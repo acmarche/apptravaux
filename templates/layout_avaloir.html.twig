@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block favicon %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+{% endblock %}
+{% block title %}Avaloirs{% endblock %}
+
+{% block brand %}
+    <a class="navbar-brand" href="{{ path('avaloir') }}" title="Accueil">
+        <span class="glyphicon glyphicon-home"></span> Avaloirs </a>
+{% endblock %}
+
+{% block menu_top %}
+    {% set action = app.request.attributes.get("_route") %}
+    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+        <li {% if action == 'avaloir' %} class="active" {% endif %} >
+            <a href="{{ path('avaloir') }}">
+                Avaloirs
+            </a>
+        </li>
+        <li {% if action == 'rue' %} class="active" {% endif %} >
+            <a href="{{ path('rue') }}">
+                Rues
+            </a>
+        </li>
+        <li {% if action == 'quartier' %} class="active" {% endif %} >
+            <a href="{{ path('quartier') }}">
+                Quartier
+            </a>
+        </li>
+    {% endif %}
+
+    {% if routeExists('intervention') %}
+        {% if is_granted('ROLE_TRAVAUX') %}
+            <li>
+                <a href="{{ path('intervention') }}">Interventions</a>
+            </li>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

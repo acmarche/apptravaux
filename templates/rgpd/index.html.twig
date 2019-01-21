@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="page-header">
+        <h3>Registre Rgpd</h3>
+    </div>
+
+    <h4 class="text-success">Finalité</h4>
+    Gestion des interventions
+
+    <h4 class="text-success">Données présentent</h4>
+    <div class="alert alert-info">
+        <strong>Données des utilisateurs:</strong>
+        <br/>
+        Nom, prénom, email<br/>
+    </div>
+    <h4 class="text-success">Différents niveaux d'accès</h4>
+    <table class="table table-bordered">
+        {% for groupe in groupes %}
+            <tr>
+                <td>{{ groupe }}</td>
+                <td>{{ groupe.description }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

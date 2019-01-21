@@ -1,0 +1,27 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+
+###> acmarche/travaux ###
+.idea/
+/public/media/
+/public/uploads/
+/public/files/
+/.php_cs.cache
+/*.sql
+/runtests.sh
+###< acmarche/travaux ###

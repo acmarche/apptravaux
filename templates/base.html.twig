@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Apptravaux{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <!-- Bootstrap -->
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/print.css') }}" rel="stylesheet" media="print">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="wrap">
+    <div class="navbar navbar-default navbar-fixed-top hidden-print" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {% block brand %}
+                    <a class="navbar-brand" href="{{ path('homepage') }}" title="Accueil">
+                        <span class="mdi mdi-home-modern"></span> AppTravaux</a>
+                {% endblock %}
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {% block menu_top %}
+
+                    {% endblock %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li>
+                            <a href="{{ path('travaux_logout') }}"
+                               title="A bientôt {{ app.user.username }}"><span
+                                        class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+    <!-- END MENU -->
+    <div class="container">
+
+        {% include '_flash_messages.html.twig' %}
+
+        {% block notifications %}
+
+        {% endblock %}
+
+        {% block body %}
+
+        {% endblock %}
+
+    </div>
+</div>
+
+<div id="footer" class="hidden-print">
+    <div class="container">
+        {% block footer %}
+            <p class="text-muted center-block">
+                Copyright © 2014-2017 - Marche-en-Famenne. Tous droits réservés.
+            </p>
+        {% endblock %}
+    </div>
+</div>
+
+{% block javascripts %}{% endblock %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{{ asset('jquery/jquery.min.js') }}"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/typeahead.bundle.js') }} " type="text/javascript"></script>
+
+{% block scripts %}
+
+{% endblock %}
+</body>
+</html>

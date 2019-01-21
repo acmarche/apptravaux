@@ -1,0 +1,9 @@
+controllers:
+    resource: ../../src/AcMarche/Travaux/Controller/
+    type: annotation
+
+acmarche_avaloir:
+    # loads routes from the PHP annotations of the controllers found in that directory
+    resource: '../../src/AcMarche/Avaloir/Controller/'
+    type:     annotation
+    prefix: avaloirs/

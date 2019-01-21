@@ -1,0 +1,31 @@
+{% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+    <div class="row hidden-print">
+        <br/>
+
+        <div class='col-md-2 col-md-offset-6'>
+            <a id="edit_enfant" href="#" class="btn btn-danger btn-sm" role="button" data-toggle="modal"
+               data-target="#myModal">
+                <i class="glyphicon glyphicon-trash"></i> Supprimer la rue</a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Suppression d'une rue</h4>
+                </div>
+                <div class="modal-body">
+                    La rue et <strong>ses avaloirs</strong> vont être supprimé !
+                    Etes vous sur de vouloir <strong>supprimer</strong> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+                    {{ form(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

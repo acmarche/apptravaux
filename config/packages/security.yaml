@@ -1,0 +1,27 @@
+# security
+security:
+    providers:
+        sql_provider:
+            entity:
+                class: AcMarche\Travaux\Entity\Security\User
+                property: username
+
+    encoders:
+        AcMarche\Travaux\Entity\Security\User: bcrypt
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        secured_area:
+            pattern:    ^/
+            provider: sql_provider
+            guard:
+                authenticators:
+                    - AcMarche\Travaux\Security\FormLoginAuthenticator
+            logout:       true
+            anonymous:    true
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

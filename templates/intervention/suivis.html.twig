@@ -1,0 +1,32 @@
+{% if suivis | length > 0 %}
+
+    <h3>Suivis</h3>
+    {{ form_start(form, { 'attr': {'class': 'well'} }) }}
+    {{ form_errors(form, { 'attr': {'class': 'well'} }) }}
+    {{ form_row(form.submit) }}
+    <div class="clear-fix"></div>
+    <br/>
+    {% for suivi in suivis %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {{ suivi.descriptif }}
+            </div>
+            <div class="panel-footer">
+                <span class="text-muted">
+                    {{ 'Created' | trans }} {{ suivi.created|date('d-m-Y H:i:s') }} par {{ suivi.useradd }}
+                    . {{ 'Updated' | trans }} {{ suivi.updated|date('d-m-Y H:i:s') }}
+                </span>
+                {% if app.user.username == suivi.useradd %}
+                    <div class="pull-right hidden-print">
+                        <a href="{{ path('suivi_edit', { 'id': suivi.id }) }}"
+                           class="btn btn-primary btn-xs pull-left hidden-print" style="margin-top: 0px;" role="button"><i
+                                    class="glyphicon glyphicon-edit"></i> Editer</a>
+                        <span class="hidden-print pull-left" style="margin-left: 10px;">
+                            <input type="checkbox" name="suivis[]" value="{{ suivi.id }}" class="checkbox"/></span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    {{ form_end(form) }}
+{% endif %}

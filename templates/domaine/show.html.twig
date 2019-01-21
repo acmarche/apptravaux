@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Détail du bâtiment <strong>{{ entity.intitule }}</strong></h3>
+    </div>
+        {% include 'domaine/actions.html.twig' %}
+
+        {% include 'default/intervention.html.twig' with {'intervention': entity.intervention } %}
+
+    {% include 'domaine/delete.html.twig' %}
+{% endblock %}

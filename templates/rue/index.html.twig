@@ -1,0 +1,57 @@
+{% extends 'layout_avaloir.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Liste des rues</h3>
+    </div>
+
+    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+        <a href="{{ path('rue_new') }}" class="btn btn-primary" role="button">
+            <i class="glyphicon glyphicon-plus"></i>
+            Ajouter</a>
+        <br/> <br/>
+    {% endif %}
+
+    {% include 'search/rue.html.twig' %}
+
+    {% if entities | length > 0 %}
+        <table class='table table-bordered table-hover'>
+            <thead>
+            <tr>
+                <th>Village</th>
+                <th>Nom</th>
+                <th>Quartier</th>
+                <th>Nbre d'avaloirs</th>
+                {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.village }}</td>
+                    <td>
+                        <a href="{{ path('rue_show', { 'id': entity.id }) }}">
+                            {{ entity }}
+                        </a>
+                    </td>
+                    <td>{{ entity.quartier }}</td>
+                    <td>{{ entity.avaloirs | length }}</td>
+                    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+                        <td>
+                            <a href="{{ path('rue_edit', { 'id': entity.id }) }}" title="Editer"
+                               role="button" class="btn btn-primary btn-xs"><i
+                                        class="glyphicon glyphicon-pencil"></i> Editer
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        Aucune
+    {% endif %}
+
+{% endblock %}

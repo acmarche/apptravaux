@@ -1,0 +1,98 @@
+<div class="hidden-print hidden-xs">
+
+    {{ form_start(search_form, { 'attr': {'class': 'form-inline'}}) }}
+    {{ form_errors(search_form) }}
+
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.id) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.intitule) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.etat) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.priorite) }}
+        </div>
+
+    </div>
+
+    <br/><br/>
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.affecte_prive) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+            {{ form_widget(search_form.date_debut) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+            {{ form_widget(search_form.date_fin) }}
+        </div>
+
+    </div>
+
+    <br/><br/>
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.domaine) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.categorie) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.batiment) }}
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-sort"></span></div>
+            {{ form_widget(search_form.sort) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(search_form.submit) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(search_form.raz) }}
+        </div>
+
+        <div class="input-group">
+            <a href="#" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+               role="button"><i class="glyphicon glyphicon-export"></i> Exporter la recherche <span
+                        class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('export_pdf') }}"><i class="glyphicon glyphicon-export"></i> En Pdf</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {{ form_end(search_form) }}
+
+    <br/>
+</div>

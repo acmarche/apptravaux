@@ -1,0 +1,21 @@
+{% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+    <div class="btn-toolbar" role="toolbar" style="margin: 0;">
+        <div class="btn-group">
+            <a href="{{ path('quartier') }}" class="btn btn-primary" role="button"><i
+                        class="glyphicon glyphicon-list"></i> Retour à la liste</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('quartierrue_new', { 'slugname': entity.slugname }) }}" class="btn btn-primary"
+               role="button"><i class="glyphicon glyphicon-list-alt"></i> Ses rues</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('nettoyage_quartier_new', { 'slugname': entity.slugname }) }}" class="btn btn-primary"
+               role="button"><i class="glyphicon glyphicon-calendar"></i> Ajouter une date de nettoyage</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('quartier_edit', { 'slugname': entity.slugname }) }}" class="btn btn-primary"
+               role="button"><i class="glyphicon glyphicon-edit"></i> Editer</a>
+        </div>
+    </div>
+    <br/>
+{% endif %}

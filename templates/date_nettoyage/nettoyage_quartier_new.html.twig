@@ -1,0 +1,18 @@
+{% extends 'layout_avaloir.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Nouvelle date de nettoyage pour le quartier <strong>{{ quartier }}</strong></h3>
+    </div>
+
+    {{ form(form) }}
+
+{% endblock %}
+
+{% block scripts %}
+    {% include 'form/calendar.html.twig' %}
+{% endblock %}

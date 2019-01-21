@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Détail du document</h3>
+    </div>
+
+    {% include 'document/actions.html.twig' %}
+
+    {% if 'image' in entity.mime %}
+        <img src="{{ entity | apptravaux_download | imagine_filter('actravaux_zoom') }}"
+             alt="img"/>
+        <br/><br/>
+    {% endif %}
+
+    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+    <a href="{{ absolute_url(entity | apptravaux_download ) }}">Télécharger</a>
+
+    {% include 'document/delete.html.twig' %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'layout_avaloir.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Edition de {{ entity.nom }}</h3>
+    </div>
+
+    {{ form(edit_form) }}
+        
+{% endblock %}
+

@@ -1,0 +1,40 @@
+{% extends 'layout_avaloir.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Détail de l'avaloir <strong>{{ entity }}</strong></h3>
+    </div>
+
+    {% include 'avaloir/actions.html.twig' with {'entity': entity } %}
+
+    {% if entity.dateRappel %}
+        <br />
+        <p>
+        <strong>Date de rappel : {{ entity.dateRappel | date('d-m-Y') }}</strong>
+        </p>
+        <br />
+    {% endif %}
+
+    <h4>Liste des dates de nettoyages</h4>
+
+    <ul class='list-group'>
+        {% for dates in entity.dates %}
+            {% set datenettoyage = dates.jour %}
+            <li class='list-group-item'>
+                <a title='' href='{{ path('datenettoyage_show', { 'id': dates.id }) }}'>
+                    {{ datenettoyage | date('d-m-Y') }}
+                </a>
+            </li>
+        {% else %}
+            <li class='list-group-item'>Aucune</li>
+        {% endfor %}
+    </ul>
+    <p>{{ entity.descriptif | nl2br }}</p>
+    <p class="text-muted">
+        {{ 'Created' | trans }} {{ entity.created|date('d-m-Y H:i:s') }}
+        . {{ 'Updated' | trans }} {{ entity.updated|date('d-m-Y H:i:s') }}
+    </p>
+
+    {% include 'avaloir/delete.html.twig' with {'delete_form': delete_form } %}
+
+{% endblock %}

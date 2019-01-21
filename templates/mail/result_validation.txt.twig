@@ -1,0 +1,7 @@
+Votre demande d'intervention {{ intervention.intitule }} a été {{ result }}
+
+{{ message }}
+
+{% if result == 'acceptée' %}
+{{ url('intervention_show', {'id': intervention.id}) }}
+{% endif %}

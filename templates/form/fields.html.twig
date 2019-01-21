@@ -1,0 +1,20 @@
+{% extends "bootstrap_3_layout.html.twig" %}
+
+{% block form %}
+    {{ form_start(form, { 'attr': {'class': 'well'} }) }}
+    {{ form_widget(form) -}}
+    {{ form_end(form) }}
+{% endblock form %}
+
+{% block form_label %}
+    {{ parent() }}
+
+    {% if required %}
+        <span class="required" title="Ce champ est requis">*</span>
+    {% endif %}
+{% endblock %}
+
+{% block button_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('btn-primary'))|trim}) %}
+    {{- parent() -}}
+{%- endblock %}

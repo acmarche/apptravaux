@@ -1,0 +1,59 @@
+<div class="hidden-print hidden-xs">
+<br/>
+    {{ form_start(search_form, { 'attr': {'class': 'form-inline'}}) }}
+    {{ form_errors(search_form) }}
+
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.village) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.quartier) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.nom) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+            {{ form_widget(search_form.date_debut) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+            {{ form_widget(search_form.date_fin) }}
+        </div>
+
+    </div>
+    <br/><br/>
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(search_form.id) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(search_form.submit) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(search_form.raz) }}
+        </div>
+
+        <div class="input-group">
+            <a href="{{ path('export_avaloirs_xls') }}" class="btn btn-success" role="button"><i
+                        class="glyphicon glyphicon-export"></i> En Xls</a>
+        </div>
+
+    </div>
+    <br/>
+    {{ form_end(search_form) }}
+</div>
+<br/>

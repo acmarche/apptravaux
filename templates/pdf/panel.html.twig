@@ -1,0 +1,230 @@
+<h3 class="text-success">
+    {{ entity }}
+</h3>
+
+<div class="col-md-6">
+    <table class='table table-bordered table-hover'>
+        <tr>
+            <th>
+                Numéro:
+            </th>
+            <td>
+                {{ entity.id }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Priorité:
+            </th>
+            <td>
+                {{ entity.priorite }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="glyphicon glyphicon-calendar"></span> Demandé le:
+            </th>
+            <td>
+                {{ entity.created | date('d-m-Y') }}
+            </td>
+        </tr>
+        {% if entity.datevalidation %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-calendar"></span> Validé le:
+                </th>
+                <td>
+
+                    {{ entity.datevalidation | date('d-m-Y') }}
+
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.domaine %}
+            <tr>
+                <th>
+                    Type:
+                </th>
+                <td>
+                    {{ entity.domaine }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.service %}
+            <tr>
+                <th>
+                    Service:
+                </th>
+                <td>
+                    {{ entity.service }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.batiment %}
+            <tr>
+                <th>
+                    Bâtiment:
+                </th>
+                <td>
+                    {{ entity.batiment }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.categorie %}
+            <tr>
+                <th>
+                    Catégorie
+                </th>
+                <td>
+                    {{ entity.categorie }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+</div>
+<div class="col-md-6">
+    <table class='table table-bordered table-hover'>
+
+        {% if entity.etat %}
+            <tr>
+                <th>
+                    Etat:
+                </th>
+                <td>
+                    {{ entity.etat }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.dateRappel %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-calendar"></span> Date rappel:
+                </th>
+                <td>
+                    {% if entity.daterappel %}
+                        {{ entity.daterappel | date('d-m-Y') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.affectation %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <strong>Affectation:</strong>
+                </th>
+                <td>
+                    {{ entity.affectation | nl2br }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.affectePrive %}
+            <tr>
+                <th>
+                    <strong>Affecté à un privé</strong>
+                </th>
+                <td>
+                    {% if entity.affectePrive %}
+                        Oui
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.transmis %}
+            <tr>
+                <th>
+                    Transmis:
+                </th>
+                <td>
+                    {% if entity.transmis %}
+                        <span class="glyphicon glyphicon-ok"></span>
+
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.soumisLe %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-calendar"></span> Soumis le
+                </th>
+                <td>
+                    {{ entity.soumisle | date('d-m-Y') }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.coutMain %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-euro"></span> Coût en main
+                    d'oeuvre:
+                </th>
+                <td>
+                    {% if entity.coutmain %}
+                        {{ entity.coutmain | number_format(2, ',', ' ') }} €
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+        {% if entity.coutMateriel %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-euro"></span><strong> Coût en
+                        matériel:</strong>
+                </th>
+                <td>
+                    {% if entity.coutmateriel %}
+                        {{ entity.coutmateriel | number_format(2, ',', ' ') }} €
+                    {% endif %}
+                </td>
+            </tr>
+            {% set total = entity.coutmain + entity.coutmateriel %}
+            {% if total > 0 %}
+                <tr>
+                    <th>
+                        <span class="text-warning">Soit un total de</span>
+                    </th>
+                    <td>
+                        <span class="text-warning">{{ total | number_format(2, ',', ' ') }} €</span>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endif %}
+        {% if entity.dateSolution %}
+            <tr>
+                <th>
+                    <span class="glyphicon glyphicon-calendar"></span> Date de solution:
+                </th>
+                <td>
+                    {% if entity.datesolution %}
+                        {{ entity.datesolution | date('d-m-Y') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+</div>
+<div class="col-md-12">
+    <br/>
+    <p>{{ entity.descriptif | nl2br }}</p>
+
+    {% if entity.solution %}
+        <h4 class="text-success">Solution apportée:</h4>
+        {{ entity.solution | nl2br }}
+    {% endif %}
+    <br/>
+</div>
+
+{% if not pdf %}
+    <div class="panel-footer">
+            <span class="text-muted">
+                {{ 'Created' | trans }} {{ entity.created|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
+                . {{ 'Updated' | trans }} {{ entity.updated|date('d-m-Y H:i:s') }}
+            </span>
+        {% if entity.archive %}
+            <span class="pull-right glyphicon glyphicon-compressed" title="Archive">Archive</span>
+        {% endif %}
+    </div>
+{% endif %}
+
+<div class="page-breaker"></div>

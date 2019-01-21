@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Nouveau suivis pour l'intervention <strong>{{ intervention }}</strong></h3>
+    </div>
+
+                <a href="{{ path('intervention_show', { 'id': intervention.id }) }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-list"></i> Retour à l'intervention</a>
+
+            <br />
+            <br />
+        {{ form(form) }}
+        
+{% endblock %}

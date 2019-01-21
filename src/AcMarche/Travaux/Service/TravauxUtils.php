@@ -1,0 +1,167 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jfsenechal
+ * Date: 13/12/16
+ * Time: 9:38
+ */
+
+namespace AcMarche\Travaux\Service;
+
+use AcMarche\Travaux\Entity\Categorie;
+use AcMarche\Travaux\Entity\Intervention;
+use AcMarche\Travaux\Entity\Security\User;
+use AcMarche\Travaux\Entity\Suivi;
+use AcMarche\Travaux\Repository\GroupRepository;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+class TravauxUtils
+{
+    private $authorizationChecker;
+    private $em;
+    private $groupRepository;
+
+    /**
+     * TravauxUtils constructor.
+     * @param AuthorizationChecker $authorizationChecker
+     * @param ObjectManager $em
+     */
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ObjectManager $em,
+        GroupRepository $groupRepository
+    ) {
+        $this->authorizationChecker = $authorizationChecker;
+        $this->em = $em;
+        $this->groupRepository = $groupRepository;
+    }
+
+    public function getInterventionsEnAttentes()
+    {
+        $places = null;
+
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_AUTEUR')) {
+            $places = ['auteur_checking'];
+        } elseif ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_ADMIN')) {
+            $places = ['admin_checking'];
+        }
+
+        if ($places) {
+            return $this->em->getRepository(Intervention::class)->getInterventionsToValid(
+                array(
+                    'places' => $places,
+                )
+            );
+        }
+
+        return [];
+    }
+
+    public function getUser(string $username)
+    {
+        return $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+    }
+
+    public function getRoleByEmail(string $email)
+    {
+        $auteurs = $this->getEmailsByGroup("TRAVAUX_AUTEUR");
+        if (in_array($email, $auteurs)) {
+            return 'auteur';
+        }
+
+        $redacteurs = $this->getEmailsByGroup("TRAVAUX_REDACTEUR");
+
+        if (in_array($email, $redacteurs)) {
+            return 'redacteur';
+        }
+
+        $contributeurs = $this->getEmailsByGroup("TRAVAUX_CONTRIBUTEUR");
+
+        if (in_array($email, $contributeurs)) {
+            return 'contributeur';
+        }
+
+        $admins = $this->getEmailsByGroup("TRAVAUX_ADMIN");
+
+        if (in_array($email, $admins)) {
+            return 'admin';
+        }
+
+        return null;
+    }
+
+    public function getEmailsByGroup(string $groupName)
+    {
+        $group = $this->groupRepository->findOneBy(['name' => $groupName]);
+        $destinataires = [];
+
+        if ($group) {
+            $users = $group->getUsers();
+            foreach ($users as $user) {
+                $destinataires[] = $user->getEmail();
+            }
+        }
+
+        return $destinataires;
+    }
+
+    public function getCategorieDefault(string $slugname)
+    {
+        return $this->em->getRepository(Categorie::class)->findOneBy(
+            ['slugname' => $slugname]
+        );
+    }
+
+    public function getConstraintsForUser()
+    {
+        $data = [];
+        /**
+         *
+         * auteur doit voir demande des contributeurs et les siennes
+         */
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_AUTEUR')) {
+            $data['role'] = 'AUTEUR';
+            $data['withAValider'] = true;
+        }
+
+        /**
+         * contributeur doit voir ses demandes
+         * les non valider aussi sinon ne voit pas ce qu'il a encode !
+         * absence du cadre a notifier contrairement à l'admin et à l'auteur
+         */
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_CONTRIBUTEUR')) {
+            $data['role'] = 'CONTRIBUTEUR';
+            $data['withAValider'] = true;
+        }
+
+        /**
+         * Doit voir ceux non valider sinon ne voit pas ce qu'il a encode
+         */
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_REDACTEUR')) {
+            $data['role'] = 'REDACTEUR';
+            $data['withAValider'] = true;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $interventions Intervention[]
+     */
+    public function setLastSuivisForInterventions($interventions)
+    {
+        foreach ($interventions as $intervention) {
+            $suivis = $this->em->getRepository(Suivi::class)->getLastSuivi($intervention);
+            if ($suivis) {
+                $intervention->setLastSuivi($suivis);
+            }
+        }
+    }
+
+    public function getInterventionsReportees()
+    {
+        return $this->em->getRepository(Intervention::class)->getInterventionsReportees();
+    }
+}
