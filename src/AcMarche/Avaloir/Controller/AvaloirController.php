@@ -152,7 +152,7 @@ class AvaloirController extends AbstractController
         return $this->render(
             'avaloir/show.html.twig',
             array(
-                'entity' => $avaloir,
+                'avaloir' => $avaloir,
                 'delete_form' => $deleteForm->createView(),
             )
         );

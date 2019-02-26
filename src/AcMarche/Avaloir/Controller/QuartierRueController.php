@@ -19,7 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class QuartierRueController extends AbstractController
 {
-
     /**
      * Displays a form to create a new Suivis entity.
      *
