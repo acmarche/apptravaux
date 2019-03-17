@@ -52,7 +52,7 @@ class ExportController extends AbstractController
         );
 
         $html = $this->renderView(
-            'pdf/head.html.twig',
+            'travaux/pdf/head.html.twig',
             array(
                 'title' => 'Liste des interventions',
             )
@@ -60,7 +60,7 @@ class ExportController extends AbstractController
 
         foreach ($interventions as $intervention) {
             $html .= $this->renderView(
-                'pdf/panel.html.twig',
+                'travaux/pdf/panel.html.twig',
                 array(
                     'entity' => $intervention,
                     'pdf' => true,
@@ -68,7 +68,7 @@ class ExportController extends AbstractController
             );
         }
 
-        $html .= $this->renderView('pdf/foot.html.twig', array());
+        $html .= $this->renderView('travaux/pdf/foot.html.twig', array());
 
         $name = 'interventions';
 

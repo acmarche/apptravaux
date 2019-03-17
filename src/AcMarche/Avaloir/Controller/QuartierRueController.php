@@ -79,7 +79,7 @@ class QuartierRueController extends AbstractController
             $i++;
         }
 
-          return $this->render('quartier_rue/new.html.twig',array(
+          return $this->render('avaloir/quartier_rue/new.html.twig',array(
             'entity' => $quartier,
             'rues' => json_encode($rues),
             'form' => $form->createView(),

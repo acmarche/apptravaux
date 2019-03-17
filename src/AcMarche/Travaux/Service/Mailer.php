@@ -74,7 +74,7 @@ class Mailer
         $destinataires = array_unique(array_merge($admins, $redacteurs));
 
         $body = $this->twig->render(
-            'mail/intervention.txt.twig',
+            'travaux/mail/intervention.txt.twig',
             array(
                 'intervention' => $intervention,
             )
@@ -116,7 +116,7 @@ class Mailer
         $sujet = 'Une demande d\'intervention à valider';
 
         $body = $this->twig->render(
-            'mail/new_validation.txt.twig',
+            'travaux/mail/new_validation.txt.twig',
             array(
                 'intervention' => $intervention,
             )
@@ -144,7 +144,7 @@ class Mailer
         $sujet = 'Une demande d\'intervention à valider';
 
         $body = $this->twig->render(
-            'mail/new_validation.txt.twig',
+            'travaux/mail/new_validation.txt.twig',
             array(
                 'intervention' => $intervention,
             )
@@ -183,7 +183,7 @@ class Mailer
         $sujet = $intervention->getIntitule()." a été ".$resultat;
 
         $body = $this->twig->render(
-            'mail/result_validation.txt.twig',
+            'travaux/mail/result_validation.txt.twig',
             array(
                 'result' => $resultat,
                 'intervention' => $intervention,
@@ -221,7 +221,7 @@ class Mailer
 
         $sujet = "Besoin d'informations pour une intervention";
         $body = $this->twig->render(
-            'mail/plus_info_contributeur.txt.twig',
+            'travaux/mail/plus_info_contributeur.txt.twig',
             array(
                 'intervention' => $intervention,
                 'message' => $message,
@@ -253,7 +253,7 @@ class Mailer
 
         $sujet = "Besoin d'informations pour une intervention";
         $body = $this->twig->render(
-            'mail/plus_info_auteur.txt.twig',
+            'travaux/mail/plus_info_auteur.txt.twig',
             array(
                 'intervention' => $intervention,
                 'message' => $message,
@@ -288,7 +288,7 @@ class Mailer
 
         $sujet = "Besoin d'informations pour une intervention";
         $body = $this->twig->render(
-            'mail/plus_info_redacteur.txt.twig',
+            'travaux/mail/plus_info_redacteur.txt.twig',
             array(
                 'intervention' => $intervention,
                 'message' => $message,
@@ -321,7 +321,7 @@ class Mailer
         $sujet = 'Archivage de : '.$intervention->getIntitule();
 
         $body = $this->twig->render(
-            'mail/archive.txt.twig',
+            'travaux/mail/archive.txt.twig',
             array(
                 'intervention' => $intervention,
             )
@@ -353,7 +353,7 @@ class Mailer
         $sujet = 'Ajout d\'un suivi pour : '.$intervention->getIntitule();
 
         $body = $this->twig->render(
-            'mail/suivis.txt.twig',
+            'travaux/mail/suivis.txt.twig',
             array(
                 'intervention' => $intervention,
                 'suivi' => $suivi,

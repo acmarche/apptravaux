@@ -32,7 +32,7 @@ class DomaineController extends AbstractController
         $entities = $em->getRepository(Domaine::class)->findAll();
 
         return $this->render(
-            'domaine/index.html.twig',
+            'travaux/domaine/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -66,7 +66,7 @@ class DomaineController extends AbstractController
         }
 
         return $this->render(
-            'domaine/new.html.twig',
+            'travaux/domaine/new.html.twig',
             array(
                 'entity' => $domaine,
                 'form' => $form->createView(),
@@ -85,7 +85,7 @@ class DomaineController extends AbstractController
         $deleteForm = $this->createDeleteForm($domaine->getId());
 
         return $this->render(
-            'domaine/show.html.twig',
+            'travaux/domaine/show.html.twig',
             array(
                 'entity' => $domaine,
                 'delete_form' => $deleteForm->createView(),
@@ -116,7 +116,7 @@ class DomaineController extends AbstractController
         }
 
         return $this->render(
-            'domaine/edit.html.twig',
+            'travaux/domaine/edit.html.twig',
             array(
                 'entity' => $domaine,
                 'edit_form' => $editForm->createView(),

@@ -1,0 +1,38 @@
+{% extends 'travaux/layout.html.twig' %}
+
+{% block body -%}
+
+    {% include 'travaux/intervention/actions.html.twig' with {'intervention': intervention } %}
+
+    {% if workflow_can(intervention, 'auteur_accept') %}
+        <p class="text-warning">Cette intervention doit être validée par un auteur</p>
+        {% if is_granted('ROLE_TRAVAUX_AUTEUR') %}
+            <p>
+                <a href="{{ path('validation_show', {'id': intervention.id}) }}" class="btn btn-warning btn-xs">
+                    Traiter cette demande
+                </a>
+            </p>
+        {% endif %}
+    {% endif %}
+
+    {% if workflow_can(intervention, 'publish') %}
+        <p class="text-warning">Cette intervention doit être validée par un administrateur</p>
+        {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
+            <p>
+                <a href="{{ path('validation_show', {'id': intervention.id}) }}" class="btn btn-warning btn-xs">
+                    Traiter cette demande
+                </a>
+            </p>
+        {% endif %}
+    {% endif %}
+
+    {% include 'travaux/intervention/panel.html.twig' %}
+
+    {% include 'travaux/intervention/documents.html.twig' %}
+
+    {% include 'travaux/intervention/suivis.html.twig' with {'form': delete_form_suivis } %}
+
+    {% include 'travaux/intervention/modal_archiver.html.twig' %}
+
+    {% include 'travaux/intervention/delete.html.twig' %}
+{% endblock %}

@@ -33,7 +33,7 @@ class ServiceController extends AbstractController
 
         $entities = $em->getRepository(Service::class)->findAll();
 
-        return $this->render('service/index.html.twig', array(
+        return $this->render('travaux/service/index.html.twig', array(
             'entities' => $entities,
         ));
     }
@@ -64,7 +64,7 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
         }
 
-        return $this->render('service/new.html.twig', array(
+        return $this->render('travaux/service/new.html.twig', array(
             'entity' => $service,
             'form' => $form->createView(),
         ));
@@ -80,7 +80,7 @@ class ServiceController extends AbstractController
     {
         $deleteForm = $this->createDeleteForm($service->getId());
 
-        return $this->render('service/show.html.twig', array(
+        return $this->render('travaux/service/show.html.twig', array(
             'entity' => $service,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -108,7 +108,7 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
         }
 
-        return $this->render('service/edit.html.twig', array(
+        return $this->render('travaux/service/edit.html.twig', array(
             'entity' => $service,
             'edit_form' => $editForm->createView(),
         ));

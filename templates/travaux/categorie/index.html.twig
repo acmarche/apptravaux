@@ -1,0 +1,42 @@
+{% extends 'travaux/layout.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Liste des catégories</h3>
+    </div>
+    
+    {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
+                <a href="{{ path('categorie_new') }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-list"></i> Ajouter</a>
+
+        <br />   <br />
+    {% endif %}
+
+        {% if entities | length > 0 %}
+            <table class='table table-bordered table-hover'>
+                <thead>
+                    <tr>
+                        <th>Intitule</th>
+                        <th>Nbre intervention</th>
+                        {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>                
+                            <td><a href="{{ path('categorie_show', { 'slugname': entity.slugname }) }}">{{ entity.intitule }}</a></td>
+                            <td>{{ entity.intervention | length }}</td>
+                            {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
+                                <td>
+                                    <a href="{{ path('categorie_edit', { 'slugname': entity.slugname }) }}" title="Editer"
+                                       role="button" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i> Editer
+                                    </a>
+                                </td>
+                            {% endif %}                           
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+{% endblock %}

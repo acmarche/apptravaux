@@ -75,7 +75,7 @@ class SuiviController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('suivi/new.html.twig',  array(
+        return $this->render('travaux/suivi/new.html.twig',  array(
             'entity' => $suivi,
             'intervention' => $intervention,
             'form' => $form->createView(),
@@ -114,7 +114,7 @@ class SuiviController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('suivi/edit.html.twig',  array(
+        return $this->render('travaux/suivi/edit.html.twig',  array(
             'entity' => $suivi,
             'edit_form' => $editForm->createView(),
         ));

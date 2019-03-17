@@ -64,24 +64,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/login_check", name="travaux_login_check")
-     */
-    public function checkAction()
-    {
-        throw new \RuntimeException(
-            'You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.'
-        );
-    }
-
-    /**
-     * @Route("/logout", name="travaux_logout")
-     */
-    public function logoutAction()
-    {
-        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
-    }
-
-    /**
      * Renders the login template with the given parameters. Overwrite this function in
      * an extended controller to provide additional data for the login template.
      *

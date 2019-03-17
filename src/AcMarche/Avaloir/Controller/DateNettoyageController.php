@@ -32,7 +32,7 @@ class DateNettoyageController extends AbstractController
     {
         $deleteForm = $this->createDeleteForm($date->getId());
 
-        return $this->render('date_nettoyage/show.html.twig', array(
+        return $this->render('avaloir/date_nettoyage/show.html.twig', array(
             'entity' => $date,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -88,7 +88,7 @@ class DateNettoyageController extends AbstractController
             return $this->redirect($this->generateUrl('avaloir_show', array('id' => $avaloir->getId())));
         }
 
-        return $this->render('date_nettoyage/new.html.twig', array(
+        return $this->render('avaloir/date_nettoyage/new.html.twig', array(
             'entity' => $dateNettoyage,
             'form' => $form->createView(),
         ));
@@ -158,7 +158,7 @@ class DateNettoyageController extends AbstractController
             return $this->redirect($this->generateUrl('quartier_show', array('slugname' => $quartier->getSlugname())));
         }
 
-        return $this->render('date_nettoyage/nettoyage_quartier_new.html.twig', array(
+        return $this->render('avaloir/date_nettoyage/nettoyage_quartier_new.html.twig', array(
             'entity' => $entity,
             'quartier' => $quartier,
             'form' => $form->createView(),
@@ -169,17 +169,7 @@ class DateNettoyageController extends AbstractController
     {
         $form = $this->createForm(
             NettoyageQuartierType::class,
-            $entity,
-            array(
-                'action' => $this->generateUrl(
-                    'nettoyage_quartier_new',
-                    array(
-                        'slugname' => $entity->getQuartier()->getSlugname(),
-                    )
-                ),
-                'method' => 'POST',
-            )
-        );
+            $entity);
 
         $form->add('submit', SubmitType::class, array('label' => 'Create'));
 

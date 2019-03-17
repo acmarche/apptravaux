@@ -82,7 +82,7 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('document/new.html.twig', array(
+        return $this->render('travaux/document/new.html.twig', array(
             'entity' => $document,
             'intervention' => $intervention,
             'form' => $form->createView(),
@@ -99,7 +99,7 @@ class DocumentController extends AbstractController
     {
         $deleteForm = $this->createDeleteForm($document->getId());
 
-        return $this->render('document/show.html.twig', array(
+        return $this->render('travaux/document/show.html.twig', array(
             'entity' => $document,
             'delete_form' => $deleteForm->createView(),
         ));

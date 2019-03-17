@@ -116,7 +116,7 @@ class InterventionController extends AbstractController
         $this->travauxUtils->setLastSuivisForInterventions($interventions);
 
         return $this->render(
-            'intervention/index.html.twig',
+            'travaux/intervention/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'entities' => $interventions,
@@ -164,7 +164,7 @@ class InterventionController extends AbstractController
         }
 
         return $this->render(
-            'intervention/new.html.twig',
+            'travaux/intervention/new.html.twig',
             array(
                 'entity' => $intervention,
                 'form' => $form->createView(),
@@ -192,7 +192,7 @@ class InterventionController extends AbstractController
         );
 
         return $this->render(
-            'intervention/show.html.twig',
+            'travaux/intervention/show.html.twig',
             array(
                 'intervention' => $intervention,
                 'suivis' => $suivis,
@@ -233,7 +233,7 @@ class InterventionController extends AbstractController
         }
 
         return $this->render(
-            'intervention/edit.html.twig',
+            'travaux/intervention/edit.html.twig',
             array(
                 'entity' => $intervention,
                 'edit_form' => $editForm->createView(),

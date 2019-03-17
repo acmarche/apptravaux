@@ -19,9 +19,9 @@ doctrine:
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        #auto_mapping: true
         mappings:
-            AcMarche\Volontariat:
+            AcMarche\Travaux:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/AcMarche/Travaux/Entity'
@@ -33,3 +33,10 @@ doctrine:
                 dir: '%kernel.project_dir%/src/AcMarche/Avaloir/Entity'
                 prefix: 'AcMarche\Avaloir'
                 alias: AcMarche\Avaloir
+            AcMarche\Stock:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/AcMarche/Stock/Entity'
+                prefix: 'AcMarche\Stock'
+                alias: AcMarche\Stock
+

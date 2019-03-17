@@ -14,7 +14,7 @@
                             {{ error.messageKey|trans(error.messageData, 'security') }}
                         </div>
                     {% endif %}
-                    <form id="loginform" action="{{ path("travaux_login_check") }}" class="form-horizontal"
+                    <form id="loginform" action="{{ path("travaux_login") }}" class="form-horizontal"
                           method="post" role="form">
 
                         <div style="margin-bottom: 25px" class="input-group">

@@ -59,7 +59,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        if ($request->getPathInfo() === '/login_check' && $request->isMethod('POST')) {
+        if ($request->getPathInfo() === '/login' && $request->isMethod('POST')) {
             return true;
         }
 
@@ -96,18 +96,22 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException('Invalid CSRF token.');
         }
 
-        $entry = $this->staffLdap->getEntry($user->getUsername());
+        try {
+            $entry = $this->staffLdap->getEntry($user->getUsername());
 
-        if ($entry instanceof Entry) {
-            $dn = $entry->getDn();
+            if ($entry instanceof Entry) {
+                $dn = $entry->getDn();
 
-            try {
-                $this->staffLdap->bind($dn, $credentials['password']);
+                try {
+                    $this->staffLdap->bind($dn, $credentials['password']);
 
-                return true;
-            } catch (\Exception $exception) {
-                //throw new BadCredentialsException($exception->getMessage());
+                    return true;
+                } catch (\Exception $exception) {
+                    //throw new BadCredentialsException($exception->getMessage());
+                }
             }
+        } catch (\Exception $exception) {
+
         }
 
         //try check password in db

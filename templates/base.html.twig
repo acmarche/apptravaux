@@ -22,6 +22,7 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <![endif]-->
 </head>
 <body>
@@ -47,7 +48,7 @@
                     {% endblock %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li>
-                            <a href="{{ path('travaux_logout') }}"
+                            <a href="{{ path('app_logout') }}"
                                title="A bientôt {{ app.user.username }}"><span
                                         class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
                         </li>

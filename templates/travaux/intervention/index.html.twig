@@ -1,0 +1,88 @@
+{% extends 'travaux/layout.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+    <div class="page-header">
+        <h3>Liste des interventions ({{ entities | length }})</h3>
+    </div>
+
+    {% include 'travaux/search/intervention.html.twig' %}
+
+    {% if entities | length > 0 %}
+
+        <table class='table table-bordered table-hover'>
+            <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Intitule</th>
+                <th>Dernier suivis</th>
+                <th>Type</th>
+                <th class="hidden-xs">Etat</th>
+                <th class="hidden-xs">Transmis</th>
+                <th>Priorité</th>
+                <th class="hidden-xs" style="width: 10%;">Validé le</th>
+                <th>Encodé par</th>
+                <th class="hidden-xs">Affection</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+
+                {% set class = '' %}
+                {% set title = '' %}
+                {% if entity.priorite == 'Haute' and entity.etat != 'Clôturé' %}
+                    {% set class = 'warning' %}
+                {% endif %}
+
+                {% if workflow_has_marked_place(entity, 'auteur_checking') %}
+                    {% set class = 'info' %}
+                    {% set title = 'Intervention doit être validée par un auteur' %}
+                {% endif %}
+                {% if workflow_has_marked_place(entity, 'admin_checking') %}
+                    {% set class = 'info' %}
+                    {% set title = 'Intervention doit être validée par un admin' %}
+                {% endif %}
+
+                <tr class="{{ class }}" id="{{ entity.id }}" title="{{ title }}">
+                    <td>
+                        {% if anchor == entity.id %}
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                        {% endif %}
+
+                        {{ entity.id }}
+
+                        {% if entity.etat == 'En attente' %}
+                            <br/>  <span class="glyphicon glyphicon-hourglass" title="{{ entity.etat }}"></span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('intervention_show', { 'id': entity.id }) }}"
+                           title="Détail de l'intervention">{{ entity.intitule }}</a>
+                    </td>
+                    <td>{{ entity.lastsuivi | slice(0, 200) }}</td>
+                    <td>{{ entity.domaine }}</td>
+                    <td class="hidden-xs">{{ entity.etat }}</td>
+                    <td class="hidden-xs">
+                        {% if entity.transmis %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% endif %}
+                    </td>
+                    <td>{{ entity.priorite }}</td>
+                    <td class="hidden-xs">
+                        {% if entity.dateValidation %}
+                            {{ entity.dateValidation | date('d-m-Y') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ entity.useradd }}</td>
+                    <td class="hidden-xs">{{ entity.affectation }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+{% block scripts %}
+    {% include 'form/calendar.html.twig' %}
+{% endblock %}

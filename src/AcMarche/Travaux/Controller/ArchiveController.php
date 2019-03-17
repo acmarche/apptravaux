@@ -89,7 +89,7 @@ class ArchiveController extends AbstractController
         $session->set($key, serialize($data));
         $entities = $em->getRepository(Intervention::class)->search($data);
 
-        return $this->render('archive/index.html.twig',  array(
+        return $this->render('travaux/archive/index.html.twig',  array(
             'search_form' => $search_form->createView(),
             'entities' => $entities,
         ));

@@ -33,7 +33,7 @@ class QuartierController extends AbstractController
 
         $entities = $em->getRepository(Quartier::class)->search(array());
 
-        return $this->render('quartier/index.html.twig', array(
+        return $this->render('avaloir/quartier/index.html.twig', array(
             'entities' => $entities,
         ));
     }
@@ -62,7 +62,7 @@ class QuartierController extends AbstractController
 
             return $this->redirect($this->generateUrl('quartier'));
         }
-        return $this->render('quartier/new.html.twig', array(
+        return $this->render('avaloir/quartier/new.html.twig', array(
             'entity' => $quartier,
             'form' => $form->createView(),
         ));
@@ -81,7 +81,7 @@ class QuartierController extends AbstractController
         $deleteForm = $this->createDeleteForm($quartier->getId());
         $rues = $em->getRepository(Rue::class)->getByQuartier($quartier, true);
 
-        return $this->render('quartier/show.html.twig', array(
+        return $this->render('avaloir/quartier/show.html.twig', array(
             'listrues' => $rues,
             'entity' => $quartier,
             'delete_form' => $deleteForm->createView(),
@@ -109,7 +109,7 @@ class QuartierController extends AbstractController
 
             return $this->redirect($this->generateUrl('quartier'));
         }
-        return $this->render('quartier/edit.html.twig', array(
+        return $this->render('avaloir/quartier/edit.html.twig', array(
             'entity' => $quartier,
             'edit_form' => $editForm->createView()
         ));

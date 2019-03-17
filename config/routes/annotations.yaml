@@ -7,3 +7,14 @@ acmarche_avaloir:
     resource: '../../src/AcMarche/Avaloir/Controller/'
     type:     annotation
     prefix: avaloirs/
+
+
+acmarche_stock:
+    # loads routes from the PHP annotations of the controllers found in that directory
+    resource: '../../src/AcMarche/Stock/Controller/'
+    type:     annotation
+    prefix: stock/
+
+app_logout:
+    path: /logout
+    methods: GET

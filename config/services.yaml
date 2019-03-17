@@ -35,6 +35,15 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AcMarche\Stock\:
+        resource: '../src/AcMarche/Stock'
+        exclude: '../src/AcMarche/Stock/{Entity,Migrations,Tests,Kernel.php}'
+
+    AcMarche\Stock\Controller\:
+        resource: '../src/AcMarche/Stock/Controller/'
+        public: true
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

@@ -30,7 +30,7 @@ class BatimentController extends AbstractController
 
         $entities = $em->getRepository(Batiment::class)->findAll();
 
-        return $this->render('batiment/index.html.twig', array(
+        return $this->render('travaux/batiment/index.html.twig', array(
             'entities' => $entities,
         ));
     }
@@ -61,7 +61,7 @@ class BatimentController extends AbstractController
             return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
         }
 
-        return $this->render('batiment/new.html.twig', array(
+        return $this->render('travaux/batiment/new.html.twig', array(
             'entity' => $batiment,
             'form' => $form->createView(),
         ));
@@ -77,7 +77,7 @@ class BatimentController extends AbstractController
     {
         $deleteForm = $this->createDeleteForm($batiment->getId());
 
-        return $this->render('batiment/show.html.twig', array(
+        return $this->render('travaux/batiment/show.html.twig', array(
             'entity' => $batiment,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -105,7 +105,7 @@ class BatimentController extends AbstractController
             return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
         }
 
-        return $this->render('batiment/edit.html.twig', array(
+        return $this->render('travaux/batiment/edit.html.twig', array(
             'entity' => $batiment,
             'edit_form' => $editForm->createView(),
         ));

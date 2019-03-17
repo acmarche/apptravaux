@@ -43,6 +43,6 @@ class DefaultController extends AbstractController
      */
     public function documentation()
     {
-        return $this->render('default/documentation.html.twig');
+        return $this->render('travaux/default/documentation.html.twig');
     }
 }

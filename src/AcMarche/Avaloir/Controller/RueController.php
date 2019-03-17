@@ -66,7 +66,7 @@ class RueController extends AbstractController
         $entities = $em->getRepository(Rue::class)->search($data);
 
         return $this->render(
-            'rue/index.html.twig',
+            'avaloir/rue/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'entities' => $entities,
@@ -100,7 +100,7 @@ class RueController extends AbstractController
         }
 
         return $this->render(
-            'rue/new.html.twig',
+            'avaloir/rue/new.html.twig',
             array(
                 'entity' => $rue,
                 'form' => $form->createView(),
@@ -119,7 +119,7 @@ class RueController extends AbstractController
         $deleteForm = $this->createDeleteForm($rue->getId());
 
         return $this->render(
-            'rue/show.html.twig',
+            'avaloir/rue/show.html.twig',
             array(
                 'entity' => $rue,
                 'delete_form' => $deleteForm->createView(),
@@ -166,7 +166,7 @@ class RueController extends AbstractController
         }
 
         return $this->render(
-            'rue/edit.html.twig',
+            'avaloir/rue/edit.html.twig',
             array(
                 'entity' => $rue,
                 'edit_form' => $editForm->createView(),

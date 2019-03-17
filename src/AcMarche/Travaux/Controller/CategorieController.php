@@ -32,7 +32,7 @@ class CategorieController extends AbstractController
         $entities = $em->getRepository(Categorie::class)->findAll();
 
         return $this->render(
-            'categorie/index.html.twig',
+            'travaux/categorie/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -66,7 +66,7 @@ class CategorieController extends AbstractController
         }
 
         return $this->render(
-            'categorie/new.html.twig',
+            'travaux/categorie/new.html.twig',
             array(
                 'entity' => $categorie,
                 'form' => $form->createView(),
@@ -85,7 +85,7 @@ class CategorieController extends AbstractController
         $deleteForm = $this->createDeleteForm($categorie->getId());
 
         return $this->render(
-            'categorie/show.html.twig',
+            'travaux/categorie/show.html.twig',
             array(
                 'entity' => $categorie,
                 'delete_form' => $deleteForm->createView(),
@@ -115,7 +115,7 @@ class CategorieController extends AbstractController
         }
 
         return $this->render(
-            'categorie/edit.html.twig',
+            'travaux/categorie/edit.html.twig',
             array(
                 'entity' => $categorie,
                 'edit_form' => $editForm->createView(),
