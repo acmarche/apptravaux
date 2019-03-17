@@ -1,0 +1,15 @@
+{% extends 'stock/layout.html.twig' %}
+
+{% block title %}Edit Produit{% endblock %}
+
+{% block body %}
+    <h1>{{ produit.nom }}</h1>
+
+    {{ include('stock/produit/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <br/>
+    <a href="{{ path('stock_produit_show',{'id': produit.id}) }}"><i class="fas fa-arrow-left"></i>
+        Annuler</a>
+
+    {{ include('stock/produit/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'stock/layout.html.twig' %}
+
+{% block title %}Categorie{% endblock %}
+
+{% block body %}
+    <h1>{{ categorie.nom }}</h1>
+
+    {% include 'stock/categorie/_actions.html.twig' %}
+
+    {{ categorie.description|nl2br }}
+
+    {{ include('stock/categorie/_delete_form.html.twig') }}
+{% endblock %}

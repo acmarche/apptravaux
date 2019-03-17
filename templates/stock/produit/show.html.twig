@@ -1,0 +1,25 @@
+{% extends 'stock/layout.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <h1>{{ produit.nom }}</h1>
+
+    {% include 'stock/produit/_actions.html.twig' %}
+
+    {{ produit.description | nl2br }}
+
+    <table class="table">
+        <tr>
+            <th>Reference</th>
+            <td>{{ produit.reference }}</td>
+        </tr>
+        <tr>
+            <th>Quantite</th>
+            <td>{{ produit.quantite }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    {{ include('stock/produit/_delete_form.html.twig') }}
+{% endblock %}

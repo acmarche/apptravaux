@@ -1,0 +1,15 @@
+{% extends 'stock/layout.html.twig' %}
+
+{% block title %}Edit Categorie{% endblock %}
+
+{% block body %}
+    <h1>{{ categorie.nom }}</h1>
+
+    {{ include('stock/categorie/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <br/>
+    <a href="{{ path('stock_categorie_show',{'id': categorie.id}) }}"><i class="fas fa-arrow-left"></i>
+        Annuler</a>
+
+    {{ include('stock/categorie/_delete_form.html.twig') }}
+{% endblock %}
