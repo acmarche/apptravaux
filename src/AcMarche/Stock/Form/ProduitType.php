@@ -19,6 +19,20 @@ class ProduitType extends AbstractType
         $builder
             ->add('nom')
             ->add(
+                'categorie',
+                EntityType::class,
+                [
+                    'class' => Categorie::class,
+                ]
+            )
+            ->add(
+                'quantite',
+                IntegerType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'reference',
                 TextType::class,
                 [
@@ -30,20 +44,6 @@ class ProduitType extends AbstractType
                 TextareaType::class,
                 [
                     'required' => false,
-                ]
-            )
-            ->add(
-                'quantite',
-                IntegerType::class,
-                [
-                    'required' => false,
-                ]
-            )
-            ->add(
-                'categorie',
-                EntityType::class,
-                [
-                    'class' => Categorie::class,
                 ]
             );
     }

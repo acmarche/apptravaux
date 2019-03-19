@@ -42,6 +42,11 @@ class Produit
      */
     private $quantite;
 
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

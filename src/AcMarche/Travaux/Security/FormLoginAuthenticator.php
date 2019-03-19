@@ -69,8 +69,8 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         return [
-            'username' => $request->request->get('_username'),
-            'password' => $request->request->get('_password'),
+            'username' => $request->request->get('username'),
+            'password' => $request->request->get('password'),
             'token' => $request->request->get('_csrf_token'),
         ];
     }
@@ -131,6 +131,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl()
     {
-        return $this->router->generate('travaux_login');
+        return $this->router->generate('app_login');
     }
 }

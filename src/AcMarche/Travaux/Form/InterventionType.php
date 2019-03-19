@@ -2,10 +2,13 @@
 
 namespace AcMarche\Travaux\Form;
 
+use AcMarche\Travaux\Entity\Batiment;
 use AcMarche\Travaux\Entity\Categorie;
+use AcMarche\Travaux\Entity\Domaine;
 use AcMarche\Travaux\Entity\Etat;
 use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Entity\Priorite;
+use AcMarche\Travaux\Entity\Service;
 use AcMarche\Travaux\Repository\CategorieRepository;
 use AcMarche\Travaux\Repository\EtatRepository;
 use AcMarche\Travaux\Repository\PrioriteRepository;
@@ -42,9 +45,31 @@ class InterventionType extends AbstractType
 
         $builder
             ->add('intitule')
-            ->add('domaine', null, array('label' => 'Type'))
-            ->add('service')
-            ->add('batiment')
+            ->add(
+                'domaine',
+                EntityType::class,
+                array(
+                    'class' => Domaine::class,
+                    'label' => 'Type',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
+                )
+            )
+            ->add(
+                'service',
+                EntityType::class,
+                [
+                    'class' => Service::class,
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
+                ]
+            )
+            ->add(
+                'batiment',
+                EntityType::class,
+                [
+                    'class' => Batiment::class,
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
+                ]
+            )
             ->add(
                 'transmis',
                 CheckboxType::class,
@@ -153,6 +178,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (EtatRepository $er) {
                             return $er->getForList();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
 
                     )
                 )
@@ -166,6 +192,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (CategorieRepository $er) {
                             return $er->getForList();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                     )
                 )
                 ->add(
@@ -177,6 +204,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (PrioriteRepository $er) {
                             return $er->getForList();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                     )
                 );
         } else {
@@ -191,6 +219,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (EtatRepository $er) {
                             return $er->getForListDefault();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
 
                     )
                 )
@@ -204,6 +233,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (PrioriteRepository $er) {
                             return $er->getForListDefault();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                     )
                 )
                 ->add(
@@ -216,6 +246,7 @@ class InterventionType extends AbstractType
                         'query_builder' => function (CategorieRepository $er) {
                             return $er->getForListDefault();
                         },
+                        'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                     )
                 );
         }

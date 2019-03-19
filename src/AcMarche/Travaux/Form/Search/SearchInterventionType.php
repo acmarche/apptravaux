@@ -12,9 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchInterventionType extends AbstractType
 {
@@ -102,6 +100,7 @@ class SearchInterventionType extends AbstractType
                     'choices' => $etats,
                     'required' => false,
                     'placeholder' => 'Choisissez un état',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
             ->add(
@@ -139,6 +138,7 @@ class SearchInterventionType extends AbstractType
                     'choices' => $priorites,
                     'required' => false,
                     'placeholder' => 'Choisissez une priorité',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
             ->add(
@@ -157,6 +157,7 @@ class SearchInterventionType extends AbstractType
                     'choices' => $batiments,
                     'required' => false,
                     'placeholder' => 'Choisissez un bâtiment',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
             ->add(
@@ -166,6 +167,7 @@ class SearchInterventionType extends AbstractType
                     'choices' => $categories,
                     'required' => false,
                     'placeholder' => 'Choisissez une catégorie',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
             ->add(
@@ -175,6 +177,7 @@ class SearchInterventionType extends AbstractType
                     'choices' => $domaines,
                     'required' => false,
                     'placeholder' => 'Choisissez un type',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
             ->add(
@@ -184,34 +187,9 @@ class SearchInterventionType extends AbstractType
                     'choices' => $sorts,
                     'required' => false,
                     'placeholder' => 'Trier par',
-                )
-            )
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => 'Rechercher',
-                )
-            )
-            ->add(
-                'raz',
-                SubmitType::class,
-                array(
-                    'label' => 'Raz',
-                    'attr' => array(
-                        'class' => 'btn-sm btn-info',
-                        'title' => 'Réinitialiser la recherche',
-                    ),
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             );
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array());
-
-    }
 }

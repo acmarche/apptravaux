@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -183,9 +184,7 @@ class InterventionController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $deleteForm = $this->createDeleteForm($intervention->getId());
         $deleteFormSuivis = $this->createSuivisDeleteForm($intervention->getId());
-        $archiveForm = $this->createArchiveForm($intervention);
 
         $suivis = $em->getRepository(Suivi::class)->search(
             array('intervention' => $intervention)
@@ -197,8 +196,6 @@ class InterventionController extends AbstractController
                 'intervention' => $intervention,
                 'suivis' => $suivis,
                 'delete_form_suivis' => $deleteFormSuivis->createView(),
-                'delete_form' => $deleteForm->createView(),
-                'archive_form' => $archiveForm->createView(),
                 'pdf' => false,
             )
         );
@@ -236,26 +233,19 @@ class InterventionController extends AbstractController
             'travaux/intervention/edit.html.twig',
             array(
                 'entity' => $intervention,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             )
         );
     }
 
     /**
-     * Deletes a Intervention entity.
-     *
      * @Route("/{id}", name="intervention_delete", methods={"DELETE"})
-     *
      * @IsGranted("delete", subject="intervention")
      */
-    public function delete(Request $request, Intervention $intervention)
+    public function delete(Request $request, Intervention $intervention): Response
     {
-        $form = $this->createDeleteForm($intervention->getId());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->isCsrfTokenValid('delete'.$intervention->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-
             try {
                 $this->fileHelper->deleteAllDocs($intervention);
                 $em->remove($intervention);
@@ -268,22 +258,6 @@ class InterventionController extends AbstractController
         }
 
         return $this->redirectToRoute('intervention');
-    }
-
-    /**
-     * Creates a form to delete a Intervention entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('intervention_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
     }
 
     /**
@@ -354,20 +328,4 @@ class InterventionController extends AbstractController
             ->getForm();
     }
 
-    private function createArchiveForm(Intervention $intervention)
-    {
-        $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('intervention_archive_set', array('id' => $intervention->getId())))
-            ->setMethod('POST')
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => "Valider cette action",
-                )
-            )
-            ->getForm();
-
-        return $form;
-    }
 }

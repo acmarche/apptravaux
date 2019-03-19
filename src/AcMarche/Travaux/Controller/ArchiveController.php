@@ -2,15 +2,15 @@
 
 namespace AcMarche\Travaux\Controller;
 
+use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Event\InterventionEvent;
+use AcMarche\Travaux\Form\Search\SearchInterventionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use AcMarche\Travaux\Entity\Intervention;
-use AcMarche\Travaux\Form\Search\SearchInterventionType;
 
 /**
  * Intervention controller.
@@ -69,10 +69,14 @@ class ArchiveController extends AbstractController
             $data['withAValider'] = true;
         }
 
-        $search_form = $this->createForm(SearchInterventionType::class, $data, array(
-            'action' => $this->generateUrl('intervention_archive'),
-            'method' => 'GET'
-        ));
+        $search_form = $this->createForm(
+            SearchInterventionType::class,
+            $data,
+            array(
+                'action' => $this->generateUrl('intervention_archive'),
+                'method' => 'GET',
+            )
+        );
 
         $search_form->handleRequest($request);
 
@@ -82,6 +86,7 @@ class ArchiveController extends AbstractController
             if ($search_form->get('raz')->isClicked()) {
                 $session->remove($key);
                 $this->addFlash('info', 'La recherche a bien été réinitialisée.');
+
                 return $this->redirectToRoute('intervention_archive');
             }
         }
@@ -89,10 +94,13 @@ class ArchiveController extends AbstractController
         $session->set($key, serialize($data));
         $entities = $em->getRepository(Intervention::class)->search($data);
 
-        return $this->render('travaux/archive/index.html.twig',  array(
-            'search_form' => $search_form->createView(),
-            'entities' => $entities,
-        ));
+        return $this->render(
+            'travaux/archive/index.html.twig',
+            array(
+                'search_form' => $search_form->createView(),
+                'entities' => $entities,
+            )
+        );
     }
 
     /**
@@ -106,10 +114,7 @@ class ArchiveController extends AbstractController
             throw $this->createAccessDeniedException('Vous n\'avez pas le droit d\'archiver');
         }
 
-        $form = $this->createArchiveForm($intervention);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->isCsrfTokenValid('archive'.$intervention->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
 
             $event = new InterventionEvent($intervention, null);
@@ -133,16 +138,4 @@ class ArchiveController extends AbstractController
         return $this->redirectToRoute('intervention');
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createArchiveForm()
-    {
-        $form = $this->createFormBuilder()
-            ->add('submit', SubmitType::class, array(
-                'label' => "Valider cette action"))
-            ->getForm();
-
-        return $form;
-    }
 }
