@@ -1,8 +1,7 @@
 {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
-           <div class="btn-toolbar" role="toolbar" style="margin: 0;">
-                <div class="btn-group">
-                    <a href="{{ path('intervention_show', { 'id': entity.intervention.id }) }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-list"></i> Retour à l'intervention</a>
-                </div>                                
-            </div>
-    <br />
+
+    <a href="{{ path('intervention_show', { 'id': entity.intervention.id }) }}" class="btn btn-primary" role="button"><i
+                class="fas fa-list"></i> Retour à l'intervention</a>
+
+    <br/>
 {% endif %}

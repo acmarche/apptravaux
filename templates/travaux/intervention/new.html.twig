@@ -7,7 +7,11 @@
         <h3>Nouvelle intervention</h3>
     </div>
 
-    {% include 'travaux/intervention/form.html.twig' with {'form': form } %}
+    <div class="card bg-light">
+        <div class="card-header">
+            {% include 'travaux/intervention/form.html.twig' with {'form': form } %}
+        </div>
+    </div>
 
 {% endblock %}
 {% block scripts %}

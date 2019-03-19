@@ -1,40 +1,42 @@
-<div class="hidden-print btn-toolbar" role="toolbar" style="margin: 0;">
-    <div class="btn-group">
-        <a href="{{ path('intervention_anchor', {'anchor' : intervention.id }) }}#{{ intervention.id }}" class="btn btn-primary"
-           role="button"><i class="glyphicon glyphicon-list"></i> Retour à la liste</a>
-    </div>
+<div class="hidden-print">
+
+    <a href="{{ path('intervention_anchor', {'anchor' : intervention.id }) }}#{{ intervention.id }}"
+       class="btn btn-primary"
+       role="button"><i class="fas fa-list"></i> Retour à la liste</a>
+
     {% if is_granted('ROLE_TRAVAUX_ADD') %}
-        <div class="btn-group">
-            <a href="{{ path('intervention_edit', { 'id': intervention.id }) }}" class="btn btn-primary"
-               role="button"><i class="glyphicon glyphicon-edit"></i> Editer</a>
-        </div>
-        <div class="btn-group">
-            <a href="{{ path('document_new', { 'id': intervention.id }) }}" class="btn btn-primary" role="button"><i
-                        class="glyphicon glyphicon-plus"></i> Joindre un fichier</a>
-        </div>
+
+        <a href="{{ path('intervention_edit', { 'id': intervention.id }) }}" class="btn btn-primary"
+           role="button"><i class="far fa-edit"></i> Editer</a>
+
+        <a href="{{ path('document_new', { 'id': intervention.id }) }}" class="btn btn-primary" role="button"><i
+                    class="fa fa-plus"></i> Joindre un fichier</a>
     {% endif %}
-    <div class="btn-group">
-        <a href="{{ path('suivi_new', { 'id': intervention.id }) }}" class="btn btn-primary" role="button"><i
-                    class="glyphicon glyphicon-plus"></i> Ajouter un suivi</a>
-    </div>
-    <div class="btn-group">
-        <a href="javascript:window.print();" class="btn btn-primary" role="button"><i
-                    class="glyphicon glyphicon-print"></i> Imprimer</a>
-    </div>
+
+    <a href="{{ path('suivi_new', { 'id': intervention.id }) }}" class="btn btn-primary" role="button"><i
+                class="fa fa-plus"></i> Ajouter un suivi</a>
+
+    <a href="javascript:window.print();" class="btn btn-primary" role="button">
+        <i class="fas fa-print"></i> Imprimer</a>
+
     {% if is_granted('ROLE_TRAVAUX_ADMIN') or is_granted('ROLE_TRAVAUX_REDACTEUR') %}
-        <div class="btn-group">
-            {% if intervention.archive %}
-                <a href="#" class="btn btn-warning" role="button" data-toggle="modal"
-                   data-target="#archiveModal">
-                    <i class="glyphicon glyphicon-level-up"></i> Désarchiver
-                </a>
-            {% else %}
-                <a href="#" class="btn btn-warning" role="button" data-toggle="modal"
-                   data-target="#archiveModal">
-                    <i class="glyphicon glyphicon-compressed"></i> Archiver
-                </a>
-            {% endif %}
-        </div>
+
+        {% if intervention.archive %}
+            <a href="#" class="btn btn-warning" role="button" data-toggle="modal"
+               data-target="#archiveModal">
+                <i class="far fa-file-archive"></i> Désarchiver
+            </a>
+        {% else %}
+            <a href="#" class="btn btn-warning" role="button" data-toggle="modal"
+               data-target="#archiveModal">
+                <i class="fas fa-archive"></i> Archiver
+            </a>
+        {% endif %}
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+            <i class="fas fa-trash"></i> Supprimer l'intervention
+        </button>
+
     {% endif %}
 </div>
 <br/>

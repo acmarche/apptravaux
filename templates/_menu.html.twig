@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top border-bottom shadow-sm">
+    {% block brand %}
+        <a class="navbar-brand" href="{{ path('homepage') }}">AppTravaux</a>
+    {% endblock %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        {% block menu_top %}
+            <ul class="navbar-nav mr-auto">
+
+                {#   <li class="nav-item active">
+                       <a class="nav-link" href="{{ path('grr_home') }}">Home <span class="sr-only">(current)</span></a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link"
+                          href="{{ path('grr_setting_index') }}">{{ 'menu.settings'|trans({}, 'actions') }}</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="{{ path('grr_area_index') }}">{{ 'menu.area'|trans({}, 'actions') }}</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link"
+                          href="{{ path('grr_entry_index') }}">{{ 'menu.entries'|trans({}, 'actions') }}</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="{{ path('grr_user_index') }}">{{ 'menu.users'|trans({}, 'actions') }}</a>
+                   </li>
+                   <li class="nav-item dropdown">
+                       <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">{{ 'menu.settings'|trans({}, 'actions') }}</a>
+                       <div class="dropdown-menu" aria-labelledby="dropdown01">
+                           <a class="dropdown-item"
+                              href="{{ path('grr_type_area_index') }}">{{ 'menu.reservation.type'|trans({}, 'actions') }}</a>
+                       </div>
+                   </li>
+                   #}
+            </ul>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <a href="{{ path('app_logout') }}"
+                       title="A bientôt {{ app.user.username }}"><span
+                                class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
+                </li>
+            {% endif %}
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text"
+                       placeholder="{{ 'form.search.placeholder'|trans({}, 'actions') }}" aria-label="Search">
+                <button class="btn btn-secondary my-2 my-sm-0"
+                        type="submit">{{ 'form.btn.search'|trans({}, 'actions') }}</button>
+            </form>
+
+        {% endblock %}
+    </div>
+
+
+</nav>

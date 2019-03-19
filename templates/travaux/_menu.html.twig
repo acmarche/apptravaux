@@ -1,0 +1,44 @@
+{% set action = app.request.attributes.get("_route") %}
+
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ path('intervention') }}"><i class="fas fa-search"></i>Rechercher</a>
+</li>
+
+{% if is_granted('ROLE_TRAVAUX_ADD') %}
+    <li class="nav-item">
+        <a href="{{ path('intervention_new') }}" class="nav-link">
+            <i class="fa fa-plus"></i> Ajouter une intervention
+        </a>
+    </li>
+{% endif %}
+
+<li class="nav-item">
+    <a href="{{ path('intervention_archive') }}" class="nav-link">Archives</a>
+</li>
+
+{% if routeExists('avaloir') %}
+    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('avaloir') }}" {% if action == 'avaloir' %} class='active' {% endif %}>Avaloirs</a>
+        </li>
+    {% endif %}
+{% endif %}
+                    
+{% if is_granted('ROLE_TRAVAUX_ADMIN') %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">Paramètres...</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" href="{{ path('batiment') }}">Les bâtiments</a>
+            <a class="dropdown-item" href="{{ path('service') }}">Les services</a>
+            <a class="dropdown-item" href="{{ path('domaine') }}">Les types</a>
+            <a class="dropdown-item" href="{{ path('categorie') }}">Les catégories</a>
+            <a class="dropdown-item" href="{{ path('documentation') }}">Documentation</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="dropdown-item" href="{{ path('actravaux_utilisateur') }}">Gestion des utilisateurs</a>
+            {% endif %}
+        </div>
+    </li>
+{% endif %}

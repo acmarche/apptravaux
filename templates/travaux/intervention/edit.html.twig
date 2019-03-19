@@ -1,19 +1,22 @@
 {% extends 'travaux/layout.html.twig' %}
+
 {% block stylesheets %}
     <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
 {% endblock %}
+
 {% block body -%}
     <div class="page-header">
         <h3>Edition de <strong>{{ entity }}</strong></h3>
     </div>
-
-    {% include 'travaux/intervention/form.html.twig' with {'form': edit_form } %}
+    <div class="card bg-light">
+        <div class="card-header">
+            {% include 'travaux/intervention/form.html.twig' %}
+        </div>
+    </div>
 
     <br/>
-    <a href="{{ path('intervention_show', { 'id': entity.id } ) }}">
-        <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Annuler et retour
-    </a>
-    <br/>
+    <a href="{{ path('intervention_show',{'id':entity.id}) }}"><i
+                class="fas fa-arrow-left"></i> Annuler</a>
 
 {% endblock %}
 {% block scripts %}
