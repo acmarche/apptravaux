@@ -16,7 +16,7 @@ class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="stock_home")
-     * IsGranted("ROLE_STOCK")
+     * @IsGranted("ROLE_STOCK")
      */
     public function index()
     {

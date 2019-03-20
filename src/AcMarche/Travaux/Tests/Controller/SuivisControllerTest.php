@@ -11,7 +11,7 @@ class SuivisControllerTest extends BaseUnit
 
         $crawler = $this->admin->click($crawler->selectLink('Test de travail')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de travail")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de travail")')->count());
         
         $crawler = $this->admin->click($crawler->selectLink('Ajouter un suivi')->link());
 
@@ -22,7 +22,7 @@ class SuivisControllerTest extends BaseUnit
         $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("bouchon")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('p:contains("bouchon")')->count());
     }
 
     public function testEdit()
@@ -41,6 +41,6 @@ class SuivisControllerTest extends BaseUnit
         $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("bouchons")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('p:contains("bouchons")')->count());
     }
 }

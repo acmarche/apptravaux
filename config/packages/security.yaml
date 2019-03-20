@@ -14,12 +14,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api:
+            pattern: ^/api/
+            guard:
+                authenticators:
+                    - AcMarche\Travaux\Security\TokenAuthenticator
+            provider: sql_provider
+
+
         secured_area:
             pattern:    ^/
             provider: sql_provider
             guard:
                 authenticators:
-                    - AcMarche\Travaux\Security\FormLoginAuthenticator
+                    - AcMarche\Travaux\Security\AppTravauxAuthenticator
             logout:       true
             anonymous:    true
 

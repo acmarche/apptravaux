@@ -33,7 +33,7 @@ class InterventionControllerTest extends BaseUnit
         $crawler = $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de travail")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de travail")')->count());
     }
 
     public function testEdit()
@@ -43,7 +43,7 @@ class InterventionControllerTest extends BaseUnit
 
         $crawler = $this->admin->click($crawler->selectLink('Test de travail')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de travail")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de travail")')->count());
 
         $crawler = $this->admin->click($crawler->selectLink('Editer')->link());
 
@@ -77,7 +77,7 @@ class InterventionControllerTest extends BaseUnit
 
         $crawler = $this->admin->click($crawler->selectLink('Test de travail')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de travail")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de travail")')->count());
 
         $crawler = $this->admin->click($crawler->selectLink('Joindre un fichier')->link());
 

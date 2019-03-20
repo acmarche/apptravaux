@@ -4,7 +4,6 @@ namespace AcMarche\Travaux\Tests\Controller;
 
 class BatimentControllerTest extends BaseUnit
 {
-
     public function testIndex()
     {
         $crawler = $this->admin->request('GET', '/batiment/');

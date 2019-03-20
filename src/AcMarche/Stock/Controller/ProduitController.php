@@ -5,6 +5,8 @@ namespace AcMarche\Stock\Controller;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Stock\Form\ProduitType;
 use AcMarche\Stock\Repository\ProduitRepository;
+use AcMarche\Stock\Service\Logger;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,9 +14,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/produit")
+ * @IsGranted("ROLE_STOCK")
  */
 class ProduitController extends AbstractController
 {
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * @Route("/", name="stock_produit_index", methods={"GET"})
      */
@@ -77,6 +90,9 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->logger->log($produit, $form->getData()->getQuantite());
+
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Le produit a bien été modifié.');

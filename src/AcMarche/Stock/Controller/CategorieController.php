@@ -5,6 +5,7 @@ namespace AcMarche\Stock\Controller;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Form\CategorieType;
 use AcMarche\Stock\Repository\CategorieRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/categorie")
+ * @IsGranted("ROLE_STOCK")
  */
 class CategorieController extends AbstractController
 {

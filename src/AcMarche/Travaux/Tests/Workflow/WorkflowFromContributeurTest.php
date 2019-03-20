@@ -34,7 +34,7 @@ class WorkflowFromContributeurTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('div:contains("Cette intervention doit être validée par un auteur")')->count()
+            $crawler->filter('p:contains("Cette intervention doit être validée par un auteur")')->count()
         );
     }
 
@@ -94,7 +94,7 @@ class WorkflowFromContributeurTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('div:contains("Cette intervention doit être validée par un auteur")')->count()
+            $crawler->filter('p:contains("Cette intervention doit être validée par un auteur")')->count()
         );
     }
 
@@ -130,7 +130,7 @@ class WorkflowFromContributeurTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('div:contains("Cette intervention doit être validée par un administrateur")')->count()
+            $crawler->filter('p:contains("Cette intervention doit être validée par un administrateur")')->count()
         );
     }
 
@@ -223,7 +223,7 @@ class WorkflowFromContributeurTest extends BaseUnit
         $crawler = $this->admin->click($crawler->selectLink('Demande de lobet')->link());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("demander au cst")')->last()->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("demander au cst")')->last()->count());
     }
 
     public function testDeleteTravail()
@@ -231,8 +231,6 @@ class WorkflowFromContributeurTest extends BaseUnit
         $crawler = $this->admin->request('GET', '/intervention/');
         $crawler = $this->admin->click($crawler->selectLink('Demande de lobet')->link());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
-
-        $crawler = $this->admin->click($crawler->selectLink('Supprimer l\'intervention')->link());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
 

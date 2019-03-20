@@ -36,7 +36,7 @@ class RedacteurControllerTest extends BaseUnit
         $this->redacteur->submit($form);
         $crawler = $this->redacteur->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de redacteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de redacteur")')->count());
     }
 
     public function testEdit()
@@ -46,7 +46,7 @@ class RedacteurControllerTest extends BaseUnit
 
         $crawler = $this->redacteur->click($crawler->selectLink('Test de redacteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de redacteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de redacteur")')->count());
 
         $crawler = $this->redacteur->click($crawler->selectLink('Editer')->link());
 
@@ -66,7 +66,7 @@ class RedacteurControllerTest extends BaseUnit
 
         $crawler = $this->redacteur->click($crawler->selectLink('Test de redacteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de redacteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de redacteur")')->count());
 
         $crawler = $this->redacteur->click($crawler->selectLink('Joindre un fichier')->link());
 
@@ -87,7 +87,7 @@ class RedacteurControllerTest extends BaseUnit
 
         $crawler = $this->redacteur->click($crawler->selectLink('Test de redacteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de redacteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de redacteur")')->count());
 
         $crawler = $this->redacteur->click($crawler->selectLink('Ajouter un suivi')->link());
 
@@ -98,6 +98,6 @@ class RedacteurControllerTest extends BaseUnit
         $this->redacteur->submit($form);
         $crawler = $this->redacteur->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("echarpe")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("echarpe")')->count());
     }
 }

@@ -51,8 +51,6 @@ class WorkflowFromAdminTest extends BaseUnit
 
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
-        $crawler = $this->admin->click($crawler->selectLink('Supprimer l\'intervention')->link());
-
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
 
         $crawler = $this->admin->followRedirect();

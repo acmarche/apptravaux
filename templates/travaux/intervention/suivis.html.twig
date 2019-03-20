@@ -3,28 +3,26 @@
     <h3>Suivis</h3>
     {{ form_start(form, { 'attr': {'class': 'well'} }) }}
     {{ form_errors(form, { 'attr': {'class': 'well'} }) }}
-    {{ form_row(form.submit) }}
+
+    <button type="submit" name="delete" class="btn btn-danger btn-sm float-right">
+        <i class="fas fa-trash"></i> Supprimer le(s) suivi(s)
+    </button>
+    <br/>
     <div class="clear-fix"></div>
     <br/>
     {% for suivi in suivis %}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                {{ suivi.descriptif }}
+        <div class="card bg-light mb-3hidden-print">
+
+            <div class="card-body">
+                <p class="card-text">
+                    {{ suivi.descriptif }}
+                </p>
             </div>
-            <div class="panel-footer">
-                <span class="text-muted">
-                    {{ 'Created' | trans }} {{ suivi.created|date('d-m-Y H:i:s') }} par {{ suivi.useradd }}
-                    . {{ 'Updated' | trans }} {{ suivi.updated|date('d-m-Y H:i:s') }}
-                </span>
-                {% if app.user.username == suivi.useradd %}
-                    <div class="pull-right hidden-print">
-                        <a href="{{ path('suivi_edit', { 'id': suivi.id }) }}"
-                           class="btn btn-primary btn-xs pull-left hidden-print" style="margin-top: 0px;" role="button"><i
-                                    class="far fa-edit"></i> Editer</a>
-                        <span class="hidden-print pull-left" style="margin-left: 10px;">
-                            <input type="checkbox" name="suivis[]" value="{{ suivi.id }}" class="checkbox"/></span>
-                    </div>
-                {% endif %}
+
+            <div class="card-footer text-muted">
+                {{ 'Created' | trans }} {{ suivi.created|date('d-m-Y H:i:s') }} par {{ suivi.useradd }}
+                . {{ 'Updated' | trans }} {{ suivi.updated|date('d-m-Y H:i:s') }}
+                {% include 'travaux/intervention/actions_suvi.html.twig' %}
             </div>
         </div>
     {% endfor %}

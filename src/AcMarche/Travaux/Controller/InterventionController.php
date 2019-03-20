@@ -317,14 +317,6 @@ class InterventionController extends AbstractController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('suivis_delete', array('id' => $intervention_id)))
             ->setMethod('DELETE')
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => 'Supprimer le(s) suivi(s)',
-                    'attr' => array('class' => 'btn-danger btn-xs hidden-print pull-right'),
-                )
-            )
             ->getForm();
     }
 

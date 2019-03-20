@@ -35,7 +35,7 @@ class ReporteControllerTest extends BaseUnit
         $crawler = $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Intervention a faire plus tard")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Intervention a faire plus tard")')->count());
     }
 
     public function testIndex()

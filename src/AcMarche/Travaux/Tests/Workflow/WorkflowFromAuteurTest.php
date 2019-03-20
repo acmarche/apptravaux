@@ -34,7 +34,7 @@ class WorkflowFromAuteurTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('div:contains("Cette intervention doit être validée par un administrateur")')->count()
+            $crawler->filter('p:contains("Cette intervention doit être validée par un administrateur")')->count()
         );
     }
 
@@ -99,7 +99,7 @@ class WorkflowFromAuteurTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('div:contains("Cette intervention doit être validée par un administrateur")')->count()
+            $crawler->filter('p:contains("Cette intervention doit être validée par un administrateur")')->count()
         );
     }
 
@@ -196,7 +196,7 @@ class WorkflowFromAuteurTest extends BaseUnit
         $crawler = $this->admin->click($crawler->selectLink('Demande de auteur pour accord')->link());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("OKAY")')->last()->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("OKAY")')->last()->count());
     }
 
     public function testDeleteTravail()
@@ -204,8 +204,6 @@ class WorkflowFromAuteurTest extends BaseUnit
         $crawler = $this->admin->request('GET', '/intervention/');
         $crawler = $this->admin->click($crawler->selectLink('Demande de auteur pour accord')->link());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
-
-        $crawler = $this->admin->click($crawler->selectLink('Supprimer l\'intervention')->link());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
 

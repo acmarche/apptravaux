@@ -68,12 +68,17 @@ class LoadUsers extends Fixture
         $group_avaloir->addRole("ROLE_TRAVAUX_AVALOIR");
         $manager->persist($group_avaloir);
 
+        $group_stock = new Group("TRAVAUX_STOCK");
+        $group_stock->addRole("ROLE_TRAVAUX_STOCK");
+        $manager->persist($group_stock);
+
         $admininistrator = new User();
         $admininistrator->setNom('Super');
         $admininistrator->setPrenom('Admin');
         $this->setUser($admininistrator, 'administrator', "administrator@marche.be");
         $admininistrator->addGroup($group_admin);
         $admininistrator->addGroup($group_avaloir);
+        $admininistrator->addGroup($group_stock);
         $manager->persist($admininistrator);
 
         $admin = new User();
@@ -125,10 +130,7 @@ class LoadUsers extends Fixture
     protected function setUser(User $user, $username, $email)
     {
         $user->setUsername($username);
-        $user->setUsernameCanonical($username);
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'acmarche'));
-        $user->setEnabled(1);
         $user->setEmail($email);
-        $user->setEmailCanonical($email);
     }
 }

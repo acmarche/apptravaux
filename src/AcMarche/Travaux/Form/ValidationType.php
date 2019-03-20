@@ -21,18 +21,11 @@ class ValidationType extends AbstractType
     {
         $builder
             ->add(
-                'id',
-                HiddenType::class,
-                [
-                    'mapped' => false,
-                ]
-            )
-            ->add(
                 'accepter',
                 SubmitType::class,
                 array(
                     'label' => 'Accepter',
-                    'attr' => array('class' => 'btn-success'),
+                    'attr' => array('class' => 'btn-success mr-1'),
                 )
             )
             ->add(
@@ -40,7 +33,7 @@ class ValidationType extends AbstractType
                 SubmitType::class,
                 array(
                     'label' => 'Refuser',
-                    'attr' => array('class' => 'btn-danger'),
+                    'attr' => array('class' => 'btn-danger ml-1'),
                 )
             )
             ->add(

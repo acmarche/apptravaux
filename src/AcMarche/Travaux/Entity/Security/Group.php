@@ -2,13 +2,15 @@
 
 namespace AcMarche\Travaux\Entity\Security;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Travaux\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
  */
-class Group extends BaseGroup
+class Group
 {
     /**
      * @ORM\Id
@@ -33,9 +35,51 @@ class Group extends BaseGroup
      */
     protected $users;
 
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    protected $roles;
+
+    /**
+     * Group constructor.
+     *
+     * @param string $name
+     * @param array  $roles
+     */
+    public function __construct($name, $roles = array())
+    {
+        $this->name = $name;
+        $this->roles = $roles;
+        $this->users = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRole($role)
+    {
+        if (!$this->hasRole($role)) {
+            $this->roles[] = strtoupper($role);
+        }
+
+        return $this;
+    }
+
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->roles, true);
+    }
+
     public function __toString()
     {
-        return $this->getName();
+        return $this->name;
     }
 
     public function getLabel()
@@ -43,90 +87,86 @@ class Group extends BaseGroup
         return $this->getName() . ' (' . $this->getDescription() . ')';
     }
 
-    /**
-     * STOP
-     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Group
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getDescription(): ?string
     {
-        return $this->title;
+        return $this->description;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Group
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getName(): ?string
     {
-        return $this->description;
+        return $this->name;
     }
 
-    /**
-     * Add user
-     *
-     * @param User $user
-     *
-     * @return Group
-     */
-    public function addUser(User $user)
+    public function setName(string $name): self
     {
-        $this->users[] = $user;
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getRoles(): ?array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * Remove user
-     *
-     * @param User $user
+     * @return Collection|User[]
      */
-    public function removeUser(User $user)
-    {
-        $this->users->removeElement($user);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection|User[]
-     */
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeGroup($this);
+        }
+
+        return $this;
+    }
+
+   
 }

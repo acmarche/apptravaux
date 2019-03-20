@@ -51,6 +51,7 @@ class InterventionType extends AbstractType
                 array(
                     'class' => Domaine::class,
                     'label' => 'Type',
+                    'required'=>false,
                     'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
             )
@@ -58,7 +59,7 @@ class InterventionType extends AbstractType
                 'service',
                 EntityType::class,
                 [
-                    'class' => Service::class,
+                    'class' => Service::class,'required'=>false,
                     'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 ]
             )
@@ -66,7 +67,7 @@ class InterventionType extends AbstractType
                 'batiment',
                 EntityType::class,
                 [
-                    'class' => Batiment::class,
+                    'class' => Batiment::class,'required'=>false,
                     'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 ]
             )

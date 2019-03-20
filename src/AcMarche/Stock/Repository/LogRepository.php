@@ -19,6 +19,12 @@ class LogRepository extends ServiceEntityRepository
         parent::__construct($registry, Log::class);
     }
 
+    public function insert(Log $log)
+    {
+        $this->_em->persist($log);
+        $this->_em->flush();
+    }
+
     // /**
     //  * @return Log[] Returns an array of Log objects
     //  */

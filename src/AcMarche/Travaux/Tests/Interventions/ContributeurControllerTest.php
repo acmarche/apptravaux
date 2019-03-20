@@ -36,7 +36,7 @@ class ContributeurControllerTest extends BaseUnit
         $this->contributeur->submit($form);
         $crawler = $this->contributeur->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de contributeur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de contributeur")')->count());
     }
 
     public function testEdit()
@@ -46,7 +46,7 @@ class ContributeurControllerTest extends BaseUnit
 
         $crawler = $this->contributeur->click($crawler->selectLink('Test de contributeur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de contributeur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de contributeur")')->count());
 
         $crawler = $this->contributeur->click($crawler->selectLink('Editer')->link());
 
@@ -66,7 +66,7 @@ class ContributeurControllerTest extends BaseUnit
 
         $crawler = $this->contributeur->click($crawler->selectLink('Test de contributeur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de contributeur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de contributeur")')->count());
 
         $crawler = $this->contributeur->click($crawler->selectLink('Joindre un fichier')->link());
 
@@ -87,7 +87,7 @@ class ContributeurControllerTest extends BaseUnit
 
         $crawler = $this->contributeur->click($crawler->selectLink('Test de contributeur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de contributeur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de contributeur")')->count());
 
         $crawler = $this->contributeur->click($crawler->selectLink('Ajouter un suivi')->link());
 

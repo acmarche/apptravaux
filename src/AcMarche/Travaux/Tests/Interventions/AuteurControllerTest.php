@@ -35,7 +35,7 @@ class AuteurControllerTest extends BaseUnit
         $crawler = $this->auteur->submit($form);
         $crawler = $this->auteur->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de auteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de auteur")')->count());
     }
 
     public function testEdit()
@@ -45,7 +45,7 @@ class AuteurControllerTest extends BaseUnit
 
         $crawler = $this->auteur->click($crawler->selectLink('Test de auteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de auteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de auteur")')->count());
 
         $crawler = $this->auteur->click($crawler->selectLink('Editer')->link());
 
@@ -65,7 +65,7 @@ class AuteurControllerTest extends BaseUnit
 
         $crawler = $this->auteur->click($crawler->selectLink('Test de auteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de auteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de auteur")')->count());
 
         $crawler = $this->auteur->click($crawler->selectLink('Joindre un fichier')->link());
 
@@ -86,7 +86,7 @@ class AuteurControllerTest extends BaseUnit
 
         $crawler = $this->auteur->click($crawler->selectLink('Test de auteur')->link());
 
-        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Test de auteur")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de auteur")')->count());
 
         $crawler = $this->auteur->click($crawler->selectLink('Ajouter un suivi')->link());
 
@@ -97,6 +97,6 @@ class AuteurControllerTest extends BaseUnit
         $this->auteur->submit($form);
         $crawler = $this->auteur->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('div.panel-body:contains("pull")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('p:contains("pull")')->count());
     }
 }
