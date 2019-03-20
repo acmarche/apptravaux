@@ -1,11 +1,14 @@
 {% extends 'stock/layout.html.twig' %}
 
-{% block title %}New Produit{% endblock %}
-
 {% block body %}
-    <h1>Nouveau produit</h1>
+    <h3>Nouveau produit</h3>
 
-    {{ include('stock/produit/_form.html.twig') }}
+    <div class="card bg-light">
+        <div class="card-header">
+            {{ include('stock/produit/_form.html.twig') }}
+        </div>
+    </div>
+
     <br/>
     <a href="{{ path('stock_produit_index') }}"><i class="fas fa-arrow-left"></i>
         Annuler</a>

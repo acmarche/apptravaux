@@ -1,0 +1,24 @@
+{% set action = app.request.attributes.get("_route") %}
+{% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+
+    <li class="nav-item{% if action == 'stock_produit_index' %}  active{% endif %}">
+        <a href="{{ path('stock_produit_index') }}" class="nav-link">
+            Produits
+        </a>
+    </li>
+
+    <li class="nav-item {% if action == 'stock_categorie_index' %} active {% endif %}">
+        <a href="{{ path('stock_categorie_index') }}" class="nav-link">
+            Catégories
+        </a>
+    </li>
+
+{% endif %}
+
+{% if routeExists('intervention') %}
+    {% if is_granted('ROLE_TRAVAUX') %}
+        <li class="nav-item">
+            <a href="{{ path('intervention') }}" class="nav-link">Interventions</a>
+        </li>
+    {% endif %}
+{% endif %}

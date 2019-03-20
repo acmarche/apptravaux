@@ -20,9 +20,12 @@ class ProduitController extends AbstractController
      */
     public function index(ProduitRepository $produitRepository): Response
     {
-        return $this->render('stock/produit/index.html.twig', [
-            'produits' => $produitRepository->findAll(),
-        ]);
+        return $this->render(
+            'stock/produit/index.html.twig',
+            [
+                'produits' => $produitRepository->findAll(),
+            ]
+        );
     }
 
     /**
@@ -38,14 +41,18 @@ class ProduitController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();
+            $this->addFlash('success', 'Le produit a bien été créé.');
 
             return $this->redirectToRoute('stock_produit_index');
         }
 
-        return $this->render('stock/produit/new.html.twig', [
-            'produit' => $produit,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'stock/produit/new.html.twig',
+            [
+                'produit' => $produit,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -53,9 +60,12 @@ class ProduitController extends AbstractController
      */
     public function show(Produit $produit): Response
     {
-        return $this->render('stock/produit/show.html.twig', [
-            'produit' => $produit,
-        ]);
+        return $this->render(
+            'stock/produit/show.html.twig',
+            [
+                'produit' => $produit,
+            ]
+        );
     }
 
     /**
@@ -69,15 +79,23 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('stock_produit_index', [
-                'id' => $produit->getId(),
-            ]);
+            $this->addFlash('success', 'Le produit a bien été modifié.');
+
+            return $this->redirectToRoute(
+                'stock_produit_index',
+                [
+                    'id' => $produit->getId(),
+                ]
+            );
         }
 
-        return $this->render('stock/produit/edit.html.twig', [
-            'produit' => $produit,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'stock/produit/edit.html.twig',
+            [
+                'produit' => $produit,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -89,6 +107,7 @@ class ProduitController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($produit);
             $entityManager->flush();
+            $this->addFlash('success', 'Le produit a bien été supprimé.');
         }
 
         return $this->redirectToRoute('stock_produit_index');

@@ -34,9 +34,14 @@
         </button>
 
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExampleDefault">
-            <ul class="navbar-nav m2r-auto">
+            <ul class="navbar-nav mr-auto ml-auto">
                 {% block menu_top %}
                 {% endblock %}
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{{ path('app_logout') }}" class="nav-link" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
             </ul>
         </div>
     </nav>

@@ -23,6 +23,8 @@ class ProduitType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Categorie::class,
+                    'placeholder'=>'Sélectionnez une catégorie',
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 ]
             )
             ->add(

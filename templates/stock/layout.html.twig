@@ -1,36 +1,14 @@
 {% extends 'base.html.twig' %}
-{% block favicon %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-{% endblock %}
-{% block title %}Gestion des stocks{% endblock %}
+
+{% block title %}Avaloirs{% endblock %}
 
 {% block brand %}
-    <a class="navbar-brand" href="{{ path('avaloir') }}" title="Accueil">
-     <i class="fas fa-home"></i> Stocks </a>
+    <a class="navbar-brand" href="{{ path('stock_home') }}" title="Accueil">
+        <i class="fas fa-home"></i> Stocks </a>
 {% endblock %}
 
 {% block menu_top %}
-    {% set action = app.request.attributes.get("_route") %}
-
-    <li {% if action == 'stock_produit_index' %} class="active" {% endif %} >
-        <a href="{{ path('stock_produit_index') }}">
-            Produits
-        </a>
-    </li>
-    <li {% if action == 'stock_categorie_index' %} class="active" {% endif %} >
-        <a href="{{ path('stock_categorie_index') }}">
-            Catégories
-        </a>
-    </li>
-
-    {% if routeExists('intervention') %}
-        {% if is_granted('ROLE_TRAVAUX') %}
-            <li>
-                <a href="{{ path('intervention') }}">Interventions</a>
-            </li>
-        {% endif %}
-    {% endif %}
-
+    {% include 'stock/_menu.html.twig' %}
 {% endblock %}
 
 {% block body %}

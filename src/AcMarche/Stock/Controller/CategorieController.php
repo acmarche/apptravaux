@@ -41,6 +41,7 @@ class CategorieController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($categorie);
             $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a bien été crée.');
 
             return $this->redirectToRoute('stock_categorie_index');
         }
@@ -78,6 +79,8 @@ class CategorieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'La catégorie a bien été modifiée.');
+
             return $this->redirectToRoute(
                 'stock_categorie_index',
                 [
@@ -104,6 +107,7 @@ class CategorieController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($categorie);
             $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a bien été supprimée.');
         }
 
         return $this->redirectToRoute('stock_categorie_index');

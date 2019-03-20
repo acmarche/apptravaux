@@ -24,6 +24,14 @@
         </li>
     {% endif %}
 {% endif %}
+
+{% if routeExists('stock_home') %}
+    {% if is_granted('ROLE_TRAVAUX') %}
+        <li class="nav-item">
+            <a href="{{ path('stock_home') }}" class="nav-link">Stocks</a>
+        </li>
+    {% endif %}
+{% endif %}
                     
 {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
     <li class="nav-item dropdown">

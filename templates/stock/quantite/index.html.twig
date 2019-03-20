@@ -1,12 +1,15 @@
 {% extends 'stock/layout.html.twig' %}
 
-
 {% block body %}
-    <h1>{{ produit.nom }}</h1>
+    <h3>{{ produit.nom }}</h3>
 
     <div class="card bg-light">
         <div class="card-header">
-            {{ include('stock/produit/_form.html.twig', {'button_label': 'Update'}) }}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary"><i
+                        class="far fa-save"></i> {{ button_label|default('Save')|trans }}</button>
+            {{ form_end(form) }}
         </div>
     </div>
 
