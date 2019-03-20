@@ -15,12 +15,11 @@ security:
             security: false
 
         api:
-            pattern: ^/api/
+            pattern: ^/stock/api/
             guard:
                 authenticators:
                     - AcMarche\Travaux\Security\TokenAuthenticator
             provider: sql_provider
-
 
         secured_area:
             pattern:    ^/

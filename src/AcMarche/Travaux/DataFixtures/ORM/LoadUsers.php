@@ -85,6 +85,7 @@ class LoadUsers extends Fixture
         $admin->setNom('Admin');
         $admin->setPrenom('Vincent');
         $this->setUser($admin, 'admin', "admin@marche.be");
+        $admin->addGroup($group_stock);
         $admin->addGroup($group_admin);
         $admin->addGroup($group_avaloir);
         $manager->persist($admin);

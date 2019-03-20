@@ -6,7 +6,7 @@
  * Time: 14:06
  */
 
-namespace AcMarche\Api\Service;
+namespace AcMarche\Stock\Service;
 
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
@@ -25,8 +25,10 @@ class SerializeApi
             $std = new \stdClass();
             $std->id = $produit->getId();
             $std->nom = $produit->getNom();
+            $std->description = $produit->getDescription();
             $std->quantite = $produit->getQuantite();
             $std->reference = $produit->getReference();
+            $data[] = $std;
         }
 
         return $data;
@@ -39,10 +41,12 @@ class SerializeApi
     public function serializeCategorie(iterable $categories)
     {
         $data = [];
-        foreach ($categories as $produit) {
+        foreach ($categories as $categorie) {
             $std = new \stdClass();
-            $std->id = $produit->getId();
-            $std->nom = $produit->getNom();
+            $std->id = $categorie->getId();
+            $std->nom = $categorie->getNom();
+            $std->description = $categorie->getDescription();
+            $data[] = $std;
         }
 
         return $data;

@@ -1,11 +1,10 @@
 <?php
 
+namespace AcMarche\Stock\Controller;
 
-namespace AcMarche\Api\Controller;
-
-use AcMarche\Api\Service\SerializeApi;
 use AcMarche\Stock\Repository\CategorieRepository;
 use AcMarche\Stock\Repository\ProduitRepository;
+use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package AcMarche\Api\Controller
  * @Route("/api")
  */
-class DefaultController extends AbstractController
+class ApiController extends AbstractController
 {
     /**
      * @var ProduitRepository

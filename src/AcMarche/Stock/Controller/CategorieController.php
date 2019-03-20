@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/categorie")
- * @IsGranted("ROLE_STOCK")
+ * @IsGranted("ROLE_TRAVAUX_STOCK")
  */
 class CategorieController extends AbstractController
 {

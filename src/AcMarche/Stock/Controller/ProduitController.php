@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/produit")
- * @IsGranted("ROLE_STOCK")
+ * @IsGranted("ROLE_TRAVAUX_STOCK")
  */
 class ProduitController extends AbstractController
 {

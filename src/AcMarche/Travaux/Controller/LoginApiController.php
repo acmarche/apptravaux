@@ -6,9 +6,9 @@
  * Time: 10:38
  */
 
-namespace AcMarche\Api\Controller;
+namespace AcMarche\Travaux\Controller;
 
-use AcMarche\Api\Service\SerializeApi;
+use AcMarche\Stock\Service\SerializeApi;
 use AcMarche\Travaux\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

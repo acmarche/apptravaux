@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class DefaultController
  * @package AcMarche\Stock\Controller
  * @Route("/quantite")
- * @IsGranted("ROLE_STOCK")
+ * @IsGranted("ROLE_TRAVAUX_STOCK")
  */
 class QuantiteController extends AbstractController
 {
