@@ -42,15 +42,15 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li>
                     <a href="{{ path('app_logout') }}"
-                       title="A bientôt {{ app.user.username }}"><span
-                                class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
+                       title="A bientôt {{ app.user.username }}">
+                        <i class="fas fa-sign-out-alt"></i>                         Déconnexion</a>
                 </li>
             {% endif %}
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="text"
-                       placeholder="{{ 'form.search.placeholder'|trans({}, 'actions') }}" aria-label="Search">
+                       placeholder="Rechercher" aria-label="Search">
                 <button class="btn btn-secondary my-2 my-sm-0"
-                        type="submit">{{ 'form.btn.search'|trans({}, 'actions') }}</button>
+                        type="submit">Rechercher</button>
             </form>
 
         {% endblock %}

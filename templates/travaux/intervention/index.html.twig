@@ -48,13 +48,13 @@
                 <tr class="{{ class }}" id="{{ entity.id }}" title="{{ title }}">
                     <td>
                         {% if anchor == entity.id %}
-                            <span class="glyphicon glyphicon-arrow-right"></span>
+                            <i class="fas fa-arrow-right"></i>
                         {% endif %}
 
                         {{ entity.id }}
 
                         {% if entity.etat == 'En attente' %}
-                            <br/>  <span class="glyphicon glyphicon-hourglass" title="{{ entity.etat }}"></span>
+                            <br/>  <i class="far fa-hourglass" title="{{ entity.etat }}"></i>
                         {% endif %}
                     </td>
                     <td>
@@ -66,7 +66,7 @@
                     <td class="hidden-xs">{{ entity.etat }}</td>
                     <td class="hidden-xs">
                         {% if entity.transmis %}
-                            <span class="glyphicon glyphicon-ok"></span>
+                          <i class="fas fa-check"></i>
                         {% endif %}
                     </td>
                     <td>{{ entity.priorite }}</td>

@@ -30,29 +30,12 @@ class DateNettoyageController extends AbstractController
      */
     public function show(DateNettoyage $date)
     {
-        $deleteForm = $this->createDeleteForm($date->getId());
-
         return $this->render('avaloir/date_nettoyage/show.html.twig', array(
             'entity' => $date,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
-    /**
-     * Creates a form to delete a DateNettoyage entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('datenettoyage_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
+
 
     /**
      * Displays a form to create a new DateNettoyage entity.
@@ -101,14 +84,11 @@ class DateNettoyageController extends AbstractController
      */
     public function delete(Request $request, DateNettoyage $dateNettoyage)
     {
-        $form = $this->createDeleteForm($dateNettoyage->getId());
-        $form->handleRequest($request);
-
-        $em = $this->getDoctrine()->getManager();
-
         $avaloir = $dateNettoyage->getAvaloir();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->isCsrfTokenValid('delete'.$dateNettoyage->getId(), $request->request->get('_token'))) {
+
+            $em = $this->getDoctrine()->getManager();
             $em->remove($dateNettoyage);
             $em->flush();
 

@@ -9,8 +9,8 @@
     </div>
 
     {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
-        <a href="{{ path('avaloir_new') }}" class="btn btn-primary" role="button"><i
-                    class="glyphicon glyphicon-plus"></i> Ajouter</a>
+        <a href="{{ path('avaloir_new') }}" class="btn btn-primary" role="button">
+            <i class="fas fa-plus"></i> Ajouter</a>
         <br/>
     {% endif %}
 
@@ -59,7 +59,7 @@
                         <td>
                             <a href="{{ path('datenettoyage_new', { 'id': entity.id }) }}"
                                class="btn btn-primary btn-xs" role="button">
-                                <i class="glyphicon glyphicon-calendar"></i>
+                                <i class="far fa-calendar-alt"></i>
                                 Ajouter une date
                             </a>
                         </td>

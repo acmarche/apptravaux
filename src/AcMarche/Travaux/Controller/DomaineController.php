@@ -82,13 +82,10 @@ class DomaineController extends AbstractController
      */
     public function show(Domaine $domaine)
     {
-        $deleteForm = $this->createDeleteForm($domaine->getId());
-
         return $this->render(
             'travaux/domaine/show.html.twig',
             array(
                 'entity' => $domaine,
-                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -129,20 +126,12 @@ class DomaineController extends AbstractController
      *
      * @Route("/{id}", name="domaine_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Domaine $domaine)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$domaine->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository(Domaine::class)->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Domaine entity.');
-            }
-
-            $em->remove($entity);
+            $em->remove($domaine);
             $em->flush();
 
             $this->addFlash('success', 'Le type a bien été supprimé.');
@@ -151,19 +140,4 @@ class DomaineController extends AbstractController
         return $this->redirectToRoute('domaine');
     }
 
-    /**
-     * Creates a form to delete a Domaine entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('domaine_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
 }

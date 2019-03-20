@@ -45,19 +45,11 @@ class SuiviController extends AbstractController
      * @Route("/new/{id}", name="suivi_new", methods={"GET","POST"})
      *
      */
-    public function new(
-        Request $request,
-        Intervention $intervention
-    ) {
+    public function new(Request $request, Intervention $intervention)
+    {
         $suivi = $this->suiviService->initSuivi($intervention);
 
-        $form = $this->createForm(
-            SuiviType::class,
-            $suivi,
-            [
-                'action' => $this->generateUrl('suivi_new', array('id' => $intervention->getId())),
-            ]
-        )
+        $form = $this->createForm(SuiviType::class)
             ->add('Create', SubmitType::class);
 
         $form->handleRequest($request);
@@ -75,11 +67,14 @@ class SuiviController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('travaux/suivi/new.html.twig',  array(
-            'entity' => $suivi,
-            'intervention' => $intervention,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'travaux/suivi/new.html.twig',
+            array(
+                'entity' => $suivi,
+                'intervention' => $intervention,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -114,9 +109,12 @@ class SuiviController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('travaux/suivi/edit.html.twig',  array(
-            'entity' => $suivi,
-            'edit_form' => $editForm->createView(),
-        ));
+        return $this->render(
+            'travaux/suivi/edit.html.twig',
+            array(
+                'entity' => $suivi,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 }

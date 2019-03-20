@@ -3,7 +3,6 @@
 namespace AcMarche\Avaloir\Form;
 
 use AcMarche\Avaloir\Entity\DateNettoyage;
-use AcMarche\Avaloir\Form\Type\AvaloirHiddenType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,8 +28,7 @@ class DateNettoyageType extends AbstractType
                     'required' => true,
                     'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
                 )
-            )
-            ->add('avaloir', AvaloirHiddenType::class);
+            );
     }
 
     /**

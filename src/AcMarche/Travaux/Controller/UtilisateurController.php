@@ -97,13 +97,10 @@ class UtilisateurController extends AbstractController
      */
     public function show(User $utilisateur)
     {
-        $deleteForm = $this->createDeleteForm($utilisateur);
-
         return $this->render(
             'utilisateur/show.html.twig',
             array(
                 'utilisateur' => $utilisateur,
-                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -176,10 +173,7 @@ class UtilisateurController extends AbstractController
      */
     public function delete(Request $request, User $user)
     {
-        $form = $this->createDeleteForm($user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
@@ -223,19 +217,4 @@ class UtilisateurController extends AbstractController
         );
     }
 
-    /**
-     * Creates a form to delete a Utilisateur utilisateur by id.
-     *
-     * @param mixed $id The utilisateur id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm(User $user)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('actravaux_utilisateur_delete', array('id' => $user->getId())))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
 }

@@ -2,13 +2,12 @@
 
 namespace AcMarche\Travaux\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use AcMarche\Travaux\Entity\Batiment;
 use AcMarche\Travaux\Form\BatimentType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,9 +29,12 @@ class BatimentController extends AbstractController
 
         $entities = $em->getRepository(Batiment::class)->findAll();
 
-        return $this->render('travaux/batiment/index.html.twig', array(
-            'entities' => $entities,
-        ));
+        return $this->render(
+            'travaux/batiment/index.html.twig',
+            array(
+                'entities' => $entities,
+            )
+        );
     }
 
     /**
@@ -61,10 +63,13 @@ class BatimentController extends AbstractController
             return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
         }
 
-        return $this->render('travaux/batiment/new.html.twig', array(
-            'entity' => $batiment,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'travaux/batiment/new.html.twig',
+            array(
+                'entity' => $batiment,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -75,12 +80,12 @@ class BatimentController extends AbstractController
      */
     public function show(Batiment $batiment)
     {
-        $deleteForm = $this->createDeleteForm($batiment->getId());
-
-        return $this->render('travaux/batiment/show.html.twig', array(
-            'entity' => $batiment,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'travaux/batiment/show.html.twig',
+            array(
+                'entity' => $batiment,
+            )
+        );
     }
 
     /**
@@ -102,13 +107,17 @@ class BatimentController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Le bâtiment a bien été modifié.');
+
             return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
         }
 
-        return $this->render('travaux/batiment/edit.html.twig', array(
-            'entity' => $batiment,
-            'edit_form' => $editForm->createView(),
-        ));
+        return $this->render(
+            'travaux/batiment/edit.html.twig',
+            array(
+                'entity' => $batiment,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -116,20 +125,13 @@ class BatimentController extends AbstractController
      *
      * @Route("/{id}", name="batiment_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Batiment $batiment)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$batiment->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository(Batiment::class)->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Batiment entity.');
-            }
-
-            $em->remove($entity);
+            $em->remove($batiment);
             $em->flush();
 
             $this->addFlash('success', 'Le bâtiment a bien été supprimé.');
@@ -138,20 +140,5 @@ class BatimentController extends AbstractController
         return $this->redirectToRoute('batiment');
     }
 
-    /**
-     * Creates a form to delete a Batiment entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('batiment_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array(
-                'label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
+
 }

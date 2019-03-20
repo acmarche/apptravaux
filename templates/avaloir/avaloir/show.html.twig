@@ -14,7 +14,7 @@
         </p>
         <br />
     {% endif %}
-
+ <br />
     <h4>Liste des dates de nettoyages</h4>
 
     <ul class='list-group'>
@@ -29,6 +29,8 @@
             <li class='list-group-item'>Aucune</li>
         {% endfor %}
     </ul>
+    <br />
+
     <p>{{ avaloir.descriptif | nl2br }}</p>
     <p class="text-muted">
         {{ 'Created' | trans }} {{ avaloir.created|date('d-m-Y H:i:s') }}

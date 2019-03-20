@@ -2,15 +2,13 @@
 
 namespace AcMarche\Travaux\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Symfony\Component\Routing\Annotation\Route;
-
 use AcMarche\Travaux\Entity\Service;
 use AcMarche\Travaux\Form\ServiceType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Service controller.
@@ -33,9 +31,12 @@ class ServiceController extends AbstractController
 
         $entities = $em->getRepository(Service::class)->findAll();
 
-        return $this->render('travaux/service/index.html.twig', array(
-            'entities' => $entities,
-        ));
+        return $this->render(
+            'travaux/service/index.html.twig',
+            array(
+                'entities' => $entities,
+            )
+        );
     }
 
     /**
@@ -64,10 +65,13 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
         }
 
-        return $this->render('travaux/service/new.html.twig', array(
-            'entity' => $service,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'travaux/service/new.html.twig',
+            array(
+                'entity' => $service,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -78,12 +82,12 @@ class ServiceController extends AbstractController
      */
     public function show(Service $service)
     {
-        $deleteForm = $this->createDeleteForm($service->getId());
-
-        return $this->render('travaux/service/show.html.twig', array(
-            'entity' => $service,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'travaux/service/show.html.twig',
+            array(
+                'entity' => $service,
+            )
+        );
     }
 
     /**
@@ -108,10 +112,13 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
         }
 
-        return $this->render('travaux/service/edit.html.twig', array(
-            'entity' => $service,
-            'edit_form' => $editForm->createView(),
-        ));
+        return $this->render(
+            'travaux/service/edit.html.twig',
+            array(
+                'entity' => $service,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -119,20 +126,13 @@ class ServiceController extends AbstractController
      *
      * @Route("/{id}", name="service_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Service $service)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository(Service::class)->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Service entity.');
-            }
-
-            $em->remove($entity);
+            $em->remove($service);
             $em->flush();
 
             $this->addFlash('success', 'Le service a bien été supprimé.');
@@ -141,20 +141,4 @@ class ServiceController extends AbstractController
         return $this->redirectToRoute('service');
     }
 
-    /**
-     * Creates a form to delete a Service entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('service_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array(
-                'label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
 }

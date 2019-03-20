@@ -56,7 +56,7 @@ class DocumentController extends AbstractController
 
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
-                    $fileName = md5(uniqid()).'.'.$file->guessClientExtension();
+                    $fileName = md5(uniqid('', true)).'.'.$file->guessClientExtension();
 
                     try {
                         $mime = $file->getMimeType();
@@ -82,11 +82,14 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
 
-        return $this->render('travaux/document/new.html.twig', array(
-            'entity' => $document,
-            'intervention' => $intervention,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'travaux/document/new.html.twig',
+            array(
+                'entity' => $document,
+                'intervention' => $intervention,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -97,12 +100,12 @@ class DocumentController extends AbstractController
      */
     public function show(Document $document)
     {
-        $deleteForm = $this->createDeleteForm($document->getId());
-
-        return $this->render('travaux/document/show.html.twig', array(
-            'entity' => $document,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'travaux/document/show.html.twig',
+            array(
+                'entity' => $document,
+            )
+        );
     }
 
     /**
@@ -113,10 +116,8 @@ class DocumentController extends AbstractController
      */
     public function delete(Request $request, Document $document)
     {
-        $form = $this->createDeleteForm($document->getId());
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$document->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $intervention = $document->getIntervention();
 
@@ -137,26 +138,5 @@ class DocumentController extends AbstractController
         return $this->redirectToRoute('intervention');
     }
 
-    /**
-     * Creates a form to delete a Document entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('document_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => 'Delete',
-                    'attr' => array('class' => 'btn-danger'),
-                )
-            )
-            ->getForm();
-    }
+
 }

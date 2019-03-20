@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <th>
-                <span class="glyphicon glyphicon-calendar"></span> Demandé le:
+                <i class="far fa-calendar-alt"></i> Demandé le:
             </th>
             <td>
                 {{ entity.created | date('d-m-Y') }}
@@ -31,7 +31,7 @@
         {% if entity.datevalidation %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-calendar"></span> Validé le:
+                    <i class="far fa-calendar-alt"></i> Validé le:
                 </th>
                 <td>
 
@@ -98,7 +98,7 @@
         {% if entity.dateRappel %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-calendar"></span> Date rappel:
+                    <i class="far fa-calendar-alt"></i> Date rappel:
                 </th>
                 <td>
                     {% if entity.daterappel %}
@@ -110,7 +110,7 @@
         {% if entity.affectation %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-user"></span>
+                    <i class="far fa-user"></i>
                     <strong>Affectation:</strong>
                 </th>
                 <td>
@@ -137,7 +137,7 @@
                 </th>
                 <td>
                     {% if entity.transmis %}
-                        <span class="glyphicon glyphicon-ok"></span>
+                        <span class="fas fa-check"></span>
 
                     {% endif %}
                 </td>
@@ -146,7 +146,7 @@
         {% if entity.soumisLe %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-calendar"></span> Soumis le
+                    <i class="far fa-calendar-alt"></i> Soumis le
                 </th>
                 <td>
                     {{ entity.soumisle | date('d-m-Y') }}
@@ -156,7 +156,7 @@
         {% if entity.coutMain %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-euro"></span> Coût en main
+                    <i class="fas fa-euro-sign"></i> Coût en main
                     d'oeuvre:
                 </th>
                 <td>
@@ -169,7 +169,7 @@
         {% if entity.coutMateriel %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-euro"></span><strong> Coût en
+                    <i class="fas fa-euro-sign"></i><strong> Coût en
                         matériel:</strong>
                 </th>
                 <td>
@@ -193,7 +193,7 @@
         {% if entity.dateSolution %}
             <tr>
                 <th>
-                    <span class="glyphicon glyphicon-calendar"></span> Date de solution:
+                    <i class="far fa-calendar-alt"></i> Date de solution:
                 </th>
                 <td>
                     {% if entity.datesolution %}
@@ -222,7 +222,7 @@
                 . {{ 'Updated' | trans }} {{ entity.updated|date('d-m-Y H:i:s') }}
             </span>
         {% if entity.archive %}
-            <span class="pull-right glyphicon glyphicon-compressed" title="Archive">Archive</span>
+            <span class="float-right"><i class="fas fa-archive" title="Archive"></i> Archive</span>
         {% endif %}
     </div>
 {% endif %}

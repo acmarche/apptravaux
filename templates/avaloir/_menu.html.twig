@@ -1,0 +1,26 @@
+{% set action = app.request.attributes.get("_route") %}
+    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+        <li class="nav-item {% if action == 'avaloir' %} active {% endif %}">
+            <a href="{{ path('avaloir') }}" class="nav-link">
+                Avaloirs
+            </a>
+        </li>
+        <li class="nav-item{% if action == 'rue' %}  active{% endif %}">
+            <a href="{{ path('rue') }}" class="nav-link">
+                Rues
+            </a>
+        </li>
+        <li class="nav-item {% if action == 'quartier' %} active {% endif %}">
+            <a href="{{ path('quartier') }}" class="nav-link">
+                Quartier
+            </a>
+        </li>
+    {% endif %}
+
+    {% if routeExists('intervention') %}
+        {% if is_granted('ROLE_TRAVAUX') %}
+            <li class="nav-item">
+                <a href="{{ path('intervention') }}" class="nav-link">Interventions</a>
+            </li>
+        {% endif %}
+    {% endif %}

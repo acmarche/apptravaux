@@ -7,7 +7,7 @@
 
     {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
         <a href="{{ path('quartier_new') }}" class="btn btn-primary" role="button"><i
-                    class="glyphicon glyphicon-plus"></i> Ajouter</a>
+                    class="fas fa-plus"></i> Ajouter</a>
         <br/><br/>
     {% endif %}
 
@@ -34,7 +34,7 @@
                     {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
                         <td>
                             <a href="{{ path('quartier_edit', { 'slugname': entity.slugname }) }}" title="Editer"
-                               role="button" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i>
+                               role="button" class="btn btn-primary btn-xs"><i class="far fa-edit"></i>
                                 Editer
                             </a>
                         </td>

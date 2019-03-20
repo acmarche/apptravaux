@@ -21,14 +21,24 @@ class RueType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('village', EntityType::class, array(
-                'required' => false,
-                'class' => Village::class,
-            ))
-            ->add('quartier', EntityType::class, array(
-                'class' => Quartier::class,
-                'required' => false
-            ));
+            ->add(
+                'village',
+                EntityType::class,
+                array(
+                    'required' => false,
+                    'class' => Village::class,
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
+                )
+            )
+            ->add(
+                'quartier',
+                EntityType::class,
+                array(
+                    'class' => Quartier::class,
+                    'required' => false,
+                    'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
+                )
+            );
     }
 
     /**
@@ -36,8 +46,10 @@ class RueType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => Rue::class
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => Rue::class,
+            )
+        );
     }
 }

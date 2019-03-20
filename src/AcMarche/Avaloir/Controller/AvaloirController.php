@@ -49,7 +49,6 @@ class AvaloirController extends AbstractController
             array(
                 'action' => $this->generateUrl('avaloir'),
                 'method' => 'GET',
-                'em' => $this->getDoctrine()->getManager(),
             )
         );
 
@@ -147,13 +146,10 @@ class AvaloirController extends AbstractController
      */
     public function show(Avaloir $avaloir)
     {
-        $deleteForm = $this->createDeleteForm($avaloir->getId());
-
         return $this->render(
             'avaloir/avaloir/show.html.twig',
             array(
                 'avaloir' => $avaloir,
-                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -196,10 +192,8 @@ class AvaloirController extends AbstractController
      */
     public function delete(Request $request, Avaloir $avaloir)
     {
-        $form = $this->createDeleteForm($avaloir->getId());
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$avaloir->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($avaloir);
             $em->flush();
@@ -209,26 +203,4 @@ class AvaloirController extends AbstractController
         return $this->redirectToRoute('avaloir');
     }
 
-    /**
-     * Creates a form to delete a Avaloir entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('avaloir_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => 'Delete',
-                    'attr' => array('class' => 'btn-danger'),
-                )
-            )
-            ->getForm();
-    }
 }

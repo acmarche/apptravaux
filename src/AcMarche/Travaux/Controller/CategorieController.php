@@ -82,13 +82,10 @@ class CategorieController extends AbstractController
      */
     public function show(Categorie $categorie)
     {
-        $deleteForm = $this->createDeleteForm($categorie->getId());
-
         return $this->render(
             'travaux/categorie/show.html.twig',
             array(
                 'entity' => $categorie,
-                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -128,20 +125,13 @@ class CategorieController extends AbstractController
      *
      * @Route("/{id}", name="categorie_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Categorie $categorie)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository(Categorie::class)->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Categorie entity.');
-            }
-
-            $intervention = $entity->getIntervention();
+            $intervention = $categorie->getIntervention();
 
             if (count($intervention) > 0) {
                 $this->addFlash(
@@ -152,7 +142,7 @@ class CategorieController extends AbstractController
                 return $this->redirectToRoute('categorie');
             }
 
-            $em->remove($entity);
+            $em->remove($categorie);
             $em->flush();
 
             $this->addFlash('success', 'La catégorie a bien été supprimée.');
@@ -161,26 +151,5 @@ class CategorieController extends AbstractController
         return $this->redirectToRoute('categorie');
     }
 
-    /**
-     * Creates a form to delete a Categorie entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('categorie_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add(
-                'submit',
-                SubmitType::class,
-                array(
-                    'label' => 'Delete',
-                    'attr' => array('class' => 'btn-danger'),
-                )
-            )
-            ->getForm();
-    }
+
 }

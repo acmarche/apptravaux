@@ -45,7 +45,6 @@ class RueController extends AbstractController
             array(
                 'action' => $this->generateUrl('rue'),
                 'method' => 'GET',
-                'em' => $this->getDoctrine()->getManager(),
             )
         );
 
@@ -116,31 +115,12 @@ class RueController extends AbstractController
      */
     public function show(Rue $rue)
     {
-        $deleteForm = $this->createDeleteForm($rue->getId());
-
         return $this->render(
             'avaloir/rue/show.html.twig',
             array(
                 'entity' => $rue,
-                'delete_form' => $deleteForm->createView(),
             )
         );
-    }
-
-    /**
-     * Creates a form to delete a Rue entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('rue_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
     }
 
     /**
@@ -181,10 +161,8 @@ class RueController extends AbstractController
      */
     public function delete(Request $request, Rue $rue)
     {
-        $form = $this->createDeleteForm($rue->getId());
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$rue->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $avaloirs = $rue->getAvaloirs();

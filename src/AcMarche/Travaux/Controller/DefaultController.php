@@ -34,7 +34,7 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('intervention', array(), '301');
         }
 
-        return $this->redirectToRoute('travaux_login');
+        return $this->redirectToRoute('app_login');
     }
 
     /**

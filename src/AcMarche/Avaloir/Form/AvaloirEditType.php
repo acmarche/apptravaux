@@ -4,6 +4,7 @@ namespace AcMarche\Avaloir\Form;
 
 use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\Rue;
+use AcMarche\Avaloir\Repository\RueRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AcMarche\Avaloir\Repository\RueRepository;
 
 class AvaloirEditType extends AbstractType
 {

@@ -2,13 +2,13 @@
 
 namespace AcMarche\Avaloir\Controller;
 
+use AcMarche\Avaloir\Entity\Quartier;
 use AcMarche\Avaloir\Entity\Rue;
+use AcMarche\Avaloir\Form\QuartierType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use AcMarche\Avaloir\Entity\Quartier;
-use AcMarche\Avaloir\Form\QuartierType;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -33,9 +33,12 @@ class QuartierController extends AbstractController
 
         $entities = $em->getRepository(Quartier::class)->search(array());
 
-        return $this->render('avaloir/quartier/index.html.twig', array(
-            'entities' => $entities,
-        ));
+        return $this->render(
+            'avaloir/quartier/index.html.twig',
+            array(
+                'entities' => $entities,
+            )
+        );
     }
 
     /**
@@ -62,10 +65,14 @@ class QuartierController extends AbstractController
 
             return $this->redirect($this->generateUrl('quartier'));
         }
-        return $this->render('avaloir/quartier/new.html.twig', array(
-            'entity' => $quartier,
-            'form' => $form->createView(),
-        ));
+
+        return $this->render(
+            'avaloir/quartier/new.html.twig',
+            array(
+                'entity' => $quartier,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -78,14 +85,15 @@ class QuartierController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $deleteForm = $this->createDeleteForm($quartier->getId());
         $rues = $em->getRepository(Rue::class)->getByQuartier($quartier, true);
 
-        return $this->render('avaloir/quartier/show.html.twig', array(
-            'listrues' => $rues,
-            'entity' => $quartier,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'avaloir/quartier/show.html.twig',
+            array(
+                'listrues' => $rues,
+                'entity' => $quartier,
+            )
+        );
     }
 
     /**
@@ -109,10 +117,14 @@ class QuartierController extends AbstractController
 
             return $this->redirect($this->generateUrl('quartier'));
         }
-        return $this->render('avaloir/quartier/edit.html.twig', array(
-            'entity' => $quartier,
-            'edit_form' => $editForm->createView()
-        ));
+
+        return $this->render(
+            'avaloir/quartier/edit.html.twig',
+            array(
+                'entity' => $quartier,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -122,10 +134,8 @@ class QuartierController extends AbstractController
      */
     public function delete(Request $request, Quartier $quartier)
     {
-        $form = $this->createDeleteForm($quartier->getId());
-        $form->handleRequest($request);
+        if ($this->isCsrfTokenValid('delete'.$quartier->getId(), $request->request->get('_token'))) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $em->remove($quartier);
@@ -137,19 +147,4 @@ class QuartierController extends AbstractController
         return $this->redirect($this->generateUrl('quartier'));
     }
 
-    /**
-     * Creates a form to delete a Quartier entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\FormInterface The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('quartier_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
-            ->getForm();
-    }
 }

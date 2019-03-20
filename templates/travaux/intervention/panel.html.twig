@@ -2,7 +2,7 @@
     <div class="card-header">
         {{ intervention }}
         {% if intervention.etat == 'En attente' %}
-            <span class="float-right glyphicon glyphicon-hourglass" title="{{ intervention.etat }}"></span>
+        <i class="float-right far fa-hourglass" title="{{ intervention.etat }}"></i>
         {% endif %}
     </div>
     <div class="card-body">
