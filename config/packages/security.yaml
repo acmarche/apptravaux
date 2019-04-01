@@ -15,7 +15,7 @@ security:
             security: false
 
         api:
-            pattern: ^/stock/api/
+            pattern: ^/stock/a1p1i/
             guard:
                 authenticators:
                     - AcMarche\Travaux\Security\TokenAuthenticator
