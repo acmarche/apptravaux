@@ -2,7 +2,9 @@
 
 namespace AcMarche\Travaux\Form\Security;
 
+use AcMarche\Travaux\Entity\Security\Group;
 use AcMarche\Travaux\Entity\Security\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +19,15 @@ class UtilisateurEditType extends AbstractType
     {
         $builder
             ->remove("plainPassword")
-        ->add("groups");
+            ->add(
+                "groups",
+                EntityType::class,
+                [
+                    'class' => Group::class,
+                    'multiple' => true,
+                    'expanded' => true,
+                ]
+            );
     }
 
     public function getParent()
