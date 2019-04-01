@@ -10,10 +10,10 @@ use AcMarche\Travaux\Service\TravauxUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 /**
@@ -39,6 +39,10 @@ class ValidationController extends AbstractController
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
 
     public function __construct(
         TravauxUtils $travauxUtils,
@@ -73,15 +77,23 @@ class ValidationController extends AbstractController
      */
     public function show(Request $request, Intervention $intervention)
     {
-        $form = $this->createValidationForm($intervention);
+        $form = $this->createForm(ValidationType::class, $intervention);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
 
+            $data = $form->getData();
+            $dateExecution = null;
+
             $message = $form->get('message')->getData();
-            $event = new InterventionEvent($intervention, $message);
+            if ($data->getDateExecution()) {
+                $dateExecution = $form->get('date_execution')->getData();
+            }
+
+            $event = new InterventionEvent($intervention, $message, null, $dateExecution);
 
             if ($form->get('accepter')->isClicked()) {
                 $result = $this->interventionWorkflow->applyAccepter($intervention);
@@ -115,6 +127,24 @@ class ValidationController extends AbstractController
                 }
             }
 
+            if ($form->has('reporter')) {
+                if ($form->get('reporter')->isClicked()) {
+
+                    if (!$dateExecution) {
+                        $this->addFlash('danger', 'Veuillez indiquer une date d\'exécution');
+
+                        return $this->redirectToRoute('validation_show', ['id' => $intervention->getId()]);
+                    }
+
+                    $result = $this->interventionWorkflow->applyAccepter($intervention);
+                    if (isset($result['error'])) {
+                        $this->addFlash("danger", $result['error']);
+                    } else {
+                        $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_REPORTER, $event);
+                    }
+                }
+            }
+
             if (!isset($result['error'])) {
                 $em->flush();
             }
@@ -132,29 +162,4 @@ class ValidationController extends AbstractController
         );
     }
 
-    private function createValidationForm(
-        Intervention $intervention
-    ) {
-        $form = $this->createForm(
-            ValidationType::class,
-            $intervention,
-            array(
-                'action' => $this->generateUrl('validation_show', array('id' => $intervention->getId())),
-                'method' => 'POST',
-            )
-        );
-
-        if ($this->authorizationChecker->isGranted("ROLE_TRAVAUX_ADMIN")) {
-            $form->add(
-                'plusinfo',
-                SubmitType::class,
-                array(
-                    'label' => 'Plus d\'infos',
-                    'attr' => array('class' => 'btn-warning'),
-                )
-            );
-        }
-
-        return $form;
-    }
 }

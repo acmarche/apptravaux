@@ -69,6 +69,8 @@ class InterventionWorkflow
         if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_CONTRIBUTEUR')) {
             return $intervention->setCurrentPlace(['auteur_checking' => 1]);
         }
+
+        return $intervention;
     }
 
     /**

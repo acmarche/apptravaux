@@ -1,5 +1,9 @@
 {% extends 'travaux/layout.html.twig' %}
 
+{% block stylesheets %}
+    <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body -%}
     <div class="page-header">
         <h3>Intervention <strong>{{ entity }}</strong> à traiter</h3>
@@ -7,23 +11,38 @@
 
     <p class="text-muted">{{ entity.descriptif | nl2br }}</p>
 
-    {{ form_start(form, { 'attr': {'class': 'form-inline'}}) }}
+    {{ form_start(form) }}
     {{ form_errors(form) }}
 
     {{ form_row(form.message) }}
 
-    <br/>
-    <div class="clearfix"></div>
-    <br/>
-
-    {{ form_row(form.accepter) }}
-
-    {% if form.plusinfo is defined %}
-        {{ form_row(form.plusinfo) }}
+    {% if form.date_execution is defined %}
+        {{ form_row(form.date_execution) }}
     {% endif %}
 
-    {{ form_row(form.refuser) }}
+    <div class="form-row">
+        <div class="col">
+            {{ form_row(form.accepter) }}
+        </div>
+
+        {% if form.plusinfo is defined %}
+            <div class="col">
+                {{ form_row(form.plusinfo) }} </div>
+        {% endif %}
+
+        {% if form.reporter is defined %}
+            <div class="col">{{ form_row(form.reporter) }}</div>
+        {% endif %}
+
+        <div class="col">
+            {{ form_row(form.refuser) }}
+        </div>
+    </div>
 
     {{ form_end(form) }}
 
+{% endblock %}
+
+{% block scripts %}
+    {% include 'form/calendar.html.twig' %}
 {% endblock %}

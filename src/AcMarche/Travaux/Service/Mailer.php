@@ -6,24 +6,47 @@ use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Event\InterventionEvent;
 use AcMarche\Travaux\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Templating\EngineInterface;
 
 class Mailer
 {
+
+    /**
+     * @var \Swift_Mailer
+     */
+    private $mailer;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
     private $authorizationChecker;
+    /**
+     * @var EngineInterface
+     */
     private $twig;
-    private $token;
+    /**
+     * @var Security
+     */
+    private $security;
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+    /**
+     * @var FlashBagInterface
+     */
     private $flashBag;
+    /**
+     * @var TravauxUtils
+     */
     private $travauxUtils;
 
     public function __construct(
         \Swift_Mailer $mailer,
         AuthorizationCheckerInterface $authorizationChecker,
         EngineInterface $twig,
-        TokenStorageInterface $tokenStorage,
+        Security $security,
         UserRepository $userRepository,
         FlashBagInterface $flashBag,
         TravauxUtils $travauxUtils
@@ -31,7 +54,7 @@ class Mailer
         $this->mailer = $mailer;
         $this->authorizationChecker = $authorizationChecker;
         $this->twig = $twig;
-        $this->token = $tokenStorage;
+        $this->security = $security;
         $this->userRepository = $userRepository;
         $this->flashBag = $flashBag;
         $this->travauxUtils = $travauxUtils;
@@ -66,8 +89,7 @@ class Mailer
         $admins = $this->travauxUtils->getEmailsByGroup("TRAVAUX_ADMIN");
         $redacteurs = $this->travauxUtils->getEmailsByGroup("TRAVAUX_REDACTEUR");
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
         $sujet = $intervention->getIntitule()." a été ajoutée";
@@ -108,8 +130,7 @@ class Mailer
             $destinataires = $this->travauxUtils->getEmailsByGroup("TRAVAUX_ADMIN");
         }
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -136,8 +157,7 @@ class Mailer
         $intervention = $event->getIntervention();
         $destinataires = $this->travauxUtils->getEmailsByGroup("TRAVAUX_ADMIN");
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -166,18 +186,16 @@ class Mailer
      */
     public function sendMailAcceptOrReject(InterventionEvent $event, $resultat)
     {
-        $destinataires = [];
         $intervention = $event->getIntervention();
+        $destinataires = $this->getDestinatairesAccept($intervention);
+        $dateExecution = $event->getDateExecution();
 
         if ($resultat == 'refusée') {
             $destinataires = $this->getDestinatairesReject($intervention);
-        } elseif ($resultat == 'acceptée') {
-            $destinataires = $this->getDestinatairesAccept($intervention);
         }
 
         $message = $event->getMessage();
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
         $sujet = $intervention->getIntitule()." a été ".$resultat;
@@ -188,13 +206,13 @@ class Mailer
                 'result' => $resultat,
                 'intervention' => $intervention,
                 'message' => $message,
+                'dateExecution' => $dateExecution,
             )
         );
 
         $this->send($from, $destinataires, $sujet, $body);
         $this->flashBag->add("success", "Un mail a été envoyé à ".implode(",", $destinataires));
     }
-
 
 
     /**
@@ -214,8 +232,7 @@ class Mailer
             $destinataires[] = $userAdd->getEmail();
         }
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -246,8 +263,7 @@ class Mailer
 
         $destinataires = $this->travauxUtils->getEmailsByGroup("TRAVAUX_AUTEUR");
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -281,8 +297,7 @@ class Mailer
             $destinataires[] = $userAdd->getEmail();
         }
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -313,8 +328,7 @@ class Mailer
 
         $destinataires = array_unique(array_merge($admins, $redacteurs));
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 
@@ -345,8 +359,7 @@ class Mailer
 
         $destinataires = array_unique(array_merge($admins, $redacteurs));
 
-        $token = $this->token->getToken();
-        $currentUser = $token->getUser();
+        $currentUser = $this->security->getUser();
 
         $from = $currentUser->getEmail();
 

@@ -25,9 +25,11 @@ class SerializeApi
             $std = new \stdClass();
             $std->id = $produit->getId();
             $std->nom = $produit->getNom();
+            $std->categorie_id = $produit->getCategorie()->getId();
             $std->description = $produit->getDescription();
             $std->quantite = $produit->getQuantite();
             $std->reference = $produit->getReference();
+            $std->image = '';
             $data[] = $std;
         }
 

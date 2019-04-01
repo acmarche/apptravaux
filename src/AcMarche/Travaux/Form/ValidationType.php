@@ -4,14 +4,24 @@ namespace AcMarche\Travaux\Form;
 
 use AcMarche\Travaux\Entity\Intervention;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ValidationType extends AbstractType
 {
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -46,6 +56,36 @@ class ValidationType extends AbstractType
                     'attr' => array('cols' => 50, 'rows' => 5),
                 )
             );
+        if ($this->authorizationChecker->isGranted("ROLE_TRAVAUX_ADMIN")) {
+            $builder->add(
+                'plusinfo',
+                SubmitType::class,
+                array(
+                    'label' => 'Plus d\'infos',
+                    'attr' => array('class' => 'btn-warning'),
+                )
+            )
+                ->add(
+                    'reporter',
+                    SubmitType::class,
+                    array(
+                        'label' => 'Reporter',
+                        'attr' => array('class' => 'btn-primary'),
+                    )
+                )
+                ->add(
+                    'date_execution',
+                    DateType::class,
+                    array(
+                        'widget' => 'single_text',
+                        'label' => 'A réaliser à partir du',
+                        'format' => 'dd/MM/yyyy',
+                        'required' => false,
+                        'help' => 'Si reporter, choisissez une date d\'exécution',
+                        'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    )
+                );
+        }
     }
 
     /**

@@ -21,6 +21,16 @@ class InterventionRepository extends ServiceEntityRepository
         parent::__construct($registry, Intervention::class);
     }
 
+    public function persist(Intervention $intervention)
+    {
+        $this->_em->persist($intervention);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
     /**
      * @return Intervention[]
      */
@@ -32,28 +42,29 @@ class InterventionRepository extends ServiceEntityRepository
     /**
      * @param $args
      * @return QueryBuilder
+     * @throws \Exception
      */
     public function setCriteria($args)
     {
-        $intitule = isset($args['intitule']) ? $args['intitule'] : null;
-        $categorie = isset($args['categorie']) ? $args['categorie'] : 0;
-        $domaine = isset($args['domaine']) ? $args['domaine'] : 0;
-        $batiment = isset($args['batiment']) ? $args['batiment'] : 0;
-        $etat = isset($args['etat']) ? $args['etat'] : null;
-        $priorite = isset($args['priorite']) ? $args['priorite'] : null;
-        $id = isset($args['id']) ? $args['id'] : 0;
-        $numero = isset($args['numero']) ? $args['numero'] : 0;
-        $date_introduction = isset($args['date_introduction']) ? $args['date_introduction'] : null;
-        $date_debut = isset($args['date_debut']) ? $args['date_debut'] : null;
-        $date_fin = isset($args['date_fin']) ? $args['date_fin'] : null;
+        $intitule = $args['intitule'] ?? null;
+        $categorie = $args['categorie'] ?? 0;
+        $domaine = $args['domaine'] ?? 0;
+        $batiment = $args['batiment'] ?? 0;
+        $etat = $args['etat'] ?? null;
+        $priorite = $args['priorite'] ?? null;
+        $id = $args['id'] ?? 0;
+        $numero = $args['numero'] ?? 0;
+        $date_introduction = $args['date_introduction'] ?? null;
+        $date_debut = $args['date_debut'] ?? null;
+        $date_fin = $args['date_fin'] ?? null;
         //1 => archive, 2 => les deux, pas definis pas d'archive
-        $archive = isset($args['archive']) ? $args['archive'] : null;
-        $withAValider = isset($args['withAValider']) ? $args['withAValider'] : false;
-        $affectation = isset($args['affectation']) ? $args['affectation'] : 0;
-        $place = isset($args['place']) ? $args['place'] : null;
-        $sort = isset($args['sort']) ? $args['sort'] : null;
-        $affecte_prive = isset($args['affecte_prive']) ? $args['affecte_prive'] : false;
-        $date_execution = isset($args['date_execution']) ? $args['date_execution'] : false;
+        $archive = $args['archive'] ?? null;
+        $withAValider = $args['withAValider'] ?? false;
+        $affectation = $args['affectation'] ?? 0;
+        $place = $args['place'] ?? null;
+        $sort = $args['sort'] ?? null;
+        $affecte_prive = $args['affecte_prive'] ?? false;
+        $date_execution = $args['date_execution'] ?? false;
 
         $qb = $this->createQueryBuilder('intervention');
         $qb->leftJoin('intervention.categorie', 'categorie', 'WITH');
@@ -187,8 +198,8 @@ class InterventionRepository extends ServiceEntityRepository
      */
     public function search($args)
     {
-        $user = isset($args['user']) ? $args['user'] : null;
-        $role = isset($args['role']) ? $args['role'] : null;
+        $user = $args['user'] ?? null;
+        $role = $args['role'] ?? null;
 
         $qb = $this->setCriteria($args);
 
@@ -198,14 +209,13 @@ class InterventionRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $results = $query->getResult();
-
-        return $results;
+        return $query->getResult();
     }
 
     /**
      * Interventions à faire plus tard
      * @return Intervention[]
+     * @throws \Exception
      */
     public function getInterventionsReportees()
     {
@@ -219,9 +229,7 @@ class InterventionRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $results = $query->getResult();
-
-        return $results;
+        return $query->getResult();
     }
 
     /**
@@ -250,9 +258,8 @@ class InterventionRepository extends ServiceEntityRepository
         $qb->andWhere($string);
 
         $query = $qb->getQuery();
-        $results = $query->getResult();
 
-        return $results;
+        return $query->getResult();
     }
 
     public function setUserConstraint(User $user, $role, QueryBuilder $qb)
@@ -263,7 +270,7 @@ class InterventionRepository extends ServiceEntityRepository
         /**
          * vois toutes ses demandes et celles du groupe contributeur
          */
-        if ($role == 'AUTEUR') {
+        if ($role === 'AUTEUR') {
             $group = $em->getRepository(Group::class)->findOneBy(
                 array(
                     'name' => 'TRAVAUX_CONTRIBUTEUR',
@@ -284,7 +291,7 @@ class InterventionRepository extends ServiceEntityRepository
         /**
          * ne peut voir que ses demandes
          */
-        if ($role == 'CONTRIBUTEUR') {
+        if ($role === 'CONTRIBUTEUR') {
             $usernames = $user->getUsername();
         }
 
@@ -292,7 +299,7 @@ class InterventionRepository extends ServiceEntityRepository
          * voir les siennes
          * celles en attente de validation admin
          */
-        if ($role == 'REDACTEUR') {
+        if ($role === 'REDACTEUR') {
             $username = $user->getUsername();
             /**
              * WHERE ((`user_add` LIKE 'redacteur' AND `current_place` LIKE '%admin_checking%')
@@ -320,4 +327,11 @@ class InterventionRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function remove(Intervention $getIntervention)
+    {
+        $this->_em->remove($getIntervention);
+        $this->flush();
+    }
+
 }

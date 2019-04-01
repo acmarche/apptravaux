@@ -1,4 +1,4 @@
-Votre demande d'intervention {{ intervention.intitule }} a été {{ result }}
+Votre demande d'intervention {{ intervention.intitule }} a été {{ result }} {% if dateExecution %} au {{ dateExecution|date('d-m-Y') }} {% endif %}
 
 {{ message }}
 

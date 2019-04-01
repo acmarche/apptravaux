@@ -2,15 +2,14 @@
 
 namespace AcMarche\Travaux\Event;
 
+use AcMarche\Travaux\Repository\InterventionRepository;
 use AcMarche\Travaux\Repository\UserRepository;
 use AcMarche\Travaux\Service\Mailer;
 use AcMarche\Travaux\Service\SuiviService;
 use AcMarche\Travaux\Service\TravauxUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Created by PhpStorm.
@@ -20,33 +19,51 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class InterventionSubscriber implements EventSubscriberInterface
 {
-    private $em;
+    /**
+     * @var InterventionRepository
+     */
+    private $interventionRepository;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
     private $authorizationChecker;
+    /**
+     * @var Mailer
+     */
     private $mailer;
-    private $token;
-    private $userRepository;
+    /**
+     * @var FlashBagInterface
+     */
     private $flashBag;
+    /**
+     * @var TravauxUtils
+     */
     private $travauxUtils;
-    protected $suiviService;
+    /**
+     * @var SuiviService
+     */
+    private $suiviService;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     public function __construct(
-        ObjectManager $em,
         AuthorizationCheckerInterface $authorizationChecker,
         Mailer $mailer,
-        TokenStorageInterface $tokenStorage,
         FlashBagInterface $flashBag,
         TravauxUtils $travauxUtils,
         SuiviService $suiviService,
+        InterventionRepository $interventionRepository,
         UserRepository $userRepository
     ) {
-        $this->em = $em;
         $this->authorizationChecker = $authorizationChecker;
         $this->mailer = $mailer;
-        $this->token = $tokenStorage;
-        $this->userRepository = $userRepository;
         $this->flashBag = $flashBag;
         $this->travauxUtils = $travauxUtils;
         $this->suiviService = $suiviService;
+        $this->interventionRepository = $interventionRepository;
+        $this->userRepository = $userRepository;
     }
 
     public static function getSubscribedEvents()
@@ -57,6 +74,7 @@ class InterventionSubscriber implements EventSubscriberInterface
             InterventionEvent::INTERVENTION_ACCEPT => 'interventionAccept',
             InterventionEvent::INTERVENTION_REJECT => 'interventionReject',
             InterventionEvent::INTERVENTION_INFO => 'interventionInfo',
+            InterventionEvent::INTERVENTION_REPORTER => 'interventionReporter',
             InterventionEvent::INTERVENTION_ARCHIVE => 'interventionArchive',
             InterventionEvent::INTERVENTION_SUIVI_NEW => 'interventionSuivi',
         );
@@ -100,6 +118,7 @@ class InterventionSubscriber implements EventSubscriberInterface
     /**
      * L'intervention est acceptée
      * @param InterventionEvent $event
+     * @throws \Exception
      */
     public function interventionAccept(InterventionEvent $event)
     {
@@ -114,8 +133,7 @@ class InterventionSubscriber implements EventSubscriberInterface
              * j'ajoute la date de validation
              */
             $intervention->setDateValidation(new \DateTime());
-            $this->em->persist($intervention);
-            $this->em->flush();
+            $this->interventionRepository->flush();
         }
 
         $this->suiviService->newSuivi($intervention, $message);
@@ -140,11 +158,41 @@ class InterventionSubscriber implements EventSubscriberInterface
      */
     public function interventionReject(InterventionEvent $event)
     {
-        $intervention = $event->getIntervention();
-        $this->em->remove($intervention);
-        $this->em->flush();
+        $this->interventionRepository->remove($event->getIntervention());
         $this->flashBag->add("success", "L'intervention a bien été refusée");
         $this->mailer->sendMailAcceptOrReject($event, "refusée");
+    }
+
+    public function interventionReporter(InterventionEvent $event)
+    {
+        $intervention = $event->getIntervention();
+        $dateExecution = $event->getDateExecution();
+        $message = $event->getMessage();
+        /**
+         * ACCEPT BY ADMIN
+         * Je previens par mail, tous les auteurs, les rédacteurs, les admins et celui qui a ajouté
+         */
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_ADMIN')) {
+            /**
+             * j'ajoute la date de validation
+             */
+            $intervention->setDateValidation(new \DateTime());
+            $intervention->setDateExecution($dateExecution);
+            $this->interventionRepository->flush();
+        }
+
+        $this->suiviService->newSuivi($intervention, $message);
+        $this->flashBag->add("success", "L'intervention a été reportée");
+
+        $this->mailer->sendMailAcceptOrReject($event, "reportée");
+
+        /**
+         * ACCEPT BY AUTEUR
+         * Je demande une validation à admin
+         */
+        if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_AUTEUR')) {
+            $this->mailer->sendAskValidationForAdmin($event);
+        }
     }
 
     /**
@@ -184,13 +232,13 @@ class InterventionSubscriber implements EventSubscriberInterface
 
     /**
      * @param InterventionEvent $event
+     * @throws \Exception
      */
     public function interventionSuivi(InterventionEvent $event)
     {
         $intervention = $event->getIntervention();
         $intervention->setUpdated(new \DateTime());
-        $this->em->persist($intervention);
-        $this->em->flush();
+        $this->interventionRepository->flush();
         $this->mailer->sendMailSuivi($event);
     }
 }
