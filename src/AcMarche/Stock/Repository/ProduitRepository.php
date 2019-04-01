@@ -19,6 +19,11 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */

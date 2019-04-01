@@ -2,6 +2,7 @@
 
 namespace AcMarche\Stock\Controller;
 
+use AcMarche\Stock\Entity\Produit;
 use AcMarche\Stock\Repository\CategorieRepository;
 use AcMarche\Stock\Repository\ProduitRepository;
 use AcMarche\Stock\Service\SerializeApi;
@@ -29,8 +30,11 @@ class ApiController extends AbstractController
      */
     private $serializeApi;
 
-    public function __construct(ProduitRepository $produitRepository, CategorieRepository $categorieRepository, SerializeApi $serializeApi)
-    {
+    public function __construct(
+        ProduitRepository $produitRepository,
+        CategorieRepository $categorieRepository,
+        SerializeApi $serializeApi
+    ) {
         $this->produitRepository = $produitRepository;
         $this->categorieRepository = $categorieRepository;
         $this->serializeApi = $serializeApi;
@@ -45,6 +49,21 @@ class ApiController extends AbstractController
         $categories = $this->serializeApi->serializeCategorie($this->categorieRepository->findAll());
 
         $data = ['categories' => $categories, 'produits' => $produits];
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @param Produit $produit
+     * @param int $quantite
+     * @Route("/update/{id}")
+     * @return JsonResponse
+     */
+    public function updateQuantite(Produit $produit, int $quantite)
+    {
+        $produit->setQuantite($quantite);
+        $this->produitRepository->flush();
+        $data = ['quantite' => $quantite];
 
         return new JsonResponse($data);
     }
