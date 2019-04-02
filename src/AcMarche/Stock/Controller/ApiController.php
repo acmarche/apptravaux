@@ -56,7 +56,7 @@ class ApiController extends AbstractController
     /**
      * @param Produit $produit
      * @param int $quantite
-     * @Route("/update/{id}")
+     * @Route("/update/{id}/{quantite}")
      * @return JsonResponse
      */
     public function updateQuantite(Produit $produit, int $quantite)
