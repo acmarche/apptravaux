@@ -5,12 +5,12 @@
 {% block body %}
 
     <div class="page-header">
-        <h3>Liste des interventions ({{ entities | length }})</h3>
+        <h3>Liste des interventions ({{ interventions | length }})</h3>
     </div>
 
     {% include 'travaux/search/intervention.html.twig' %}
 
-    {% if entities | length > 0 %}
+    {% if interventions | length > 0 %}
 
         <table class='table table-bordered table-hover'>
             <thead>
@@ -28,55 +28,55 @@
             </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
+            {% for intervention in interventions %}
 
                 {% set class = '' %}
                 {% set title = '' %}
-                {% if entity.priorite == 'Haute' and entity.etat != 'Clôturé' %}
-                    {% set class = 'warning' %}
+                {% if intervention.priorite == 'Haute' and intervention.etat != 'Clôturé' %}
+                    {% set class = 'table-danger' %}
                 {% endif %}
 
-                {% if workflow_has_marked_place(entity, 'auteur_checking') %}
-                    {% set class = 'info' %}
+                {% if workflow_has_marked_place(intervention, 'auteur_checking') %}
+                    {% set class = 'table-info' %}
                     {% set title = 'Intervention doit être validée par un auteur' %}
                 {% endif %}
-                {% if workflow_has_marked_place(entity, 'admin_checking') %}
-                    {% set class = 'info' %}
+                {% if workflow_has_marked_place(intervention, 'admin_checking') %}
+                    {% set class = 'table-info' %}
                     {% set title = 'Intervention doit être validée par un admin' %}
                 {% endif %}
 
-                <tr class="{{ class }}" id="{{ entity.id }}" title="{{ title }}">
+                <tr class="{{ class }}" id="{{ intervention.id }}" title="{{ title }}">
                     <td>
-                        {% if anchor == entity.id %}
+                        {% if anchor == intervention.id %}
                             <i class="fas fa-arrow-right"></i>
                         {% endif %}
 
-                        {{ entity.id }}
+                        {{ intervention.id }}
 
-                        {% if entity.etat == 'En attente' %}
-                            <br/>  <i class="far fa-hourglass" title="{{ entity.etat }}"></i>
+                        {% if intervention.etat == 'En attente' %}
+                            <br/>  <i class="far fa-hourglass" title="{{ intervention.etat }}"></i>
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('intervention_show', { 'id': entity.id }) }}"
-                           title="Détail de l'intervention">{{ entity.intitule }}</a>
+                        <a href="{{ path('intervention_show', { 'id': intervention.id }) }}"
+                           title="Détail de l'intervention">{{ intervention.intitule }}</a>
                     </td>
-                    <td>{{ entity.lastsuivi | slice(0, 200) }}</td>
-                    <td>{{ entity.domaine }}</td>
-                    <td class="hidden-xs">{{ entity.etat }}</td>
+                    <td>{{ intervention.lastsuivi | slice(0, 200) }}</td>
+                    <td>{{ intervention.domaine }}</td>
+                    <td class="hidden-xs">{{ intervention.etat }}</td>
                     <td class="hidden-xs">
-                        {% if entity.transmis %}
+                        {% if intervention.transmis %}
                           <i class="fas fa-check"></i>
                         {% endif %}
                     </td>
-                    <td>{{ entity.priorite }}</td>
+                    <td>{{ intervention.priorite }}</td>
                     <td class="hidden-xs">
-                        {% if entity.dateValidation %}
-                            {{ entity.dateValidation | date('d-m-Y') }}
+                        {% if intervention.dateValidation %}
+                            {{ intervention.dateValidation | date('d-m-Y') }}
                         {% endif %}
                     </td>
-                    <td>{{ entity.useradd }}</td>
-                    <td class="hidden-xs">{{ entity.affectation }}</td>
+                    <td>{{ intervention.useradd }}</td>
+                    <td class="hidden-xs">{{ intervention.affectation }}</td>
                 </tr>
             {% endfor %}
             </tbody>

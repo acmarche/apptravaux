@@ -36,7 +36,7 @@ class User implements UserInterface
     /**
      * Plain password. Used for model validation. Must not be persisted.
      *
-     * @var string
+     * @var string|null
      */
     protected $plainPassword;
 
@@ -98,6 +98,22 @@ class User implements UserInterface
      * @var string|null
      */
     protected $token;
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     */
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
 
     public function __construct()
     {

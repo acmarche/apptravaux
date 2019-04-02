@@ -121,7 +121,7 @@ class InterventionController extends AbstractController
             'travaux/intervention/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
-                'entities' => $interventions,
+                'interventions' => $interventions,
                 'anchor' => $anchor,
             )
         );
