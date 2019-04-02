@@ -23,7 +23,7 @@
     {{ form_row(search_form.sort, {label_attr: {class: 'sr-only'} }) }}
 
     <input type="submit" class="btn btn-primary mr-1" value="Rechercher" name="submit">
-    <input type="submit" class="btn btn-primary mr-1" value="Raz" name="submit" title="Réinitialiser la recherche">
+    {{ form_row(search_form.raz) }}
 
     <br/><br/>
     <a class="btn btn-sm btn-success" href="{{ path('export_pdf') }}" role="button">Exporter en Pdf</a>

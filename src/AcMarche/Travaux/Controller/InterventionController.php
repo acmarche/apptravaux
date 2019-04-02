@@ -102,6 +102,7 @@ class InterventionController extends AbstractController
 
         if ($search_form->isSubmitted() && $search_form->isValid()) {
             $data = $search_form->getData();
+            dump($data);
 
             if ($search_form->get('raz')->isClicked()) {
                 $this->session->remove($key);

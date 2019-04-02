@@ -11,7 +11,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchInterventionType extends AbstractType
@@ -189,6 +191,13 @@ class SearchInterventionType extends AbstractType
                     'placeholder' => 'Trier par',
                     'attr' => ['class' => 'custom-select my-1 mr-sm-2'],
                 )
+            )
+            ->add(
+                'raz',
+                SubmitType::class,
+                [
+                    'attr' => ['class'=>' mr-1 btn-primary ','title'=>'Réinitialiser la recherche'],
+                ]
             );
     }
 
