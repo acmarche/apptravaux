@@ -1,15 +1,21 @@
 {% set action = app.request.attributes.get("_route") %}
 {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
 
+    <li class="nav-item {% if action == 'stock_categorie_index' %} active {% endif %}">
+        <a href="{{ path('stock_categorie_index') }}" class="nav-link">
+            Catégories
+        </a>
+    </li>
+
     <li class="nav-item{% if action == 'stock_produit_index' %}  active{% endif %}">
         <a href="{{ path('stock_produit_index') }}" class="nav-link">
             Produits
         </a>
     </li>
 
-    <li class="nav-item {% if action == 'stock_categorie_index' %} active {% endif %}">
-        <a href="{{ path('stock_categorie_index') }}" class="nav-link">
-            Catégories
+    <li class="nav-item{% if action == 'stock_produit_new' %}  active{% endif %}">
+        <a href="{{ path('stock_produit_new') }}" class="nav-link">
+            <i class="fas fa-plus"></i>  Nouveau produit
         </a>
     </li>
 
