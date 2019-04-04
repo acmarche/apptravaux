@@ -32,6 +32,33 @@ class ProduitRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param array $args
+     * @return Produit[]
+     */
+    public function search(array $args) : array
+    {
+        $nom = isset($args['nom']) ? $args['nom'] : null;
+        $categorie = isset($args['categorie']) ? $args['categorie'] : null;
+
+        $qb = $this->createQueryBuilder('produit');
+
+        if ($nom) {
+            $qb->andWhere('produit.nom LIKE :mot OR produit.description LIKE :mot ')
+                ->setParameter('mot', '%'.$nom.'%');
+        }
+
+        if ($categorie) {
+            $qb->andWhere('produit.categorie = :categorie')
+                ->setParameter('categorie', $categorie);
+        }
+
+        return $qb
+            ->orderBy('produit.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */

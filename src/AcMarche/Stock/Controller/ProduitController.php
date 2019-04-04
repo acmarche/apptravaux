@@ -4,6 +4,7 @@ namespace AcMarche\Stock\Controller;
 
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Stock\Form\ProduitType;
+use AcMarche\Stock\Form\SearchProduitType;
 use AcMarche\Stock\Repository\ProduitRepository;
 use AcMarche\Stock\Service\Logger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -31,14 +32,49 @@ class ProduitController extends AbstractController
     /**
      * @Route("/", name="stock_produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(Request $request, ProduitRepository $produitRepository): Response
     {
+        $session = $request->getSession();
+        $key = 'produit_search';
+
+        $data = array();
+
+        if ($session->has($key)) {
+            $data = unserialize($session->get($key));
+        }
+
+        $search_form = $this->createForm(
+            SearchProduitType::class,
+            $data,
+            array(
+                'method' => 'GET',
+            )
+        );
+
+        $search_form->handleRequest($request);
+
+        if ($search_form->isSubmitted() && $search_form->isValid()) {
+            $data = $search_form->getData();
+
+            if ($search_form->get('raz')->isClicked()) {
+                $session->remove($key);
+                $this->addFlash('info', 'La recherche a bien été réinitialisée.');
+
+                return $this->redirectToRoute('stock_produit_index');
+            }
+        }
+
+        $session->set($key, serialize($data));
+        $produits = $produitRepository->search($data);
+
         return $this->render(
             'stock/produit/index.html.twig',
-            [
-                'produits' => $produitRepository->getAll(),
-            ]
+            array(
+                'search_form' => $search_form->createView(),
+                'produits' => $produits,
+            )
         );
+
     }
 
     /**
