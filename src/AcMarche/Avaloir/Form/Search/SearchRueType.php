@@ -64,6 +64,12 @@ class SearchRueType extends AbstractType
                         'placeholder' => 'Rue',
                     ),
                 )
+            ) ->add(
+                'raz',
+                SubmitType::class,
+                [
+                    'attr' => ['class'=>' mr-1 btn-primary ','title'=>'Réinitialiser la recherche'],
+                ]
             );
     }
 

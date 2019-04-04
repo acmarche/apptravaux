@@ -16,7 +16,7 @@
     {{ form_widget(search_form.id) }}
 
     <input type="submit" class="btn btn-primary mr-1" value="Rechercher" name="submit">
-    <input type="submit" class="btn btn-primary mr-1" value="Raz" name="submit" title="Réinitialiser la recherche">
+    {{ form_row(search_form.raz) }}
 
     <a href="{{ path('export_avaloirs_xls') }}" class="btn btn-success" role="button"><i class="fas fa-download"></i> En
         Xls</a>

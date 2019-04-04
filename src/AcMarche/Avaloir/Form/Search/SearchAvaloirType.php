@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchAvaloirType extends AbstractType
@@ -104,6 +105,13 @@ class SearchAvaloirType extends AbstractType
                         'class' => 'datepicker',
                     ),
                 )
+            )
+            ->add(
+                'raz',
+                SubmitType::class,
+                [
+                    'attr' => ['class'=>' mr-1 btn-primary ','title'=>'Réinitialiser la recherche'],
+                ]
             );
     }
 }
