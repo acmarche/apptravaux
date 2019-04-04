@@ -9,5 +9,7 @@
 
     {{ categorie.description|nl2br }}
 
+    {% include 'stock/categorie/_list_produits.html.twig' %}
+
     {{ include('stock/categorie/_delete_form.html.twig') }}
 {% endblock %}

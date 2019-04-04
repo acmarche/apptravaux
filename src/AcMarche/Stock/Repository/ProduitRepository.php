@@ -19,6 +19,14 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+    public function getAll()
+    {
+        return $this->createQueryBuilder('produit')
+            ->orderBy('produit.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function flush()
     {
         $this->_em->flush();
