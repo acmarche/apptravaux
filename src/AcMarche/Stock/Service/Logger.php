@@ -43,7 +43,13 @@ class Logger
         $log->setNom($produit->getNom());
         $log->setQuantite($quantite);
         $user = $this->security->getUser();
-        $log->setUser($user->getUsername());
+        if (!$user) {
+            $username = "smartphone";
+        } else {
+            $username = $user->getUsername();
+        }
+        
+        $log->setUser($username);
         //$log->setCreatedAt(new \DateTime());
         $this->logRepository->insert($log);
 

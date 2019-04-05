@@ -5,6 +5,7 @@ namespace AcMarche\Stock\Controller;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Stock\Repository\CategorieRepository;
 use AcMarche\Stock\Repository\ProduitRepository;
+use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,15 +30,21 @@ class ApiController extends AbstractController
      * @var SerializeApi
      */
     private $serializeApi;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     public function __construct(
         ProduitRepository $produitRepository,
         CategorieRepository $categorieRepository,
-        SerializeApi $serializeApi
+        SerializeApi $serializeApi,
+        Logger $logger
     ) {
         $this->produitRepository = $produitRepository;
         $this->categorieRepository = $categorieRepository;
         $this->serializeApi = $serializeApi;
+        $this->logger = $logger;
     }
 
     /**
@@ -64,6 +71,9 @@ class ApiController extends AbstractController
         $produit->setQuantite($quantite);
         $this->produitRepository->flush();
         $data = ['quantite' => $quantite];
+
+        $this->logger->log($produit, $quantite);
+
 
         return new JsonResponse($data);
     }
