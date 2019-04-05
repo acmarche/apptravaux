@@ -13,12 +13,14 @@
         <thead>
         <tr>
             <th>Nom</th>
+            <th>Nombre de produits</th>
         </tr>
         </thead>
         <tbody>
         {% for categorie in categories %}
             <tr>
                 <td><a href="{{ path('stock_categorie_show', {'id': categorie.id}) }}">{{ categorie.nom }}</a></td>
+                <td>{{ categorie.produits|length }}</td>
             </tr>
         {% else %}
             <tr>
