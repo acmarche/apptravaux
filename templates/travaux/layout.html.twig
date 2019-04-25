@@ -13,7 +13,7 @@
 
 {% block notifications %}
     {% if app.user is not null and (is_granted("ROLE_TRAVAUX_VALIDATION") or (is_granted("ROLE_TRAVAUX_REDACTEUR"))) %}
-        <div class="hidden-print">
+        <div class="d-print-none">
             {{ render(controller('AcMarche\\Travaux\\Controller\\NotificationController::index')) }}
         </div>
     {% endif %}
