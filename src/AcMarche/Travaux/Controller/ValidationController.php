@@ -89,7 +89,8 @@ class ValidationController extends AbstractController
             $dateExecution = null;
 
             $message = $form->get('message')->getData();
-            if ($data->getDateExecution()) {
+
+            if ($form->has('date_execution') && $data->getDateExecution()) {
                 $dateExecution = $form->get('date_execution')->getData();
             }
 
