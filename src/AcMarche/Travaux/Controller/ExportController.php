@@ -52,25 +52,14 @@ class ExportController extends AbstractController
         );
 
         $html = $this->renderView(
-            'travaux/pdf/head.html.twig',
-            array(
-                'title' => 'Liste des interventions',
-            )
+            'travaux/pdf/interventions.html.twig',
+            [
+                'interventions' => $interventions,
+                'title' => 'Interventions',
+            ]
         );
 
-        foreach ($interventions as $intervention) {
-            $html .= $this->renderView(
-                'travaux/pdf/panel.html.twig',
-                array(
-                    'entity' => $intervention,
-                    'pdf' => true,
-                )
-            );
-        }
-
-        $html .= $this->renderView('travaux/pdf/foot.html.twig', array());
-
-        $name = 'interventions';
+        $name = sprintf('interventions-%s.pdf', date('Y-m-d'));
 
         $this->pdf->setOption('footer-right', '[page]/[toPage]');
 
