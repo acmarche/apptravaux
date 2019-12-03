@@ -13,6 +13,7 @@ use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Entity\Security\User;
 use AcMarche\Travaux\Entity\Suivi;
 use AcMarche\Travaux\Repository\GroupRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,7 +31,7 @@ class TravauxUtils
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ObjectManager $em,
+        EntityManagerInterface $em,
         GroupRepository $groupRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;

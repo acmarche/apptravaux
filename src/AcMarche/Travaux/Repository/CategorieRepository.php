@@ -3,7 +3,6 @@
 namespace AcMarche\Travaux\Repository;
 
 use AcMarche\Travaux\Entity\Categorie;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

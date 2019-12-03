@@ -9,7 +9,7 @@
 namespace AcMarche\Travaux\Event;
 
 use AcMarche\Travaux\Service\Mailer;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -27,7 +27,7 @@ class WorkflowSubscriber implements EventSubscriberInterface
     private $twig;
 
     public function __construct(
-        ObjectManager $em,
+        EntityManagerInterface $em,
         AuthorizationCheckerInterface $authorizationChecker,
         Mailer $mailer,
         EngineInterface $twig
