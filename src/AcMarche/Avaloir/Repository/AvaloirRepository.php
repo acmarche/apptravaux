@@ -24,7 +24,7 @@ class AvaloirRepository extends ServiceEntityRepository
      */
     public function findAll()
     {
-        return $this->findBy(array(), array('date_nettoyage' => 'DESC'));
+        return $this->findBy(array(), array('id' => 'DESC'));
     }
 
     /**
