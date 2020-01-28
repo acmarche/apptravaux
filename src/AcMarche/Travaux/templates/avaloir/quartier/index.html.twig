@@ -26,14 +26,14 @@
             {% for entity in entities %}
                 <tr>
                     <td>
-                        <a href="{{ path('quartier_show', { 'slugname': entity.slugname }) }}">
+                        <a href="{{ path('quartier_show', { 'id': entity.id }) }}">
                             {{ entity }}
                         </a>
                     </td>
                     <td>{{ entity.rues | length }}</td>
                     {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
                         <td>
-                            <a href="{{ path('quartier_edit', { 'slugname': entity.slugname }) }}" title="Editer"
+                            <a href="{{ path('quartier_edit', { 'id': entity.id }) }}" title="Editer"
                                role="button" class="btn btn-primary btn-xs"><i class="far fa-edit"></i>
                                 Editer
                             </a>

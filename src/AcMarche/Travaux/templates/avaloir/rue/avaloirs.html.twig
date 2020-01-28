@@ -24,7 +24,7 @@
                 <td>{{ avaloir.rue.village }}</td>
                 <td>
                     {% if avaloir.rue.quartier %}
-                        <a href="{{ path('quartier_show', { 'slugname': avaloir.rue.quartier.slugname }) }}">
+                        <a href="{{ path('quartier_show', { 'id': avaloir.rue.quartier.id }) }}">
                             {{ avaloir.rue.quartier }}
                         </a>
                     {% endif %}

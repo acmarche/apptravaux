@@ -31,7 +31,7 @@ class NotificationController extends AbstractController
         $interventions = $this->travauxUtils->getInterventionsEnAttentes();
         $reportees = $this->travauxUtils->getInterventionsReportees();
 
-        return $this->render('travaux/notification/index.html.twig', array(
+        return $this->render('@AcMarcheTravaux/travaux/notification/index.html.twig', array(
             'interventions' => $interventions,
             'reportees' => $reportees,
         ));
@@ -46,7 +46,7 @@ class NotificationController extends AbstractController
     {
         $reportees = $this->travauxUtils->getInterventionsReportees();
 
-        return $this->render('travaux/notification/reporte.html.twig', array(
+        return $this->render('@AcMarcheTravaux/travaux/notification/reporte.html.twig', array(
             'interventions' => $reportees,
         ));
     }

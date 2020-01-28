@@ -32,7 +32,7 @@ class DomaineController extends AbstractController
         $entities = $em->getRepository(Domaine::class)->findAll();
 
         return $this->render(
-            'travaux/domaine/index.html.twig',
+            '@AcMarcheTravaux/travaux/domaine/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -62,11 +62,11 @@ class DomaineController extends AbstractController
 
             $this->addFlash('success', 'Le type a bien été créé.');
 
-            return $this->redirectToRoute('domaine_show', array('slugname' => $domaine->getSlugname()));
+            return $this->redirectToRoute('domaine_show', array('id' => $domaine->getId()));
         }
 
         return $this->render(
-            'travaux/domaine/new.html.twig',
+            '@AcMarcheTravaux/travaux/domaine/new.html.twig',
             array(
                 'entity' => $domaine,
                 'form' => $form->createView(),
@@ -77,13 +77,13 @@ class DomaineController extends AbstractController
     /**
      * Finds and displays a Domaine entity.
      *
-     * @Route("/{slugname}", name="domaine_show", methods={"GET"})
+     * @Route("/{id}", name="domaine_show", methods={"GET"})
      *
      */
     public function show(Domaine $domaine)
     {
         return $this->render(
-            'travaux/domaine/show.html.twig',
+            '@AcMarcheTravaux/travaux/domaine/show.html.twig',
             array(
                 'entity' => $domaine,
             )
@@ -93,7 +93,7 @@ class DomaineController extends AbstractController
     /**
      * Displays a form to edit an existing Domaine entity.
      *
-     * @Route("/{slugname}/edit", name="domaine_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="domaine_edit", methods={"GET","POST"})
      *
      */
     public function edit(Request $request, Domaine $domaine)
@@ -109,11 +109,11 @@ class DomaineController extends AbstractController
 
             $this->addFlash('success', 'Le type a bien été mis à jour.');
 
-            return $this->redirectToRoute('domaine_show', array('slugname' => $domaine->getSlugname()));
+            return $this->redirectToRoute('domaine_show', array('id' => $domaine->getId()));
         }
 
         return $this->render(
-            'travaux/domaine/edit.html.twig',
+            '@AcMarcheTravaux/travaux/domaine/edit.html.twig',
             array(
                 'entity' => $domaine,
                 'edit_form' => $editForm->createView(),

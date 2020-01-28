@@ -79,10 +79,9 @@ class ValidationType extends AbstractType
                     array(
                         'widget' => 'single_text',
                         'label' => 'A réaliser à partir du',
-                        'format' => 'dd/MM/yyyy',
                         'required' => false,
                         'help' => 'Si reporter, choisissez une date d\'exécution',
-                        'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                        'attr' => array( 'autocomplete' => 'off'),
                     )
                 );
         }

@@ -69,7 +69,7 @@ class AvaloirEditType extends AbstractType
                     'required' => false,
                     'label' => 'Date de rappel',
                     'format' => 'dd/MM/yyyy',
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             );
     }

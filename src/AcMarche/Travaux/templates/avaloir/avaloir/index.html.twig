@@ -39,7 +39,7 @@
                     <td>{{ entity.rue.village }}</td>
                     <td>
                         {% if entity.rue.quartier %}
-                            <a href="{{ path('quartier_show', { 'slugname': entity.rue.quartier.slugname }) }}">
+                            <a href="{{ path('quartier_show', { 'id': entity.rue.quartier.id }) }}">
                                 {{ entity.rue.quartier }}
                             </a>
                         {% endif %}

@@ -52,7 +52,7 @@ class ExportController extends AbstractController
         );
 
         $html = $this->renderView(
-            'travaux/pdf/interventions.html.twig',
+            '@AcMarcheTravaux/travaux/pdf/interventions.html.twig',
             [
                 'interventions' => $interventions,
                 'title' => 'Interventions',

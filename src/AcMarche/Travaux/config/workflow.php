@@ -1,7 +1,4 @@
 <?php
-
-$container->loadFromExtension(
-    'framework',
     array(
         'workflows' => array(
             'intervention_publication' => array(
@@ -43,5 +40,4 @@ $container->loadFromExtension(
                 ),
             ),
         ),
-    )
 );

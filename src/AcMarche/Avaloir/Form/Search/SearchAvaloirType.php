@@ -88,7 +88,7 @@ class SearchAvaloirType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Entre le',
-                        'class' => 'datepicker',
+
                     ),
                 )
             )
@@ -102,7 +102,7 @@ class SearchAvaloirType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Et le',
-                        'class' => 'datepicker',
+
                     ),
                 )
             )

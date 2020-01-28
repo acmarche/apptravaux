@@ -78,7 +78,7 @@ class QuartierController extends AbstractController
     /**
      * Finds and displays a Quartier entity.
      *
-     * @Route("/{slugname}", name="quartier_show", methods={"GET"})
+     * @Route("/{id}", name="quartier_show", methods={"GET"})
      *
      */
     public function show(Quartier $quartier)
@@ -99,7 +99,7 @@ class QuartierController extends AbstractController
     /**
      * Displays a form to edit an existing Quartier entity.
      *
-     * @Route("/{slugname}/edit", name="quartier_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="quartier_edit", methods={"GET","POST"})
      *
      */
     public function edit(Request $request, Quartier $quartier)

@@ -71,7 +71,7 @@ class Mailer
             ->subject($sujet)
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/intervention.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/intervention.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -112,7 +112,7 @@ class Mailer
             ->subject('Une demande d\'intervention à valider')
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/new_validation.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/new_validation.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -140,7 +140,7 @@ class Mailer
             ->subject('Une demande d\'intervention à valider')
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/new_validation.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/new_validation.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -178,7 +178,7 @@ class Mailer
             ->subject($sujet)
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/result_validation.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/result_validation.txt.twig')
             ->context(
                 array(
                     'result' => $resultat,
@@ -218,7 +218,7 @@ class Mailer
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/plus_info_contributeur.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_contributeur.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -251,7 +251,7 @@ class Mailer
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/plus_info_auteur.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_auteur.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -288,7 +288,7 @@ class Mailer
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/plus_info_redacteur.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_redacteur.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -321,7 +321,7 @@ class Mailer
             ->subject('Archivage de : ' . $intervention->getIntitule())
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/archive.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/archive.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
@@ -353,7 +353,7 @@ class Mailer
             ->subject('Ajout d\'un suivi pour : ' . $intervention->getIntitule())
             ->from($from)
             ->to($destinataires)
-            ->textTemplate('travaux/mail/suivis.txt.twig')
+            ->textTemplate('@AcMarcheTravaux/travaux/mail/suivis.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,

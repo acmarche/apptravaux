@@ -1,2 +1,39 @@
 framework:
-    workflows: ~
+    workflows:
+        intervention_publication:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'multiple_state'
+                arguments: 'currentPlace'
+            supports:
+                - AcMarche\Travaux\Entity\Intervention
+            initial_marking: draft
+            places:
+                -  auteur_checking
+                -  redacteur
+                -  admin_checking
+                -  deleted
+                -  published
+            transitions:
+                auteur_accept:
+                    from: auteur_checking
+                    to:   admin_checking
+                info_back_auteur:
+                    from: admin_checking
+                    to:   auteur_checking
+                info_back_contributeur:
+                    from: admin_checking
+                    to:   auteur_checking
+                info_back_redacteur:
+                    from: admin_checking
+                    to:   admin_checking
+                publish:
+                    from: admin_checking
+                    to:   published
+                reject:
+                    from:
+                      - auteur_checking
+                      - admin_checking
+                    to:   deleted

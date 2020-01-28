@@ -101,7 +101,7 @@ class DateNettoyageController extends AbstractController
     /**
      * Displays a form to create a new Suivis entity.
      *
-     * @Route("/new/quartier/{slugname}", name="nettoyage_quartier_new", methods={"GET","POST"})
+     * @Route("/new/quartier/{id}", name="nettoyage_quartier_new", methods={"GET","POST"})
      *
      */
     public function nettoyageQuartierNew(Request $request, Quartier $quartier)
@@ -135,7 +135,7 @@ class DateNettoyageController extends AbstractController
                 $this->addFlash('success', "La date a bien été ajoutée");
             }
 
-            return $this->redirect($this->generateUrl('quartier_show', array('slugname' => $quartier->getSlugname())));
+            return $this->redirect($this->generateUrl('quartier_show', array('id' => $quartier->getId())));
         }
 
         return $this->render('avaloir/date_nettoyage/nettoyage_quartier_new.html.twig', array(

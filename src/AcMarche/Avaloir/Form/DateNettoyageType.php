@@ -26,7 +26,7 @@ class DateNettoyageType extends AbstractType
                     'label' => 'Date de nettoyage',
                     'format' => 'dd/MM/yyyy',
                     'required' => true,
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             );
     }

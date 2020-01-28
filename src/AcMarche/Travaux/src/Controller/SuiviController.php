@@ -68,7 +68,7 @@ class SuiviController extends AbstractController
         }
 
         return $this->render(
-            'travaux/suivi/new.html.twig',
+            '@AcMarcheTravaux/travaux/suivi/new.html.twig',
             array(
                 'entity' => $suivi,
                 'intervention' => $intervention,
@@ -110,7 +110,7 @@ class SuiviController extends AbstractController
         }
 
         return $this->render(
-            'travaux/suivi/edit.html.twig',
+            '@AcMarcheTravaux/travaux/suivi/edit.html.twig',
             array(
                 'entity' => $suivi,
                 'edit_form' => $editForm->createView(),

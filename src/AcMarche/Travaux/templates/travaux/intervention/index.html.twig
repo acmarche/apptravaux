@@ -1,14 +1,11 @@
-{% extends 'travaux/layout.html.twig' %}
-{% block stylesheets %}
-    <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
-{% endblock %}
+{% extends '@AcMarcheTravaux/layout.html.twig' %}
 {% block body %}
 
     <div class="page-header">
         <h3>Liste des interventions ({{ interventions | length }})</h3>
     </div>
 
-    {% include 'travaux/search/intervention.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/search/intervention.html.twig' %}
 
     {% if interventions | length > 0 %}
 
@@ -82,7 +79,4 @@
             </tbody>
         </table>
     {% endif %}
-{% endblock %}
-{% block scripts %}
-    {% include 'form/calendar.html.twig' %}
 {% endblock %}

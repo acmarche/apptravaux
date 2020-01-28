@@ -1,4 +1,4 @@
-{% extends 'travaux/layout.html.twig' %}
+{% extends '@AcMarcheTravaux/layout.html.twig' %}
 
 {% block body -%}
     <div class="page-header">
@@ -28,7 +28,7 @@
             {% for entity in entities %}
                 <tr>
                     <td>
-                        <a href="{{ path('service_show', { 'slugname': entity.slugname }) }}">
+                        <a href="{{ path('service_show', { 'id': entity.id }) }}">
                             {{ entity.intitule }}
                         </a>
                     </td>
@@ -37,7 +37,7 @@
                     </td>
                     {% if is_granted('ROLE_TRAVAUX_ADMIN') %}
                         <td>
-                            <a href="{{ path('service_edit', { 'slugname': entity.slugname }) }}" title="Editer"
+                            <a href="{{ path('service_edit', { 'id': entity.id }) }}" title="Editer"
                                role="button" class="btn btn-primary btn-xs"><i class="far fa-edit"></i>
                                 Editer
                             </a>

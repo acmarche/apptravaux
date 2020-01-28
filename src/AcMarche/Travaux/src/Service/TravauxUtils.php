@@ -111,7 +111,7 @@ class TravauxUtils
     public function getCategorieDefault(string $slugname)
     {
         return $this->em->getRepository(Categorie::class)->findOneBy(
-            ['slugname' => $slugname]
+            ['id' => $slugname]
         );
     }
 

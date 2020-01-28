@@ -95,7 +95,7 @@ class ArchiveController extends AbstractController
         $entities = $em->getRepository(Intervention::class)->search($data);
 
         return $this->render(
-            'travaux/archive/index.html.twig',
+            '@AcMarcheTravaux/travaux/archive/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'entities' => $entities,

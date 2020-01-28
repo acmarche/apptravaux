@@ -94,9 +94,8 @@ class InterventionType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Date de rappel',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             )
             ->add(
@@ -114,9 +113,8 @@ class InterventionType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Soumis le',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             )
             ->add(
@@ -133,9 +131,8 @@ class InterventionType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Date de solution',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             )
             ->add(
@@ -162,9 +159,8 @@ class InterventionType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'A réaliser à partir du',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
-                    'attr' => array('class' => 'datepicker', 'autocomplete' => 'off'),
+                    'attr' => array( 'autocomplete' => 'off'),
                 )
             );
 

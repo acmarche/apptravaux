@@ -33,7 +33,7 @@ class DefaultController extends AbstractController
         if ($this->authorizationChecker->isGranted("ROLE_TRAVAUX")) {
             return $this->redirectToRoute('intervention', array(), '301');
         }
-
+        $this->addFlash('danger', 'Vous n\'avez pas les droits suffisant pour cette application');
         return $this->redirectToRoute('app_login');
     }
 
@@ -43,6 +43,6 @@ class DefaultController extends AbstractController
      */
     public function documentation()
     {
-        return $this->render('travaux/default/documentation.html.twig');
+        return $this->render('@AcMarcheTravaux/travaux/default/documentation.html.twig');
     }
 }

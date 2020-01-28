@@ -83,7 +83,7 @@ class DocumentController extends AbstractController
         }
 
         return $this->render(
-            'travaux/document/new.html.twig',
+            '@AcMarcheTravaux/travaux/document/new.html.twig',
             array(
                 'entity' => $document,
                 'intervention' => $intervention,
@@ -101,7 +101,7 @@ class DocumentController extends AbstractController
     public function show(Document $document)
     {
         return $this->render(
-            'travaux/document/show.html.twig',
+            '@AcMarcheTravaux/travaux/document/show.html.twig',
             array(
                 'entity' => $document,
             )

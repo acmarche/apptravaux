@@ -22,7 +22,7 @@ class QuartierRueController extends AbstractController
     /**
      * Displays a form to create a new Suivis entity.
      *
-     * @Route("/new/{slugname}", name="quartierrue_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="quartierrue_new", methods={"GET","POST"})
      *
      */
     public function new(Request $request, Quartier $quartier)
@@ -53,7 +53,7 @@ class QuartierRueController extends AbstractController
 
             if ($diff === 0 and $diff_count === 0) {
                 $this->addFlash("warning", "Aucun changement n'a été effectué");
-                return $this->redirectToRoute('quartier_show', array('slugname' => $quartier->getSlugname()));
+                return $this->redirectToRoute('quartier_show', array('id' => $quartier->getId()));
             }
 
             $enMoins = array_diff($ruesOld, $rues);
@@ -65,7 +65,7 @@ class QuartierRueController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Les rues ont bien modifiées.');
-            return $this->redirectToRoute('quartier_show', array('slugname' => $quartier->getSlugname()));
+            return $this->redirectToRoute('quartier_show', array('id' => $quartier->getId()));
         }
 
         /**
@@ -116,7 +116,7 @@ class QuartierRueController extends AbstractController
     private function createCreateForm(Quartier $entity)
     {
         $form = $this->createForm(QuartierRueType::class, $entity, array(
-            'action' => $this->generateUrl('quartierrue_new', array('slugname' => $entity->getSlugname())),
+            'action' => $this->generateUrl('quartierrue_new', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
 

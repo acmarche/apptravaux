@@ -30,7 +30,7 @@ class BatimentController extends AbstractController
         $entities = $em->getRepository(Batiment::class)->findAll();
 
         return $this->render(
-            'travaux/batiment/index.html.twig',
+            '@AcMarcheTravaux/travaux/batiment/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -60,11 +60,11 @@ class BatimentController extends AbstractController
 
             $this->addFlash('success', 'Le bâtiment a bien été créé.');
 
-            return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
+            return $this->redirectToRoute('batiment_show', array('id' => $batiment->getId()));
         }
 
         return $this->render(
-            'travaux/batiment/new.html.twig',
+            '@AcMarcheTravaux/travaux/batiment/new.html.twig',
             array(
                 'entity' => $batiment,
                 'form' => $form->createView(),
@@ -75,13 +75,13 @@ class BatimentController extends AbstractController
     /**
      * Finds and displays a Batiment entity.
      *
-     * @Route("/{slugname}", name="batiment_show", methods={"GET"})
+     * @Route("/{id}", name="batiment_show", methods={"GET"})
      *
      */
     public function show(Batiment $batiment)
     {
         return $this->render(
-            'travaux/batiment/show.html.twig',
+            '@AcMarcheTravaux/travaux/batiment/show.html.twig',
             array(
                 'entity' => $batiment,
             )
@@ -91,7 +91,7 @@ class BatimentController extends AbstractController
     /**
      * Displays a form to edit an existing Batiment entity.
      *
-     * @Route("/{slugname}/edit", name="batiment_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="batiment_edit", methods={"GET","POST"})
      *
      */
     public function edit(Request $request, Batiment $batiment)
@@ -108,11 +108,11 @@ class BatimentController extends AbstractController
 
             $this->addFlash('success', 'Le bâtiment a bien été modifié.');
 
-            return $this->redirectToRoute('batiment_show', array('slugname' => $batiment->getSlugname()));
+            return $this->redirectToRoute('batiment_show', array('id' => $batiment->getId()));
         }
 
         return $this->render(
-            'travaux/batiment/edit.html.twig',
+            '@AcMarcheTravaux/travaux/batiment/edit.html.twig',
             array(
                 'entity' => $batiment,
                 'edit_form' => $editForm->createView(),

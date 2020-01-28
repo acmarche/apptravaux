@@ -32,7 +32,7 @@ class ServiceController extends AbstractController
         $entities = $em->getRepository(Service::class)->findAll();
 
         return $this->render(
-            'travaux/service/index.html.twig',
+            '@AcMarcheTravaux/travaux/service/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -62,11 +62,11 @@ class ServiceController extends AbstractController
 
             $this->addFlash('success', 'Le service a bien été créé.');
 
-            return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
+            return $this->redirectToRoute('service_show', array('id' => $service->getId()));
         }
 
         return $this->render(
-            'travaux/service/new.html.twig',
+            '@AcMarcheTravaux/travaux/service/new.html.twig',
             array(
                 'entity' => $service,
                 'form' => $form->createView(),
@@ -77,13 +77,13 @@ class ServiceController extends AbstractController
     /**
      * Finds and displays a Service entity.
      *
-     * @Route("/{slugname}", name="service_show", methods={"GET"})
+     * @Route("/{id}", name="service_show", methods={"GET"})
      *
      */
     public function show(Service $service)
     {
         return $this->render(
-            'travaux/service/show.html.twig',
+            '@AcMarcheTravaux/travaux/service/show.html.twig',
             array(
                 'entity' => $service,
             )
@@ -93,7 +93,7 @@ class ServiceController extends AbstractController
     /**
      * Displays a form to edit an existing Service entity.
      *
-     * @Route("/{slugname}/edit", name="service_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="service_edit", methods={"GET","POST"})
      *
      */
     public function edit(Request $request, Service $service)
@@ -109,11 +109,11 @@ class ServiceController extends AbstractController
 
             $this->addFlash('success', 'Le service a bien été modifié.');
 
-            return $this->redirectToRoute('service_show', array('slugname' => $service->getSlugname()));
+            return $this->redirectToRoute('service_show', array('id' => $service->getId()));
         }
 
         return $this->render(
-            'travaux/service/edit.html.twig',
+            '@AcMarcheTravaux/travaux/service/edit.html.twig',
             array(
                 'entity' => $service,
                 'edit_form' => $editForm->createView(),

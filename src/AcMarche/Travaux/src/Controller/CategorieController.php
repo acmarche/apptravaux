@@ -32,7 +32,7 @@ class CategorieController extends AbstractController
         $entities = $em->getRepository(Categorie::class)->findAll();
 
         return $this->render(
-            'travaux/categorie/index.html.twig',
+            '@AcMarcheTravaux/travaux/categorie/index.html.twig',
             array(
                 'entities' => $entities,
             )
@@ -62,11 +62,11 @@ class CategorieController extends AbstractController
 
             $this->addFlash('success', 'La catégorie a bien été crée.');
 
-            return $this->redirectToRoute('categorie_show', array('slugname' => $categorie->getSlugname()));
+            return $this->redirectToRoute('categorie_show', array('id' => $categorie->getId()));
         }
 
         return $this->render(
-            'travaux/categorie/new.html.twig',
+            '@AcMarcheTravaux/travaux/categorie/new.html.twig',
             array(
                 'entity' => $categorie,
                 'form' => $form->createView(),
@@ -77,13 +77,13 @@ class CategorieController extends AbstractController
     /**
      * Finds and displays a Categorie entity.
      *
-     * @Route("/{slugname}", name="categorie_show", methods={"GET"})
+     * @Route("/{id}", name="categorie_show", methods={"GET"})
      *
      */
     public function show(Categorie $categorie)
     {
         return $this->render(
-            'travaux/categorie/show.html.twig',
+            '@AcMarcheTravaux/travaux/categorie/show.html.twig',
             array(
                 'entity' => $categorie,
             )
@@ -93,7 +93,7 @@ class CategorieController extends AbstractController
     /**
      * Displays a form to edit an existing Categorie entity.
      *
-     * @Route("/{slugname}/edit", name="categorie_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="categorie_edit", methods={"GET","POST"})
      *
      */
     public function edit(Request $request, Categorie $categorie)
@@ -108,11 +108,11 @@ class CategorieController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'La catégorie a bien été mise à jour.');
 
-            return $this->redirectToRoute('categorie_show', array('slugname' => $categorie->getSlugname()));
+            return $this->redirectToRoute('categorie_show', array('id' => $categorie->getId()));
         }
 
         return $this->render(
-            'travaux/categorie/edit.html.twig',
+            '@AcMarcheTravaux/travaux/categorie/edit.html.twig',
             array(
                 'entity' => $categorie,
                 'edit_form' => $editForm->createView(),

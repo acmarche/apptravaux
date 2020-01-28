@@ -2,41 +2,32 @@
 
 namespace AcMarche\Travaux\Security;
 
-use AcMarche\Travaux\Repository\UserRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use AcMarche\Travaux\Entity\Security\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Ldap\Entry;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class AppTravauxAuthenticator extends AbstractFormLoginAuthenticator
+class TravauxAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var CsrfTokenManagerInterface
-     */
+    private $entityManager;
+    private $urlGenerator;
     private $csrfTokenManager;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
     private $passwordEncoder;
     /**
      * @var StaffLdap
@@ -44,14 +35,14 @@ class AppTravauxAuthenticator extends AbstractFormLoginAuthenticator
     private $staffLdap;
 
     public function __construct(
-        UserRepository $userRepository,
-        RouterInterface $router,
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
         StaffLdap $staffLdap,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
+        $this->entityManager = $entityManager;
+        $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->staffLdap = $staffLdap;
@@ -59,43 +50,44 @@ class AppTravauxAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        if ($request->getPathInfo() === '/login' && $request->isMethod('POST')) {
-            return true;
-        }
-
-        return false;
+        return 'app_login' === $request->attributes->get('_route')
+            && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
-        return [
+        $credentials = [
             'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
-            'token' => $request->request->get('_csrf_token'),
+            'csrf_token' => $request->request->get('_csrf_token'),
         ];
+        $request->getSession()->set(
+            Security::LAST_USERNAME,
+            $credentials['username']
+        );
+
+        return $credentials;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $username = $credentials['username'];
-        $user = null;
-
-        try {
-            return $this->userRepository->loadUserByUsername($username);
-        } catch (NonUniqueResultException $e) {
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
         }
 
-        return null;
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+
+        if (!$user) {
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException('Username could not be found.');
+        }
+
+        return $user;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $token = $credentials['token'];
-
-        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $token))) {
-            throw new InvalidCsrfTokenException('Invalid CSRF token.');
-        }
-
         try {
             $entry = $this->staffLdap->getEntry($user->getUsername());
 
@@ -111,26 +103,31 @@ class AppTravauxAuthenticator extends AbstractFormLoginAuthenticator
                 }
             }
         } catch (\Exception $exception) {
-
         }
 
         //try check password in db
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
+    /**
+     * Used to upgrade (rehash) the user's password automatically over time.
+     */
+    public function getPassword($credentials): ?string
+    {
+        return $credentials['password'];
+    }
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
-
-        if (!$targetPath) {
-            $targetPath = $this->router->generate('homepage');
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($targetPath);
+        return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 
     protected function getLoginUrl()
     {
-        return $this->router->generate('app_login');
+        return $this->urlGenerator->generate('app_login');
     }
 }

@@ -1,0 +1,16 @@
+{
+  "namespaces": [
+    {
+      "namespace": "AcMarcheTravaux",
+      "path": "src/AcMarche/Travaux/templates"
+    },
+    {
+      "namespace": "AcMarcheAvaloir",
+      "path": "src/AcMarche/Avaloir/templates"
+    },
+    {
+      "namespace": "AcMarcheStock",
+      "path": "src/AcMarche/Stock/templates"
+    }
+  ]
+}

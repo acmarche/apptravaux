@@ -56,7 +56,7 @@ class DroitTest extends BaseUnit
         $this->assertEquals(
             $result,
             $this->client->getResponse()->getStatusCode(),
-            "Unexpected HTTP status code for GET /travaux/new"
+            "Unexpected HTTP status code for GET /@AcMarcheTravaux/travaux/new"
         );
     }
 }

@@ -66,7 +66,7 @@ class ValidationController extends AbstractController
     {
         $interventions = $this->travauxUtils->getInterventionsEnAttentes();
 
-        return $this->render('travaux/validation/index.html.twig', array('entities' => $interventions));
+        return $this->render('@AcMarcheTravaux/travaux/validation/index.html.twig', array('entities' => $interventions));
     }
 
     /**
@@ -154,7 +154,7 @@ class ValidationController extends AbstractController
         }
 
         return $this->render(
-            'travaux/validation/show.html.twig',
+            '@AcMarcheTravaux/travaux/validation/show.html.twig',
             array(
                 'entity' => $intervention,
                 'form' => $form->createView(),
