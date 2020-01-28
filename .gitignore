@@ -15,7 +15,6 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-
 ###> acmarche/travaux ###
 .idea/
 /public/media/
@@ -23,6 +22,8 @@
 /public/files/
 /*.sql
 /runtests.sh
+/config/services_dev.yaml
+/config/services_test.yaml
 ###< acmarche/travaux ###
 ###> liip/imagine-bundle ###
 /public/media/cache/

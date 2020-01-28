@@ -33,7 +33,6 @@ class DefaultController extends AbstractController
         if ($this->authorizationChecker->isGranted("ROLE_TRAVAUX")) {
             return $this->redirectToRoute('intervention', array(), '301');
         }
-        $this->addFlash('danger', 'Vous n\'avez pas les droits suffisant pour cette application');
         return $this->redirectToRoute('app_login');
     }
 

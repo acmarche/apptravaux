@@ -4,9 +4,8 @@ namespace AcMarche\Travaux\DataFixtures\ORM;
 
 use AcMarche\Travaux\Entity\Intervention;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadIntervention extends Fixture implements DependentFixtureInterface
 {
@@ -25,9 +24,9 @@ class LoadIntervention extends Fixture implements DependentFixtureInterface
         $intervention->setPriorite($this->getReference('Normal'));
         $intervention->setService($this->getReference('enseignement'));
         $intervention->setUserAdd('contributeur');
-        $intervention->setCreated(new \DateTime());
-        $intervention->setUpdated(new \DateTime());
-        $intervention->setCurrentPlace(['auteur_checking' => 1]);
+        $intervention->setCreatedAt(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
+        $intervention->setCurrentPlace('auteur_checking');
 
         $manager->persist($intervention);
 
@@ -41,9 +40,9 @@ class LoadIntervention extends Fixture implements DependentFixtureInterface
         $intervention->setPriorite($this->getReference('Normal'));
         $intervention->setService($this->getReference('enseignement'));
         $intervention->setUserAdd('auteur');
-        $intervention->setCreated(new \DateTime());
-        $intervention->setUpdated(new \DateTime());
-        $intervention->setCurrentPlace(['admin_checking' => 1]);
+        $intervention->setCreatedAt(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
+        $intervention->setCurrentPlace('admin_checking');
         $manager->persist($intervention);
 
         $intervention = new Intervention();
@@ -56,9 +55,9 @@ class LoadIntervention extends Fixture implements DependentFixtureInterface
         $intervention->setPriorite($this->getReference('Normal'));
         $intervention->setService($this->getReference('enseignement'));
         $intervention->setUserAdd('auteur');
-        $intervention->setCreated(new \DateTime());
-        $intervention->setUpdated(new \DateTime());
-        $intervention->setCurrentPlace(['admin_checking' => 1]);
+        $intervention->setCreatedAt(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
+        $intervention->setCurrentPlace('admin_checking');
         $manager->persist($intervention);
 
         $intervention = new Intervention();
@@ -71,9 +70,9 @@ class LoadIntervention extends Fixture implements DependentFixtureInterface
         $intervention->setPriorite($this->getReference('Normal'));
         $intervention->setService($this->getReference('enseignement'));
         $intervention->setUserAdd('auteur');
-        $intervention->setCreated(new \DateTime());
-        $intervention->setUpdated(new \DateTime());
-        $intervention->setCurrentPlace(['published' => 1]);
+        $intervention->setCreatedAt(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
+        $intervention->setCurrentPlace('published');
         $manager->persist($intervention);
 
         $intervention = new Intervention();
@@ -87,9 +86,9 @@ class LoadIntervention extends Fixture implements DependentFixtureInterface
         $intervention->setPriorite($this->getReference('Normal'));
         $intervention->setService($this->getReference('enseignement'));
         $intervention->setUserAdd('redacteur');
-        $intervention->setCreated(new \DateTime());
-        $intervention->setUpdated(new \DateTime());
-        $intervention->setCurrentPlace(['published' => 1]);
+        $intervention->setCreatedAt(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
+        $intervention->setCurrentPlace('published');
         $manager->persist($intervention);
 
         $manager->flush();

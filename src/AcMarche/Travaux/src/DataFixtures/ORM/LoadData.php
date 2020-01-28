@@ -10,13 +10,14 @@ use AcMarche\Travaux\Entity\Priorite;
 use AcMarche\Travaux\Entity\Service;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadData extends Fixture implements DependentFixtureInterface
 {
 
+
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function load(ObjectManager $manager)
     {
@@ -39,41 +40,26 @@ class LoadData extends Fixture implements DependentFixtureInterface
 
         $batiment = new Batiment();
         $batiment->setIntitule('Ecole de Aye');
-        $batiment->setSlugname("ecole-aye");
-        $batiment->setCreated(new \DateTime());
-        $batiment->setUpdated(new \DateTime());
         $manager->persist($batiment);
         $this->addReference('ecole-aye', $batiment);
 
         $batiment = new Batiment();
         $batiment->setIntitule("Ecole de Hollogne");
-        $batiment->setSlugname("ecole-hollogne");
-        $batiment->setCreated(new \DateTime());
-        $batiment->setUpdated(new \DateTime());
         $manager->persist($batiment);
         $this->addReference('ecole-hollogne', $batiment);
 
         $categorie = new Categorie();
         $categorie->setIntitule("Intervention");
-        $categorie->setSlugname("intervention");
-        $categorie->setCreated(new \DateTime());
-        $categorie->setUpdated(new \DateTime());
         $manager->persist($categorie);
         $this->addReference('cat-intervention', $categorie);
 
         $domaine = new Domaine();
         $domaine->setIntitule("Parc et jardin");
-        $domaine->setSlugname("parc-jardin");
-        $domaine->setCreated(new \DateTime());
-        $domaine->setUpdated(new \DateTime());
         $manager->persist($domaine);
         $this->addReference('parc-jardin', $domaine);
 
         $service = new Service();
         $service->setIntitule("Enseignement");
-        $service->setSlugname("enseignement");
-        $service->setCreated(new \DateTime());
-        $service->setUpdated(new \DateTime());
         $manager->persist($service);
         $this->addReference('enseignement', $service);
 
@@ -91,4 +77,5 @@ class LoadData extends Fixture implements DependentFixtureInterface
     {
         return [LoadUsers::class];
     }
+
 }

@@ -11,8 +11,8 @@ namespace AcMarche\Travaux\DataFixtures\ORM;
 use AcMarche\Travaux\Entity\Security\Group;
 use AcMarche\Travaux\Entity\Security\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadUsers extends Fixture
 {

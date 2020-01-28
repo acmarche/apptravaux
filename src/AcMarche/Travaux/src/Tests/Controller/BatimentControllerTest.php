@@ -7,6 +7,7 @@ class BatimentControllerTest extends BaseUnit
     public function testIndex()
     {
         $crawler = $this->admin->request('GET', '/batiment/');
+
         $this->assertEquals(
             200,
             $this->admin->getResponse()->getStatusCode()
@@ -32,14 +33,14 @@ class BatimentControllerTest extends BaseUnit
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('h3:contains("Les carme")')->count(),
-            'Missing element h3:contains("Les carme")'
+            $crawler->filter('h3:contains("Les carme")')->count()
         );
     }
 
     public function testEdit()
     {
-        $crawler = $this->admin->request('GET', '/batiment/les-carme');
+        $batiment = $this->getBatiment('les carme');
+        $crawler = $this->admin->request('GET', '/batiment/' . $batiment->getId());
         $this->assertEquals(
             200,
             $this->admin->getResponse()->getStatusCode()

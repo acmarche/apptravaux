@@ -8,45 +8,59 @@
 
 namespace AcMarche\Travaux\Tests\Controller;
 
+use AcMarche\Travaux\Entity\Batiment;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Panther\Client;
-
 
 class BaseUnit extends WebTestCase
 {
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $admin;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $contributeur;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $auteur;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $redacteur;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $lecteur;
 
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $anonyme;
-
+    /**
+     * @var \Symfony\Component\HttpKernel\KernelInterface
+     */
+    private $kernel2;
+    /**
+     * @var object|null
+     */
+    private $entityManager;
 
     public function setUp()
     {
+        $this->kernel2 = self::bootKernel();
+
+        $this->entityManager = $this->kernel2->getContainer()
+            ->get('doctrine')
+            ->getManager();
+
+        static::ensureKernelShutdown();
         $this->admin = static::createClient(
             array(),
             array(
@@ -55,6 +69,7 @@ class BaseUnit extends WebTestCase
             )
         );
 
+        static::ensureKernelShutdown();
         $this->contributeur = static::createClient(
             array(),
             array(
@@ -63,6 +78,7 @@ class BaseUnit extends WebTestCase
             )
         );
 
+        static::ensureKernelShutdown();
         $this->auteur = static::createClient(
             array(),
             array(
@@ -71,6 +87,7 @@ class BaseUnit extends WebTestCase
             )
         );
 
+        static::ensureKernelShutdown();
         $this->redacteur = static::createClient(
             array(),
             array(
@@ -79,6 +96,7 @@ class BaseUnit extends WebTestCase
             )
         );
 
+        static::ensureKernelShutdown();
         $this->lecteur = static::createClient(
             array(),
             array(
@@ -87,6 +105,14 @@ class BaseUnit extends WebTestCase
             )
         );
 
-        $this->anonyme = static::createClient(        );
+        static::ensureKernelShutdown();
+        $this->anonyme = static::createClient();
+    }
+
+    protected function getBatiment(string $name): ?Batiment
+    {
+        return $this->entityManager
+            ->getRepository(Batiment::class)
+            ->findOneBy(['intitule' => $name]);
     }
 }
