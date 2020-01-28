@@ -65,7 +65,7 @@ class RueController extends AbstractController
         $entities = $em->getRepository(Rue::class)->search($data);
 
         return $this->render(
-            'avaloir/rue/index.html.twig',
+            '@AcMarcheAvaloir/rue/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'entities' => $entities,
@@ -99,7 +99,7 @@ class RueController extends AbstractController
         }
 
         return $this->render(
-            'avaloir/rue/new.html.twig',
+            '@AcMarcheAvaloir/rue/new.html.twig',
             array(
                 'entity' => $rue,
                 'form' => $form->createView(),
@@ -116,7 +116,7 @@ class RueController extends AbstractController
     public function show(Rue $rue)
     {
         return $this->render(
-            'avaloir/rue/show.html.twig',
+            '@AcMarcheAvaloir/rue/show.html.twig',
             array(
                 'entity' => $rue,
             )
@@ -146,7 +146,7 @@ class RueController extends AbstractController
         }
 
         return $this->render(
-            'avaloir/rue/edit.html.twig',
+            '@AcMarcheAvaloir/rue/edit.html.twig',
             array(
                 'entity' => $rue,
                 'edit_form' => $editForm->createView(),

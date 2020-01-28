@@ -46,7 +46,7 @@ class UtilisateurController extends AbstractController
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
 
         return $this->render(
-            'utilisateur/index.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/index.html.twig',
             array(
                 'users' => $users,
             )
@@ -81,7 +81,7 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->render(
-            'utilisateur/new.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/new.html.twig',
             array(
                 'utilisateur' => $utilisateur,
                 'form' => $form->createView(),
@@ -98,7 +98,7 @@ class UtilisateurController extends AbstractController
     public function show(User $utilisateur)
     {
         return $this->render(
-            'utilisateur/show.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/show.html.twig',
             array(
                 'utilisateur' => $utilisateur,
             )
@@ -127,7 +127,7 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->render(
-            'utilisateur/edit.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/edit.html.twig',
             array(
                 'utilisateur' => $utilisateur,
                 'edit_form' => $editForm->createView(),
@@ -158,7 +158,7 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->render(
-            'utilisateur/password.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/password.html.twig',
             array(
                 'utilisateur' => $utilisateur,
                 'edit_form' => $editForm->createView(),
@@ -209,7 +209,7 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->render(
-            'utilisateur/password.html.twig',
+            '@AcMarcheTravaux/travaux/utilisateur/password.html.twig',
             [
                 'user' => $user,
                 'form' => $form->createView(),

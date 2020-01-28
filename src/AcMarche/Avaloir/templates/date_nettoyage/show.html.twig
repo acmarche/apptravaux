@@ -1,0 +1,10 @@
+{% extends '@AcMarcheAvaloir/layout_avaloir.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Avaloir <strong>{{ entity.avaloir }}</strong> au <strong>{{ entity}}</strong> </h3>
+    </div>
+
+    {% include '@AcMarcheAvaloir/date_nettoyage/delete.html.twig' %}
+
+{% endblock %}

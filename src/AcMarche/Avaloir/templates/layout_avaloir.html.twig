@@ -1,0 +1,12 @@
+{% extends '@AcMarcheTravaux/layout.html.twig' %}
+
+{% block title %}Avaloirs{% endblock %}
+
+{% block brand %}
+    <a class="navbar-brand" href="{{ path('avaloir') }}" title="Accueil">
+        <i class="fas fa-home"></i> Avaloirs </a>
+{% endblock %}
+
+{% block menu_top %}
+    {% include '@AcMarcheAvaloir/_menu.html.twig' %}
+{% endblock %}

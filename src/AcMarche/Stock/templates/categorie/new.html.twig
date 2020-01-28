@@ -1,0 +1,14 @@
+{% extends '@AcMarcheStock/layout.html.twig' %}
+
+{% block title %}New Categorie{% endblock %}
+
+{% block body %}
+    <h3>Nouvelle catégorie</h3>
+
+    {{ include('@AcMarcheStock/categorie/_form.html.twig') }}
+
+    <br/>
+    <a href="{{ path('stock_categorie_index') }}"><i class="fas fa-arrow-left"></i>
+        Annuler</a>
+
+{% endblock %}

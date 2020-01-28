@@ -69,7 +69,7 @@ class AvaloirController extends AbstractController
         $entities = $em->getRepository(Avaloir::class)->search($data);
 
         return $this->render(
-            'avaloir/avaloir/index.html.twig',
+            '@AcMarcheAvaloir/avaloir/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'entities' => $entities,
@@ -130,7 +130,7 @@ class AvaloirController extends AbstractController
         }
 
         return $this->render(
-            'avaloir/avaloir/new.html.twig',
+            '@AcMarcheAvaloir/avaloir/new.html.twig',
             array(
                 'entity' => $avaloir,
                 'form' => $form->createView(),
@@ -147,7 +147,7 @@ class AvaloirController extends AbstractController
     public function show(Avaloir $avaloir)
     {
         return $this->render(
-            'avaloir/avaloir/show.html.twig',
+            '@AcMarcheAvaloir/avaloir/show.html.twig',
             array(
                 'avaloir' => $avaloir,
             )
@@ -177,7 +177,7 @@ class AvaloirController extends AbstractController
         }
 
         return $this->render(
-            'avaloir/avaloir/edit.html.twig',
+            '@AcMarcheAvaloir/avaloir/edit.html.twig',
             array(
                 'entity' => $avaloir,
                 'edit_form' => $editForm->createView(),

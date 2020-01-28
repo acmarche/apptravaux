@@ -84,7 +84,6 @@ class SearchAvaloirType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Date d\'introduction',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Entre le',
@@ -98,7 +97,6 @@ class SearchAvaloirType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Date d\'introduction',
-                    'format' => 'dd/MM/yyyy',
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Et le',

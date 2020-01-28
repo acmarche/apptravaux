@@ -23,7 +23,7 @@ class CategorieController extends AbstractController
     public function index(CategorieRepository $categorieRepository): Response
     {
         return $this->render(
-            'stock/categorie/index.html.twig',
+            '@AcMarcheStock/categorie/index.html.twig',
             [
                 'categories' => $categorieRepository->getAll(),
             ]
@@ -49,7 +49,7 @@ class CategorieController extends AbstractController
         }
 
         return $this->render(
-            'stock/categorie/new.html.twig',
+            '@AcMarcheStock/categorie/new.html.twig',
             [
                 'categorie' => $categorie,
                 'form' => $form->createView(),
@@ -63,7 +63,7 @@ class CategorieController extends AbstractController
     public function show(Categorie $categorie): Response
     {
         return $this->render(
-            'stock/categorie/show.html.twig',
+            '@AcMarcheStock/categorie/show.html.twig',
             [
                 'categorie' => $categorie,
             ]
@@ -92,7 +92,7 @@ class CategorieController extends AbstractController
         }
 
         return $this->render(
-            'stock/categorie/edit.html.twig',
+            '@AcMarcheStock/categorie/edit.html.twig',
             [
                 'categorie' => $categorie,
                 'form' => $form->createView(),
@@ -105,7 +105,7 @@ class CategorieController extends AbstractController
      */
     public function delete(Request $request, Categorie $categorie): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($categorie);
             $entityManager->flush();

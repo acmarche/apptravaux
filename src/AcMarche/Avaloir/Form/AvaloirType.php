@@ -73,7 +73,6 @@ class AvaloirType extends AbstractType
                     'widget' => 'single_text',
                     'required' => false,
                     'label' => 'Date de rappel',
-                    'format' => 'dd/MM/yyyy',
                     'attr' => array( 'autocomplete' => 'off'),
                 )
             );

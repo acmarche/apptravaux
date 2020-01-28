@@ -39,7 +39,6 @@ class QuantiteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->logger->log($produit, $form->getData()->getQuantite());
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -49,6 +48,9 @@ class QuantiteController extends AbstractController
             return $this->redirectToRoute('stock_produit_show', ['id' => $produit->getId()]);
         }
 
-        return $this->render('stock/quantite/index.html.twig', ['produit' => $produit, 'form' => $form->createView()]);
+        return $this->render(
+            '@AcMarcheStock/quantite/index.html.twig',
+            ['produit' => $produit, 'form' => $form->createView()]
+        );
     }
 }

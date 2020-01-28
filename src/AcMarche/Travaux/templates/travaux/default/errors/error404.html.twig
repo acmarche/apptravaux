@@ -1,0 +1,19 @@
+{% extends '@AcMarcheTravaux/travaux/layout.html.twig' %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block body %}
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2>Page non trouvée: {{ status_text }}</h2>
+        </div>
+        <div class="card-body">
+
+            <p>
+                <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+            </p>
+
+            <img src="{{ asset('bundles/acmarchetravaux/images/conept.jpg') }}" alt="csl">
+        </div>
+    </div>
+{% endblock %}

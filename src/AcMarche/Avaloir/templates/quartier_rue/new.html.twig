@@ -1,0 +1,75 @@
+{% extends '@AcMarcheAvaloir/layout_avaloir.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/acmarchetravaux/jquery-ui/jquery-ui.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('bundles/acmarchetravaux/bootstrap-tokenfield-master/dist/css/bootstrap-tokenfield.min.css') }}"
+          rel="stylesheet">
+    <link href="{{ asset('bundles/acmarchetravaux/bootstrap-tokenfield-master/dist/css/tokenfield-typeahead.min.css') }}"
+          rel="stylesheet">
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Rues pour le quartier <strong>{{ entity }}</strong></h3>
+    </div>
+
+        {{ form_errors(form) }}
+        {{ form_start(form) }}
+        {{ form_row(form.tokenfield) }}
+        {{ form_row(form.rueids) }}
+        <br/>
+        {{ form_end(form) }}
+
+    <a href="{{ path('quartier_show', { 'id': entity.id } ) }}">
+      <i class="fas fa-list"></i> Annuler et retour
+    </a>
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ asset('bundles/acmarchetravaux/jquery-ui/jquery-ui.js')}}"></script>
+    <script src="{{ asset('bundles/acmarchetravaux/bootstrap-tokenfield-master/dist/bootstrap-tokenfield.js') }}"></script>
+
+    <script type="text/javascript">
+
+        var engine = new Bloodhound({
+            datumTokenizer: function (datum) {
+                return Bloodhound.tokenizers.whitespace(datum.value);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '{{ path('rue_autocomplete') }}/%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        var options = {
+            hint: true,
+            highlight: true,
+            minLength: 2
+        };
+
+        var dataSet = {
+            display: 'label',
+            limit: 10,
+            source: engine,
+            templates: {
+                suggestion: function (data) {
+                    return '<p>' + data.label + ' (' + data.village + ')</p>';
+                }
+            }
+        };
+
+        $('#quartier_rue_tokenfield').tokenfield({
+                typeahead: [options, dataSet]
+            }
+        );
+
+        $('#quartier_rue_tokenfield').tokenfield('setTokens', {{ rues | raw }});
+
+        $('#quartier_rue_submit').click(function () {
+            rueIds = $('#quartier_rue_tokenfield').tokenfield('getTokensList', '|');
+            $('#quartier_rue_rueids').val(rueIds);
+        });
+
+    </script>
+{% endblock %}

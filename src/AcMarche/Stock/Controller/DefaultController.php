@@ -20,6 +20,6 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('stock/default/index.html.twig');
+        return $this->render('@AcMarcheStock/default/index.html.twig');
     }
 }

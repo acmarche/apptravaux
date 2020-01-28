@@ -30,7 +30,7 @@ class DateNettoyageController extends AbstractController
      */
     public function show(DateNettoyage $date)
     {
-        return $this->render('avaloir/date_nettoyage/show.html.twig', array(
+        return $this->render('@AcMarcheAvaloir/date_nettoyage/show.html.twig', array(
             'entity' => $date,
         ));
     }
@@ -71,7 +71,7 @@ class DateNettoyageController extends AbstractController
             return $this->redirect($this->generateUrl('avaloir_show', array('id' => $avaloir->getId())));
         }
 
-        return $this->render('avaloir/date_nettoyage/new.html.twig', array(
+        return $this->render('@AcMarcheAvaloir/date_nettoyage/new.html.twig', array(
             'entity' => $dateNettoyage,
             'form' => $form->createView(),
         ));
@@ -138,7 +138,7 @@ class DateNettoyageController extends AbstractController
             return $this->redirect($this->generateUrl('quartier_show', array('id' => $quartier->getId())));
         }
 
-        return $this->render('avaloir/date_nettoyage/nettoyage_quartier_new.html.twig', array(
+        return $this->render('@AcMarcheAvaloir/date_nettoyage/nettoyage_quartier_new.html.twig', array(
             'entity' => $entity,
             'quartier' => $quartier,
             'form' => $form->createView(),

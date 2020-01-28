@@ -1,0 +1,86 @@
+{% extends '@AcMarcheAvaloir/layout_avaloir.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/acmarchetravaux/jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/acmarchetravaux/css/typeahead.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body -%}
+
+    <div class="page-header">
+        <h3>Nouvel avaloir</h3>
+    </div>
+
+    <div class="card bg-light">
+        <div class="card-header">
+
+            {{ form_start(form, { 'attr': {'class': 'well'} }) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.rue) }}
+            {{ form_row(form.numero) }}
+            {% for dateField in form.dates %}
+                {{ form_errors(dateField) }}
+                {{ form_widget(dateField) }}
+            {% endfor %}
+            {{ form_row(form.descriptif) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        //set hidden field
+        function gotoRue(obj, data) {
+            $('#avaloir_rueId').val(data.value);
+        }
+
+        function initTypeahead() {
+            var rues = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.label);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '{{ path('rue_autocomplete') }}/%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            var options = {
+                hint: true,
+                highlight: true,
+                minLength: 2
+            };
+
+            var dataSet = {
+                display: 'label',
+                limit: 10,
+                source: rues,
+                templates: {
+                    suggestion: function (data) {
+                        return '<p>' + data.label + ' (' + data.village + ')</p>';
+                    }
+                }
+            };
+
+
+            $('.typeahead').typeahead(options, dataSet)
+                .bind('typeahead:selected', function (obj, data) {
+                    gotoRue(obj, data);
+                })
+                .bind('typeahead:autocompleted', function (obj, data) {
+                    gotoRue(obj, data);
+                });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initTypeahead();
+        });
+    </script>
+
+{% endblock %}

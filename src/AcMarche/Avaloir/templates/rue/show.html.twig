@@ -1,0 +1,19 @@
+{% extends '@AcMarcheAvaloir/layout_avaloir.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>
+            Détail de la rue <strong>{{ entity }}</strong>
+            {% if entity.quartier %}
+                dans le quartier <strong>{{ entity.quartier }}</strong>
+            {% endif %}
+
+        </h3>
+    </div>
+
+    {% include '@AcMarcheAvaloir/rue/actions.html.twig' %}
+
+    {% include '@AcMarcheAvaloir/rue/avaloirs.html.twig' with {'avaloirs': entity.avaloirs } %}
+
+    {% include '@AcMarcheAvaloir/rue/delete.html.twig' %}
+{% endblock %}

@@ -24,7 +24,6 @@ class NettoyageQuartierType extends AbstractType
                 array(
                     'widget' => 'single_text',
                     'label' => 'Date de nettoyage',
-                    'format' => 'dd/MM/yyyy',
                     'required' => true,
                     'attr' => array( 'autocomplete' => 'off'),
                 )

@@ -68,13 +68,12 @@ class ProduitController extends AbstractController
         $produits = $produitRepository->search($data);
 
         return $this->render(
-            'stock/produit/index.html.twig',
+            '@AcMarcheStock/produit/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
                 'produits' => $produits,
             )
         );
-
     }
 
     /**
@@ -96,7 +95,7 @@ class ProduitController extends AbstractController
         }
 
         return $this->render(
-            'stock/produit/new.html.twig',
+            '@AcMarcheStock/produit/new.html.twig',
             [
                 'produit' => $produit,
                 'form' => $form->createView(),
@@ -110,7 +109,7 @@ class ProduitController extends AbstractController
     public function show(Produit $produit): Response
     {
         return $this->render(
-            'stock/produit/show.html.twig',
+            '@AcMarcheStock/produit/show.html.twig',
             [
                 'produit' => $produit,
             ]
@@ -126,7 +125,6 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->logger->log($produit, $form->getData()->getQuantite());
 
             $this->getDoctrine()->getManager()->flush();
@@ -142,7 +140,7 @@ class ProduitController extends AbstractController
         }
 
         return $this->render(
-            'stock/produit/edit.html.twig',
+            '@AcMarcheStock/produit/edit.html.twig',
             [
                 'produit' => $produit,
                 'form' => $form->createView(),
@@ -155,7 +153,7 @@ class ProduitController extends AbstractController
      */
     public function delete(Request $request, Produit $produit): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$produit->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($produit);
             $entityManager->flush();
