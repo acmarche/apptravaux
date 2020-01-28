@@ -2,17 +2,22 @@
 
 namespace AcMarche\Avaloir\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\AvaloirRepository")
  * @ORM\Table(name="avaloir")
  *
  */
-class Avaloir
+class Avaloir implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -50,22 +55,15 @@ class Avaloir
     protected $date_rappel;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created", type="datetime")
-     */
-    private $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updated;
-
-    /**
      * Utilise pour l'ajout d'un avoloir (ajax)
      * @var
      */
     private $rueId;
+
+    public function __construct()
+    {
+        $this->dates = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -88,156 +86,53 @@ class Avaloir
         return $this->rue . " " . $this->numero;
     }
 
-    /**
-     * STOP
-     */
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->dates = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set descriptif
-     *
-     * @param string $descriptif
-     *
-     * @return Avaloir
-     */
-    public function setDescriptif($descriptif)
+    public function getDescriptif(): ?string
+    {
+        return $this->descriptif;
+    }
+
+    public function setDescriptif(?string $descriptif): self
     {
         $this->descriptif = $descriptif;
 
         return $this;
     }
 
-    /**
-     * Get descriptif
-     *
-     * @return string
-     */
-    public function getDescriptif()
+    public function getNumero(): ?string
     {
-        return $this->descriptif;
+        return $this->numero;
     }
 
-    /**
-     * Set numero
-     *
-     * @param string $numero
-     *
-     * @return Avaloir
-     */
-    public function setNumero($numero)
+    public function setNumero(?string $numero): self
     {
         $this->numero = $numero;
 
         return $this;
     }
 
-    /**
-     * Get numero
-     *
-     * @return string
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
-     * Set dateRappel
-     *
-     * @param \DateTime $dateRappel
-     *
-     * @return Avaloir
-     */
-    public function setDateRappel($dateRappel)
-    {
-        $this->date_rappel = $dateRappel;
-
-        return $this;
-    }
-
-    /**
-     * Get dateRappel
-     *
-     * @return \DateTime
-     */
-    public function getDateRappel()
+    public function getDateRappel(): ?\DateTimeInterface
     {
         return $this->date_rappel;
     }
 
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return Avaloir
-     */
-    public function setCreated($created)
+    public function setDateRappel(?\DateTimeInterface $date_rappel): self
     {
-        $this->created = $created;
+        $this->date_rappel = $date_rappel;
 
         return $this;
     }
 
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
+    public function getRue(): ?Rue
     {
-        return $this->created;
+        return $this->rue;
     }
 
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Avaloir
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set rue
-     *
-     * @param \AcMarche\Avaloir\Entity\Rue $rue
-     *
-     * @return Avaloir
-     */
-    public function setRue(\AcMarche\Avaloir\Entity\Rue $rue)
+    public function setRue(?Rue $rue): self
     {
         $this->rue = $rue;
 
@@ -245,46 +140,38 @@ class Avaloir
     }
 
     /**
-     * Get rue
-     *
-     * @return \AcMarche\Avaloir\Entity\Rue
+     * @return Collection|DateNettoyage[]
      */
-    public function getRue()
+    public function getDates(): Collection
     {
-        return $this->rue;
+        return $this->dates;
     }
 
-    /**
-     * Add date
-     *
-     * @param \AcMarche\Avaloir\Entity\DateNettoyage $date
-     *
-     * @return Avaloir
-     */
-    public function addDate(\AcMarche\Avaloir\Entity\DateNettoyage $date)
+    public function addDate(DateNettoyage $date): self
     {
-        $this->dates[] = $date;
+        if (!$this->dates->contains($date)) {
+            $this->dates[] = $date;
+            $date->setAvaloir($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDate(DateNettoyage $date): self
+    {
+        if ($this->dates->contains($date)) {
+            $this->dates->removeElement($date);
+            // set the owning side to null (unless already changed)
+            if ($date->getAvaloir() === $this) {
+                $date->setAvaloir(null);
+            }
+        }
 
         return $this;
     }
 
     /**
-     * Remove date
-     *
-     * @param \AcMarche\Avaloir\Entity\DateNettoyage $date
+     * STOP
      */
-    public function removeDate(\AcMarche\Avaloir\Entity\DateNettoyage $date)
-    {
-        $this->dates->removeElement($date);
-    }
 
-    /**
-     * Get dates
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDates()
-    {
-        return $this->dates;
-    }
 }

@@ -2,9 +2,10 @@
 
 namespace AcMarche\Avaloir\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\RueRepository")
@@ -14,7 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 class Rue
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -52,89 +52,51 @@ class Rue
      */
     private $quartier;
 
+    public function __construct()
+    {
+        $this->avaloirs = new ArrayCollection();
+    }
+
     public function __toString()
     {
         return $this->nom;
     }
 
-    /**
-     * STOP
-     */
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->avaloirs = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set nom
-     *
-     * @param string $nom
-     *
-     * @return Rue
-     */
-    public function setNom($nom)
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
 
-    /**
-     * Get nom
-     *
-     * @return string
-     */
-    public function getNom()
+    public function getCode(): ?int
     {
-        return $this->nom;
+        return $this->code;
     }
 
-    /**
-     * Set code
-     *
-     * @param integer $code
-     *
-     * @return Rue
-     */
-    public function setCode($code)
+    public function setCode(?int $code): self
     {
         $this->code = $code;
 
         return $this;
     }
 
-    /**
-     * Get code
-     *
-     * @return integer
-     */
-    public function getCode()
+    public function getVillage(): ?Village
     {
-        return $this->code;
+        return $this->village;
     }
 
-    /**
-     * Set village
-     *
-     * @param \AcMarche\Avaloir\Entity\Village $village
-     *
-     * @return Rue
-     */
-    public function setVillage(\AcMarche\Avaloir\Entity\Village $village = null)
+    public function setVillage(?Village $village): self
     {
         $this->village = $village;
 
@@ -142,57 +104,42 @@ class Rue
     }
 
     /**
-     * Get village
-     *
-     * @return \AcMarche\Avaloir\Entity\Village
+     * @return Collection|Avaloir[]
      */
-    public function getVillage()
-    {
-        return $this->village;
-    }
-
-    /**
-     * Add avaloir
-     *
-     * @param \AcMarche\Avaloir\Entity\Avaloir $avaloir
-     *
-     * @return Rue
-     */
-    public function addAvaloir(\AcMarche\Avaloir\Entity\Avaloir $avaloir)
-    {
-        $this->avaloirs[] = $avaloir;
-
-        return $this;
-    }
-
-    /**
-     * Remove avaloir
-     *
-     * @param \AcMarche\Avaloir\Entity\Avaloir $avaloir
-     */
-    public function removeAvaloir(\AcMarche\Avaloir\Entity\Avaloir $avaloir)
-    {
-        $this->avaloirs->removeElement($avaloir);
-    }
-
-    /**
-     * Get avaloirs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAvaloirs()
+    public function getAvaloirs(): Collection
     {
         return $this->avaloirs;
     }
 
-    /**
-     * Set quartier
-     *
-     * @param \AcMarche\Avaloir\Entity\Quartier $quartier
-     *
-     * @return Rue
-     */
-    public function setQuartier(\AcMarche\Avaloir\Entity\Quartier $quartier = null)
+    public function addAvaloir(Avaloir $avaloir): self
+    {
+        if (!$this->avaloirs->contains($avaloir)) {
+            $this->avaloirs[] = $avaloir;
+            $avaloir->setRue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvaloir(Avaloir $avaloir): self
+    {
+        if ($this->avaloirs->contains($avaloir)) {
+            $this->avaloirs->removeElement($avaloir);
+            // set the owning side to null (unless already changed)
+            if ($avaloir->getRue() === $this) {
+                $avaloir->setRue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuartier(): ?Quartier
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?Quartier $quartier): self
     {
         $this->quartier = $quartier;
 
@@ -200,12 +147,7 @@ class Rue
     }
 
     /**
-     * Get quartier
-     *
-     * @return \AcMarche\Avaloir\Entity\Quartier
+     * STOP
      */
-    public function getQuartier()
-    {
-        return $this->quartier;
-    }
+
 }

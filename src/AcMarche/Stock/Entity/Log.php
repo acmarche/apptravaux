@@ -3,14 +3,15 @@
 namespace AcMarche\Stock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Stock\Repository\LogRepository")
  */
-class Log
+class Log implements TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @ORM\Id()
@@ -71,4 +72,5 @@ class Log
 
         return $this;
     }
+
 }

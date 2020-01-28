@@ -1,0 +1,41 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'fr'
+    ac_marche_travaux.upload.directory: "%kernel.project_dir%/public/files"
+    ac_marche_travaux.download.directory: "/files"
+    router.request_context.host: '%env(APP_URL)%'
+    router.request_context.scheme: http
+    ac_marche_avaloir_destinataire: '%env(AVALOIR_EMAIL)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    AcMarche\Travaux\:
+        resource: '../src/*'
+            # you can exclude directories or files
+            # but if a service is unused, it's removed anyway
+        exclude: '../src/{Entity,Tests}'
+
+    AcMarche\Avaloir\:
+        resource: '../../Avaloir'
+        exclude: '../../Avaloir/{Entity,Migrations,Tests,Kernel.php}'
+
+    AcMarche\Stock\:
+        resource: '../../Stock'
+        exclude: '../../Stock/{Entity,Migrations,Tests,Kernel.php}'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    AcMarche\Travaux\Security\StaffLdap:
+        $host: '%env(ACLDAP_URL)%'
+        $dn: '%env(ACLDAP_DN)%'
+        $user: '%env(ACLDAP_USER)%'
+        $password: '%env(ACLDAP_PASSWORD)%'

@@ -1,5 +1,5 @@
 controllers:
-    resource: ../../src/AcMarche/Travaux/Controller/
+    resource: ../../src/AcMarche/Travaux/src/Controller/
     type: annotation
 
 acmarche_avaloir:
@@ -14,7 +14,3 @@ acmarche_stock:
     resource: '../../src/AcMarche/Stock/Controller/'
     type:     annotation
     prefix: stock/
-
-app_logout:
-    path: /logout
-    methods: GET

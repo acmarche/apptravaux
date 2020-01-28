@@ -3,11 +3,13 @@
 namespace AcMarche\Avaloir\Command;
 
 use AcMarche\Avaloir\Repository\AvaloirRepository;
-use AcMarche\Travaux\Service\Mailer;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class RappelCommand extends Command
 {
@@ -20,22 +22,16 @@ class RappelCommand extends Command
      * @var ParameterBagInterface
      */
     private $parameterBag;
-    /**
-     * @var \Twig_Environment
-     */
-    private $twigEnvironment;
 
     private function __construct(
-        Mailer $mailer,
+        MailerInterface $mailer,
         AvaloirRepository $avaloirRepository,
-        ParameterBagInterface $parameterBag,
-        \Twig_Environment $twigEnvironment
+        ParameterBagInterface $parameterBag
     ) {
         $this->mailer = $mailer;
         parent::__construct();
         $this->avaloirRepository = $avaloirRepository;
         $this->parameterBag = $parameterBag;
-        $this->twigEnvironment = $twigEnvironment;
     }
 
     protected function configure()
@@ -47,25 +43,28 @@ class RappelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $destinataire = $this->parameterBag->get('ac_marche_avaloir_destinataire');
 
         $avaloirs = $this->avaloirRepository->findBy(['date_rappel' => new \DateTime()]);
 
         if ($avaloirs) {
-            $body = $this->twigEnvironment->render(
-                'email/rappel.txt.twig',
-                array(
-                    'avaloirs' => $avaloirs,
-                )
-            );
+            $mail = (new TemplatedEmail())
+                ->subject("Rappel avaloir")
+                ->from($destinataire)
+                ->to($destinataire)
+                ->textTemplate('email/rappel.txt.twig')
+                ->context(
+                    array(
+                        'avaloirs' => $avaloirs,
+                    )
+                );
 
-            $this->mailer->send(
-                $destinataire,
-                $destinataire,
-                "Rappel avaloir",
-                $body
-            );
+            try {
+                $this->mailer->send($mail);
+            } catch (TransportExceptionInterface $e) {
+                $output->writeln('error mail' . $e->getMessage());
+            }
         }
+        return 0;
     }
 }

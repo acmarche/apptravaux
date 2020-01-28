@@ -3,17 +3,18 @@
 namespace AcMarche\Avaloir\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\DateNettoyageRepository")
  * @ORM\Table(name="dates")
  *
  */
-
-class DateNettoyage
+class DateNettoyage implements TimestampableInterface
 {
+    use TimestampableTrait;
 
     /**
      * @ORM\Id
@@ -62,50 +63,29 @@ class DateNettoyage
         $this->quartier = $quartier;
     }
 
-    /**
-     * STOP
-     */
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set jour
-     *
-     * @param \DateTime $jour
-     * @return DateNettoyage
-     */
-    public function setJour($jour)
+    public function getJour(): ?\DateTimeInterface
+    {
+        return $this->jour;
+    }
+
+    public function setJour(\DateTimeInterface $jour): self
     {
         $this->jour = $jour;
 
         return $this;
     }
 
-    /**
-     * Get jour
-     *
-     * @return \DateTime
-     */
-    public function getJour()
+    public function getAvaloir(): ?Avaloir
     {
-        return $this->jour;
+        return $this->avaloir;
     }
 
-    /**
-     * Set avaloir
-     *
-     * @param string $avaloir
-     * @return DateNettoyage
-     */
-    public function setAvaloir($avaloir)
+    public function setAvaloir(?Avaloir $avaloir): self
     {
         $this->avaloir = $avaloir;
 
@@ -113,12 +93,7 @@ class DateNettoyage
     }
 
     /**
-     * Get avaloir
-     *
-     * @return string
+     * STOP
      */
-    public function getAvaloir()
-    {
-        return $this->avaloir;
-    }
+
 }

@@ -64,6 +64,18 @@ class Produit
         return $this;
     }
 
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -72,18 +84,6 @@ class Produit
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
 
         return $this;
     }
@@ -100,15 +100,16 @@ class Produit
         return $this;
     }
 
-    public function getReference(): ?string
+    public function getCategorie(): ?Categorie
     {
-        return $this->reference;
+        return $this->categorie;
     }
 
-    public function setReference(?string $reference): self
+    public function setCategorie(?Categorie $categorie): self
     {
-        $this->reference = $reference;
+        $this->categorie = $categorie;
 
         return $this;
     }
+
 }

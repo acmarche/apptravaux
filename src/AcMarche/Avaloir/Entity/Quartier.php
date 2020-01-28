@@ -2,9 +2,10 @@
 
 namespace AcMarche\Avaloir\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\QuartierRepository")
@@ -14,19 +15,12 @@ use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
 
 class Quartier
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @Gedmo\Slug(fields={"nom"}, updatable=true)
-     * @ORM\Column(length=70, unique=true)
-     */
-    private $slugname;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -40,6 +34,9 @@ class Quartier
      *
      */
     private $rues;
+    /**
+     * @var ArrayCollection
+     */
     private $rueids;
 
     public function __toString()
@@ -52,8 +49,8 @@ class Quartier
      */
     public function __construct()
     {
-        $this->rues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->rueids = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rues = new ArrayCollection();
+        $this->rueids = new ArrayCollection();
     }
 
     public function setRueIds($rues)
@@ -68,50 +65,17 @@ class Quartier
         return $this->rueids;
     }
 
-    /**
-     * STOP
-     */
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set slugname
-     *
-     * @param string $slugname
-     * @return Quartier
-     */
-    public function setSlugname($slugname)
+    public function getNom(): ?string
     {
-        $this->slugname = $slugname;
-
-        return $this;
+        return $this->nom;
     }
 
-    /**
-     * Get slugname
-     *
-     * @return string
-     */
-    public function getSlugname()
-    {
-        return $this->slugname;
-    }
-
-    /**
-     * Set nom
-     *
-     * @param string $nom
-     * @return Quartier
-     */
-    public function setNom($nom)
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -119,45 +83,38 @@ class Quartier
     }
 
     /**
-     * Get nom
-     *
-     * @return string
+     * @return Collection|Rue[]
      */
-    public function getNom()
+    public function getRues(): Collection
     {
-        return $this->nom;
+        return $this->rues;
     }
 
-    /**
-     * Add rues
-     *
-     * @param \AcMarche\Avaloir\Entity\Rue $rues
-     * @return Quartier
-     */
-    public function addRue(\AcMarche\Avaloir\Entity\Rue $rues)
+    public function addRue(Rue $rue): self
     {
-        $this->rues[] = $rues;
+        if (!$this->rues->contains($rue)) {
+            $this->rues[] = $rue;
+            $rue->setQuartier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRue(Rue $rue): self
+    {
+        if ($this->rues->contains($rue)) {
+            $this->rues->removeElement($rue);
+            // set the owning side to null (unless already changed)
+            if ($rue->getQuartier() === $this) {
+                $rue->setQuartier(null);
+            }
+        }
 
         return $this;
     }
 
     /**
-     * Remove rues
-     *
-     * @param \AcMarche\Avaloir\Entity\Rue $rues
+     * STOP
      */
-    public function removeRue(\AcMarche\Avaloir\Entity\Rue $rues)
-    {
-        $this->rues->removeElement($rues);
-    }
 
-    /**
-     * Get rues
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRues()
-    {
-        return $this->rues;
-    }
 }

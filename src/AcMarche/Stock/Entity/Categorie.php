@@ -34,14 +34,14 @@ class Categorie
      */
     private $produits;
 
-    public function __toString()
-    {
-        return $this->nom;
-    }
-
     public function __construct()
     {
         $this->produits = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->nom;
     }
 
     public function getId(): ?int
@@ -81,29 +81,6 @@ class Categorie
         return $this->produits;
     }
 
-    public function addQuantite(Produit $quantite): self
-    {
-        if (!$this->produits->contains($quantite)) {
-            $this->produits[] = $quantite;
-            $quantite->setCategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuantite(Produit $quantite): self
-    {
-        if ($this->produits->contains($quantite)) {
-            $this->produits->removeElement($quantite);
-            // set the owning side to null (unless already changed)
-            if ($quantite->getCategorie() === $this) {
-                $quantite->setCategorie(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function addProduit(Produit $produit): self
     {
         if (!$this->produits->contains($produit)) {
@@ -126,4 +103,5 @@ class Categorie
 
         return $this;
     }
+
 }
