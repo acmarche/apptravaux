@@ -1,8 +1,8 @@
-{% extends '@AcMarcheTravaux/layout.html.twig' %}
+{% extends '@AcMarcheTravaux/travaux/layout.html.twig' %}
 
 {% block body -%}
 
-    {% include 'travaux/intervention/actions.html.twig' with {'intervention': intervention } %}
+    {% include '@AcMarcheTravaux/travaux/intervention/actions.html.twig' with {'intervention': intervention } %}
 
     {% if workflow_can(intervention, 'auteur_accept') %}
         <p class="text-warning">Cette intervention doit être validée par un auteur</p>
@@ -26,13 +26,13 @@
         {% endif %}
     {% endif %}
 
-    {% include 'travaux/intervention/panel.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/intervention/panel.html.twig' %}
 
-    {% include 'travaux/intervention/documents.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/intervention/documents.html.twig' %}
 
-    {% include 'travaux/intervention/suivis.html.twig' with {'form': delete_form_suivis } %}
+    {% include '@AcMarcheTravaux/travaux/intervention/suivis.html.twig' with {'form': delete_form_suivis } %}
 
-    {% include 'travaux/intervention/modal_archiver.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/intervention/modal_archiver.html.twig' %}
 
-    {% include 'travaux/intervention/delete.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/intervention/delete.html.twig' %}
 {% endblock %}

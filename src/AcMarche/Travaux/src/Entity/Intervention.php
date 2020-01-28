@@ -174,7 +174,7 @@ class Intervention implements TimestampableInterface
 
     /**
      * This property is used by the marking store
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     public $currentPlace;
 
@@ -183,20 +183,23 @@ class Intervention implements TimestampableInterface
         return $this->intitule;
     }
 
+    /**
+     * @var Suivi|null
+     */
     protected $lastSuivi;
 
     /**
-     * @return mixed
+     * @return Suivi
      */
-    public function getLastSuivi()
+    public function getLastSuivi() : ?Suivi
     {
         return $this->lastSuivi;
     }
 
     /**
-     * @param mixed $lastSuivis
+     * @param Suivi $lastSuivis
      */
-    public function setLastSuivi(Suivi $lastSuivi)
+    public function setLastSuivi(?Suivi $lastSuivi)
     {
         $this->lastSuivi = $lastSuivi;
     }
@@ -420,12 +423,12 @@ class Intervention implements TimestampableInterface
         return $this;
     }
 
-    public function getCurrentPlace(): ?array
+    public function getCurrentPlace(): ?string
     {
         return $this->currentPlace;
     }
 
-    public function setCurrentPlace(?array $currentPlace): self
+    public function setCurrentPlace(?string $currentPlace): self
     {
         $this->currentPlace = $currentPlace;
 
@@ -566,8 +569,5 @@ class Intervention implements TimestampableInterface
         return $this;
     }
 
-    /***
-     * STOP
-     */
 
 }

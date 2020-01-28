@@ -101,9 +101,4 @@ class Suivi implements TimestampableInterface
 
         return $this;
     }
-
-    /**
-     * STOP
-     */
-
 }

@@ -40,7 +40,7 @@ class ArchiveController extends AbstractController
         $user = $this->getUser();
         $data['user'] = $user;
         $data['archive'] = 1; //force archive
-        $data['sort'] = 'created';
+        $data['sort'] = 'createdAt';
 
         /**
          * dans le repository je perds les roles ??
@@ -125,7 +125,7 @@ class ArchiveController extends AbstractController
                 $intervention->setArchive(false);
             } else {
                 $intervention->setArchive(true);
-                $intervention->setCurrentPlace(['published' => 1]);//force
+                $intervention->setCurrentPlace('published');//force
                 $dispatcher->dispatch(InterventionEvent::INTERVENTION_ARCHIVE, $event);
             }
 

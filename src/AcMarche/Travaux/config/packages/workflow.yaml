@@ -5,11 +5,11 @@ framework:
             audit_trail:
                 enabled: true
             marking_store:
-                type: 'multiple_state'
-                arguments: 'currentPlace'
+                type: 'method'
+                property: 'currentPlace'
             supports:
                 - AcMarche\Travaux\Entity\Intervention
-            initial_marking: draft
+            initial_marking: auteur_checking
             places:
                 -  auteur_checking
                 -  redacteur
@@ -33,7 +33,5 @@ framework:
                     from: admin_checking
                     to:   published
                 reject:
-                    from:
-                      - auteur_checking
-                      - admin_checking
+                    from: auteur_checking
                     to:   deleted

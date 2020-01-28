@@ -1,11 +1,5 @@
 {% extends "bootstrap_4_layout.html.twig" %}
 
-{% block form %}
-    {{ form_start(form, { 'attr': {'class': 'well'} }) }}
-    {{ form_widget(form) -}}
-    {{ form_end(form) }}
-{% endblock form %}
-
 {% block button_widget -%}
     {% set attr = attr|merge({class: (attr.class|default('btn-primary'))|trim}) %}
     {{- parent() -}}

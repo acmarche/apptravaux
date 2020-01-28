@@ -22,7 +22,6 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.yaml');
-        $loader->load('workflow.yaml');
     }
 
     /**
@@ -45,6 +44,10 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
                     case 'liip_imagine':
                         $this->loadConfig($container, 'liip_imagine');
                         break;
+                    case 'framework':
+                        $this->loadConfig($container, 'workflow');
+                        $this->loadConfig($container, 'translation');
+                        break;
                     case 'vich_uploader22':
                         $this->loadConfig($container, 'vich_uploader');
                         break;
@@ -61,7 +64,6 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
         $configs = $this->loadYamlFile($container);
 
         $configs->load($name . '.yaml');
-        //  $container->prependExtensionConfig('doctrine', $configs);
     }
 
     /**

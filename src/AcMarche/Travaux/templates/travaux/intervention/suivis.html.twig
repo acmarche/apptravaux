@@ -20,9 +20,9 @@
             </div>
 
             <div class="card-footer text-muted">
-                {{ 'Created' | trans }} {{ suivi.created|date('d-m-Y H:i:s') }} par {{ suivi.useradd }}
-                . {{ 'Updated' | trans }} {{ suivi.updated|date('d-m-Y H:i:s') }}
-                {% include 'travaux/intervention/actions_suvi.html.twig' %}
+                {{ 'Created' | trans }} {{ suivi.createdAt|date('d-m-Y H:i:s') }} par {{ suivi.useradd }}
+                . {{ 'Updated' | trans }} {{ suivi.updatedAt|date('d-m-Y H:i:s') }}
+                {% include '@AcMarcheTravaux/travaux/intervention/actions_suvi.html.twig' %}
             </div>
         </div>
     {% endfor %}

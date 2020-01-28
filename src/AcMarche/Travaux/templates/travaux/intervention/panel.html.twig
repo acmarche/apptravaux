@@ -1,8 +1,8 @@
 <div class="card bg-light mb-3">
     <div class="card-header">
-        {{ intervention }}
+        <h3>{{ intervention }}</h3>
         {% if intervention.etat == 'En attente' %}
-        <i class="float-right far fa-hourglass" title="{{ intervention.etat }}"></i>
+            <i class="float-right far fa-hourglass" title="{{ intervention.etat }}"></i>
         {% endif %}
     </div>
     <div class="card-body">
@@ -30,7 +30,7 @@
                             <i class="far fa-calendar-alt"></i> Demandé le:
                         </th>
                         <td>
-                            {{ intervention.created | date('d-m-Y') }}
+                            {{ intervention.createdAt | date('d-m-Y') }}
                         </td>
                     </tr>
                     <tr>
@@ -207,8 +207,8 @@
     {% if not pdf %}
         <div class="card-footer text-muted">
         <span class="text-muted">
-                {{ 'Created' | trans }} {{ intervention.created|date('d-m-Y H:i:s') }} par {{ intervention.useradd }}
-                . {{ 'Updated' | trans }} {{ intervention.updated|date('d-m-Y H:i:s') }}
+                {{ 'Created' | trans }} {{ intervention.createdAt|date('d-m-Y H:i:s') }} par {{ intervention.useradd }}
+                . {{ 'Updated' | trans }} {{ intervention.updatedAt|date('d-m-Y H:i:s') }}
             </span>
             {% if intervention.archive %}
                 <i class="float-right fas fa-archive" title="Archive"></i>

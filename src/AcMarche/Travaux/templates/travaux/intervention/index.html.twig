@@ -1,4 +1,4 @@
-{% extends '@AcMarcheTravaux/layout.html.twig' %}
+{% extends '@AcMarcheTravaux/travaux/layout.html.twig' %}
 {% block body %}
 
     <div class="page-header">
@@ -63,7 +63,7 @@
                     <td class="hidden-xs">{{ intervention.etat }}</td>
                     <td class="hidden-xs">
                         {% if intervention.transmis %}
-                          <i class="fas fa-check"></i>
+                            <i class="fas fa-check"></i>
                         {% endif %}
                     </td>
                     <td>{{ intervention.priorite }}</td>

@@ -1,11 +1,11 @@
-{% extends '@AcMarcheTravaux/layout.html.twig' %}
+{% extends '@AcMarcheTravaux/travaux/layout.html.twig' %}
 
 {% block body %}
     <div class="page-header">
         <h3>Archive des interventions ({{ entities | length }})</h3>
     </div>
 
-    {% include 'travaux/search/intervention.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/search/intervention.html.twig' %}
 
     {% if entities | length > 0 %}
 

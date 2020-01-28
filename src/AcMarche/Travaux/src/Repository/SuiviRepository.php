@@ -46,7 +46,7 @@ class SuiviRepository extends ServiceEntityRepository
         if ($sort) {
             $qb->addOrderBy('suivi.'.$sort, 'DESC');
         } else {
-            $qb->addOrderBy('suivi.created', 'DESC');
+            $qb->addOrderBy('suivi.createdAt', 'DESC');
         }
 
         $qb->addOrderBy('suivi.id', 'ASC');
@@ -71,6 +71,7 @@ class SuiviRepository extends ServiceEntityRepository
     /**
      * @param Intervention $intervention
      * @return Suivi|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getLastSuivi(Intervention $intervention)
     {
