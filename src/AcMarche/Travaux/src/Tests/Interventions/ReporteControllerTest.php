@@ -23,7 +23,7 @@ class ReporteControllerTest extends BaseUnit
 
         $form['intervention[intitule]'] = 'Intervention a faire plus tard';
         $form['intervention[descriptif]'] = 'En été fait meilleur';
-        $form['intervention[date_execution]'] = $today->format('d/m/Y');
+        $form['intervention[date_execution]'] = $today->format('Y-m-d');
 
         $option = $crawler->filter('#intervention_batiment option:contains("Eglises")');
 
@@ -32,7 +32,7 @@ class ReporteControllerTest extends BaseUnit
 
         $form['intervention[batiment]']->select($value);
 
-        $crawler = $this->admin->submit($form);
+        $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
         $this->assertGreaterThan(0, $crawler->filter('div:contains("Intervention a faire plus tard")')->count());
@@ -63,14 +63,14 @@ class ReporteControllerTest extends BaseUnit
         $today->modify('-3 day');
 
         $form = $crawler->selectButton('Mettre à jour')->form(array());
-        $form['intervention[date_execution]'] = $today->format('d/m/Y');
+        $form['intervention[date_execution]'] = $today->format('Y-m-d');
 
         $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
         $dateString = $today->format('d-m-Y');
 
-        $this->assertEquals(1, $crawler->filter('td:contains("'.$dateString.'")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("' . $dateString . '")')->count());
 
         $crawler = $this->admin->request('GET', '/intervention/');
         $this->assertEquals(1, $crawler->filter('td:contains("Intervention a faire plus tard")')->count());

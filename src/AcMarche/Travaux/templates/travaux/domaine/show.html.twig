@@ -4,9 +4,9 @@
     <div class="page-header">
         <h3>Détail du bâtiment <strong>{{ entity.intitule }}</strong></h3>
     </div>
-        {% include 'travaux/domaine/actions.html.twig' %}
+        {% include '@AcMarcheTravaux/travaux/domaine/actions.html.twig' %}
 
-        {% include 'travaux/default/intervention.html.twig' with {'intervention': entity.intervention } %}
+        {% include '@AcMarcheTravaux/travaux/default/intervention.html.twig' with {'intervention': entity.intervention } %}
 
-    {% include 'travaux/domaine/delete.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/domaine/delete.html.twig' %}
 {% endblock %}

@@ -159,7 +159,7 @@ class InterventionController extends AbstractController
             $this->addFlash('success', 'L\'intervention a bien été crée.');
 
             $event = new InterventionEvent($intervention, null);
-            $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_NEW, $event);
+            $this->eventDispatcher->dispatch($event, InterventionEvent::INTERVENTION_NEW);
 
             return $this->redirectToRoute('intervention_show', array('id' => $intervention->getId()));
         }
@@ -244,7 +244,7 @@ class InterventionController extends AbstractController
      */
     public function delete(Request $request, Intervention $intervention): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$intervention->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $intervention->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             try {
                 $this->fileHelper->deleteAllDocs($intervention);
@@ -253,7 +253,7 @@ class InterventionController extends AbstractController
                 $em->flush();
                 $this->addFlash('success', 'L\'intervention a bien été supprimée.');
             } catch (IOException $exception) {
-                $this->addFlash("danger", "Erreur de la suppression des pièce jointes: ".$exception->getMessage());
+                $this->addFlash("danger", "Erreur de la suppression des pièce jointes: " . $exception->getMessage());
             }
         }
 

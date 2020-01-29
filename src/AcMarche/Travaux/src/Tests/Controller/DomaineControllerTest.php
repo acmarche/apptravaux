@@ -27,7 +27,8 @@ class DomaineControllerTest extends BaseUnit
 
     public function testEdit()
     {
-        $crawler = $this->admin->request('GET', '/domaine/eau');
+        $domaine = $this->getDomaine('Eau');
+        $crawler = $this->admin->request('GET', '/domaine/'.$domaine->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /domaine/eau");
 
         $this->assertGreaterThan(0, $crawler->filter('h3:contains("Eau")')->count(), 'Missing element h3:contains("Eau")');

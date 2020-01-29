@@ -6,7 +6,7 @@ class CategorieControllerTest extends BaseUnit
 {
     public function testIndex()
     {
-        $crawler = $this->admin->request('GET', '/categorie/');
+        $this->admin->request('GET', '/categorie/');
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /categorie/");
     }
 
@@ -27,7 +27,8 @@ class CategorieControllerTest extends BaseUnit
 
     public function testEdit()
     {
-        $crawler = $this->admin->request('GET', '/categorie/ma_cat');
+        $categorie = $this->getCategorie('Ma cat');
+        $crawler = $this->admin->request('GET', '/categorie/'.$categorie->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /categorie/ma_cat");
         //print_r($this->client->getResponse()->getContent());
         $this->assertGreaterThan(0, $crawler->filter('h3:contains("Ma cat")')->count(), 'Missing element h3:contains("Ma cat")');

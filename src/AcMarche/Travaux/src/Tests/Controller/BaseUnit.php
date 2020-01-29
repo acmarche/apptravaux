@@ -9,6 +9,10 @@
 namespace AcMarche\Travaux\Tests\Controller;
 
 use AcMarche\Travaux\Entity\Batiment;
+use AcMarche\Travaux\Entity\Categorie;
+use AcMarche\Travaux\Entity\Domaine;
+use AcMarche\Travaux\Entity\Intervention;
+use AcMarche\Travaux\Entity\Service;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -113,6 +117,33 @@ class BaseUnit extends WebTestCase
     {
         return $this->entityManager
             ->getRepository(Batiment::class)
+            ->findOneBy(['intitule' => $name]);
+    }
+
+    protected function getCategorie(string $name): ?Categorie
+    {
+        return $this->entityManager
+            ->getRepository(Categorie::class)
+            ->findOneBy(['intitule' => $name]);
+    }
+
+    protected function getService(string $name): ?Service
+    {
+        return $this->entityManager
+            ->getRepository(Service::class)
+            ->findOneBy(['intitule' => $name]);
+    }
+
+    protected function getDomaine(string $name): ?Domaine
+    {
+        return $this->entityManager
+            ->getRepository(Domaine::class)
+            ->findOneBy(['intitule' => $name]);
+    }
+    protected function getIntervention(string $name): ?Intervention
+    {
+        return $this->entityManager
+            ->getRepository(Intervention::class)
             ->findOneBy(['intitule' => $name]);
     }
 }

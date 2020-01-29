@@ -6,7 +6,6 @@ use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Event\InterventionEvent;
 use AcMarche\Travaux\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -70,13 +69,16 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject($sujet)
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/intervention.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
                 )
             );
+
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
 
         $this->mailer->send($mail);
     }
@@ -111,7 +113,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject('Une demande d\'intervention à valider')
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/new_validation.txt.twig')
             ->context(
                 array(
@@ -119,6 +120,9 @@ class Mailer
                 )
             );
 
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -139,16 +143,16 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject('Une demande d\'intervention à valider')
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/new_validation.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
-
     }
 
     /**
@@ -177,7 +181,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject($sujet)
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/result_validation.txt.twig')
             ->context(
                 array(
@@ -187,7 +190,9 @@ class Mailer
                     'dateExecution' => $dateExecution,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -217,7 +222,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_contributeur.txt.twig')
             ->context(
                 array(
@@ -225,7 +229,9 @@ class Mailer
                     'message' => $message,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -250,7 +256,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_auteur.txt.twig')
             ->context(
                 array(
@@ -258,7 +263,9 @@ class Mailer
                     'message' => $message,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -287,7 +294,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject("Besoin d'informations pour une intervention")
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/plus_info_redacteur.txt.twig')
             ->context(
                 array(
@@ -295,7 +301,9 @@ class Mailer
                     'message' => $message,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -320,14 +328,15 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject('Archivage de : ' . $intervention->getIntitule())
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/archive.txt.twig')
             ->context(
                 array(
                     'intervention' => $intervention,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 
@@ -352,7 +361,6 @@ class Mailer
         $mail = (new TemplatedEmail())
             ->subject('Ajout d\'un suivi pour : ' . $intervention->getIntitule())
             ->from($from)
-            ->to($destinataires)
             ->textTemplate('@AcMarcheTravaux/travaux/mail/suivis.txt.twig')
             ->context(
                 array(
@@ -360,7 +368,9 @@ class Mailer
                     'suivi' => $suivi,
                 )
             );
-
+        foreach ($destinataires as $destinataire) {
+            $mail->addTo($destinataire);
+        }
         $this->mailer->send($mail);
     }
 

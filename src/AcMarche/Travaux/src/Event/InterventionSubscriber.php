@@ -302,7 +302,7 @@ class InterventionSubscriber implements EventSubscriberInterface
     public function interventionSuivi(InterventionEvent $event)
     {
         $intervention = $event->getIntervention();
-        $intervention->setUpdated(new \DateTime());
+        $intervention->setUpdatedAt(new \DateTime());
         $this->interventionRepository->flush();
         try {
             $this->mailer->sendMailSuivi($event);

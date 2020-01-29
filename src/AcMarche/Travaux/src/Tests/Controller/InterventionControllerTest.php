@@ -29,8 +29,7 @@ class InterventionControllerTest extends BaseUnit
 
         $form['intervention[service]']->select($value);
 
-        // soumet le formulaire
-        $crawler = $this->admin->submit($form);
+        $this->admin->submit($form);
         $crawler = $this->admin->followRedirect();
 
         $this->assertGreaterThan(0, $crawler->filter('div:contains("Test de travail")')->count());

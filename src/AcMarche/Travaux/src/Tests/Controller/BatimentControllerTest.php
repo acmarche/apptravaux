@@ -6,7 +6,7 @@ class BatimentControllerTest extends BaseUnit
 {
     public function testIndex()
     {
-        $crawler = $this->admin->request('GET', '/batiment/');
+        $this->admin->request('GET', '/batiment/');
 
         $this->assertEquals(
             200,
@@ -16,7 +16,7 @@ class BatimentControllerTest extends BaseUnit
 
     public function testAdd()
     {
-        $crawler = $this->admin->request('GET', '/batiment/new');
+        $this->admin->request('GET', '/batiment/new');
         $this->assertEquals(
             200,
             $this->admin->getResponse()->getStatusCode()

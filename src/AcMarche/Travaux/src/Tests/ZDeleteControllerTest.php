@@ -6,7 +6,8 @@ class ZDeleteControllerTest extends BaseUnit
 {
     public function testDeleteBatiment()
     {
-        $crawler = $this->admin->request('GET', '/batiment/les-carmes');
+        $batiment = $this->getBatiment('Les Carmes');
+        $crawler = $this->admin->request('GET', '/batiment/'.$batiment->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
@@ -18,7 +19,8 @@ class ZDeleteControllerTest extends BaseUnit
 
     public function testDeleteDomaine()
     {
-        $crawler = $this->admin->request('GET', '/domaine/eaux');
+        $domaine = $this->getDomaine('Eaux');
+        $crawler = $this->admin->request('GET', '/domaine/'.$domaine->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
@@ -29,7 +31,8 @@ class ZDeleteControllerTest extends BaseUnit
 
     public function testDeleteService()
     {
-        $crawler = $this->admin->request('GET', '/service/carmes');
+        $service = $this->getService('Carmes');
+        $crawler = $this->admin->request('GET', '/service/'.$service->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());
@@ -40,7 +43,8 @@ class ZDeleteControllerTest extends BaseUnit
 
     public function testDeleteCategorie()
     {
-        $crawler = $this->admin->request('GET', '/categorie/ma_categorie');
+        $categorie = $this->getCategorie('Ma categorie');
+        $crawler = $this->admin->request('GET', '/categorie/'.$categorie->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode());
 
         $this->admin->submit($crawler->selectButton('Supprimer')->last()->form());

@@ -66,7 +66,10 @@ class ValidationController extends AbstractController
     {
         $interventions = $this->travauxUtils->getInterventionsEnAttentes();
 
-        return $this->render('@AcMarcheTravaux/travaux/validation/index.html.twig', array('entities' => $interventions));
+        return $this->render(
+            '@AcMarcheTravaux/travaux/validation/index.html.twig',
+            array('entities' => $interventions)
+        );
     }
 
     /**
@@ -82,7 +85,6 @@ class ValidationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
 
             $data = $form->getData();
@@ -101,7 +103,7 @@ class ValidationController extends AbstractController
                 if (isset($result['error'])) {
                     $this->addFlash("danger", $result['error']);
                 } else {
-                    $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_ACCEPT, $event);
+                    $this->eventDispatcher->dispatch($event, InterventionEvent::INTERVENTION_ACCEPT);
                 }
             }
 
@@ -110,7 +112,7 @@ class ValidationController extends AbstractController
                 if (isset($result['error'])) {
                     $this->addFlash("danger", $result['error']);
                 } else {
-                    $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_REJECT, $event);
+                    $this->eventDispatcher->dispatch($event, InterventionEvent::INTERVENTION_REJECT);
                 }
 
                 //redirect to list because intervention deleted
@@ -123,14 +125,13 @@ class ValidationController extends AbstractController
                     if (isset($result['error'])) {
                         $this->addFlash("danger", $result['error']);
                     } else {
-                        $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_INFO, $event);
+                        $this->eventDispatcher->dispatch($event, InterventionEvent::INTERVENTION_INFO);
                     }
                 }
             }
 
             if ($form->has('reporter')) {
                 if ($form->get('reporter')->isClicked()) {
-
                     if (!$dateExecution) {
                         $this->addFlash('danger', 'Veuillez indiquer une date d\'exécution');
 
@@ -141,7 +142,7 @@ class ValidationController extends AbstractController
                     if (isset($result['error'])) {
                         $this->addFlash("danger", $result['error']);
                     } else {
-                        $this->eventDispatcher->dispatch(InterventionEvent::INTERVENTION_REPORTER, $event);
+                        $this->eventDispatcher->dispatch($event, InterventionEvent::INTERVENTION_REPORTER);
                     }
                 }
             }

@@ -58,7 +58,7 @@ class SuiviController extends AbstractController
             $this->suiviService->newSuivi($intervention, $form->getData()->getDescriptif());
 
             $event = new InterventionEvent($intervention, null, $suivi);
-            $this->dispatcher->dispatch(InterventionEvent::INTERVENTION_SUIVI_NEW, $event);
+            $this->dispatcher->dispatch($event, InterventionEvent::INTERVENTION_SUIVI_NEW);
 
             $intervention = $suivi->getIntervention();
 
@@ -98,7 +98,7 @@ class SuiviController extends AbstractController
             $userAdd = $suivi->getUserAdd();
 
             if ($userAdd == $user->getUsername()) {
-                $intervention->setUpdated(new \DateTime());
+                $intervention->setUpdatedAt(new \DateTime());
                 $em->persist($intervention);
                 $em->flush();
                 $this->addFlash('success', 'Le suivi a bien été mis à jour.');

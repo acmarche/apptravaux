@@ -27,7 +27,8 @@ class HServiceControllerTest extends BaseUnit
 
     public function testEdit()
     {
-        $crawler = $this->admin->request('GET', '/service/crames');
+        $service = $this->getService('Crames');
+        $crawler = $this->admin->request('GET', '/service/'.$service->getId());
         $this->assertEquals(200, $this->admin->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /service/crames");
 
         $this->assertGreaterThan(0, $crawler->filter('h3:contains("Crames")')->count(), 'Missing element h3:contains("Crames")');

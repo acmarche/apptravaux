@@ -17,8 +17,8 @@ class DefaultControllerTest extends BaseUnit
         $form = $crawler->selectButton('Rechercher')->form(array(
             'search_intervention[intitule]' => 'parking',
             'search_intervention[id]' => 345,
-            'search_intervention[date_debut]' => $date->format('m-d-Y'),
-            'search_intervention[date_fin]' => $date->format('m-d-Y'),
+            'search_intervention[date_debut]' => $date->format('Y/m/d'),
+            'search_intervention[date_fin]' => $date->format('Y/m/d'),
         ));
 
         $priorite_option = $crawler->filter('#search_intervention_priorite option:contains("Normal")');

@@ -5,9 +5,9 @@
         <h3>Détail de la catégorie <strong>{{ entity.intitule }}</strong></h3>
     </div>
 
-    {% include 'travaux/categorie/actions.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/categorie/actions.html.twig' %}
 
-    {% include 'travaux/default/intervention.html.twig' with {'intervention': entity.intervention } %}
+    {% include '@AcMarcheTravaux/travaux/default/intervention.html.twig' with {'intervention': entity.intervention } %}
 
-    {% include 'travaux/categorie/delete.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/categorie/delete.html.twig' %}
 {% endblock %}

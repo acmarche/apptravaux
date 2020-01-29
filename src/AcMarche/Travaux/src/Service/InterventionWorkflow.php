@@ -11,10 +11,9 @@ namespace AcMarche\Travaux\Service;
 use AcMarche\Travaux\Entity\Intervention;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Workflow\Exception\LogicException;
+use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
-use Symfony\Component\Workflow\WorkflowInterface;
-use Symfony\Component\Workflow\Registry;
 
 class InterventionWorkflow
 {
@@ -51,7 +50,7 @@ class InterventionWorkflow
     {
         //si admin on passe toutes les etapes d'un coup
         if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_ADMIN')) {
-            return $intervention->setCurrentPlace(['published' => 1]);
+            return $intervention->setCurrentPlace('published');
         }
 
         /**
@@ -59,21 +58,21 @@ class InterventionWorkflow
          * demande une validation admin
          */
         if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_AUTEUR')) {
-            return $intervention->setCurrentPlace(['admin_checking' => 1]);
+            return $intervention->setCurrentPlace('admin_checking');
         }
 
         /**
          * si redacteur
          */
         if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_REDACTEUR')) {
-            return $intervention->setCurrentPlace(['admin_checking' => 1]);
+            return $intervention->setCurrentPlace('admin_checking');
         }
 
         /**
          * si contributeur
          */
         if ($this->authorizationChecker->isGranted('ROLE_TRAVAUX_CONTRIBUTEUR')) {
-            return $intervention->setCurrentPlace(['auteur_checking' => 1]);
+            return $intervention->setCurrentPlace('auteur_checking');
         }
 
         return $intervention;
