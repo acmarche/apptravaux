@@ -24,6 +24,7 @@
 /runtests.sh
 /config/services_dev.yaml
 /config/services_test.yaml
+/composer.lock
 ###< acmarche/travaux ###
 ###> liip/imagine-bundle ###
 /public/media/cache/
