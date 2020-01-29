@@ -121,15 +121,22 @@ class InterventionWorkflow
     public function applyRefuser(Intervention $intervention)
     {
         $this->workflow = $this->workflowRegistry->get($intervention);
-        if ($this->workflow->can($intervention, 'reject')) {
-            $transitions = ['reject'];
-            foreach ($transitions as $transition) {
-                $result = $this->applyTransition($intervention, $transition);
-                if (isset($result['error'])) {
-                    return $result;
-                }
-            }
 
+        if ($this->workflow->can($intervention, 'reject_from_auteur')) {
+            $transition = 'reject_from_auteur';
+            $result = $this->applyTransition($intervention, $transition);
+            if (isset($result['error'])) {
+                return $result;
+            }
+            return true;
+        }
+
+        if ($this->workflow->can($intervention, 'reject_from_admin')) {
+            $transition = 'reject_from_admin';
+            $result = $this->applyTransition($intervention, $transition);
+            if (isset($result['error'])) {
+                return $result;
+            }
             return true;
         }
 

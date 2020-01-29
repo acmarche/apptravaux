@@ -1,9 +1,5 @@
 {% extends '@AcMarcheTravaux/travaux/layout.html.twig' %}
 
-{% block stylesheets %}
-    <link href="{{ asset('jquery-ui/jquery-ui.min.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block body -%}
     <div class="page-header">
         <h3>Intervention <strong>{{ entity }}</strong> à traiter</h3>
@@ -27,11 +23,13 @@
 
         {% if form.plusinfo is defined %}
             <div class="col">
-                {{ form_row(form.plusinfo) }} </div>
+                {{ form_row(form.plusinfo) }}
+            </div>
         {% endif %}
 
         {% if form.reporter is defined %}
-            <div class="col">{{ form_row(form.reporter) }}</div>
+            <div class="col">{{ form_row(form.reporter) }}
+            </div>
         {% endif %}
 
         <div class="col">
@@ -41,8 +39,4 @@
 
     {{ form_end(form) }}
 
-{% endblock %}
-
-{% block scripts %}
-    {% include 'form/calendar.html.twig' %}
 {% endblock %}

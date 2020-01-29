@@ -32,6 +32,9 @@ framework:
                 publish:
                     from: admin_checking
                     to:   published
-                reject:
+                reject_from_auteur:
                     from: auteur_checking
+                    to:   deleted
+                reject_from_admin:
+                    from: admin_checking
                     to:   deleted
