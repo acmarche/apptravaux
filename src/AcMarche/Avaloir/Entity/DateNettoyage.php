@@ -73,7 +73,12 @@ class DateNettoyage implements TimestampableInterface
         return $this->jour;
     }
 
-    public function setJour(\DateTimeInterface $jour): self
+    /**
+     * Attention ajouter ?
+     * @param \DateTimeInterface|null $jour
+     * @return $this
+     */
+    public function setJour(?\DateTimeInterface $jour): self
     {
         $this->jour = $jour;
 

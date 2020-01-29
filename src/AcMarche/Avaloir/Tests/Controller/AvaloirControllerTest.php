@@ -28,7 +28,7 @@ class AvaloirControllerTest extends BaseUnit
 
         $form = $crawler->selectButton('Ajouter')->form(
             array(
-                'avaloir[dates][0][jour]' => '01/10/2015',
+                'avaloir[dates][0][jour]' => '2015-01-10',
                 'avaloir[numero]' => 999,
                 'avaloir[rue]' => $rue->getNom(),
                 'avaloir[rueId]' => $rue->getId(),

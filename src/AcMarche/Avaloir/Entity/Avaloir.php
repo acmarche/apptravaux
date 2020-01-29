@@ -170,8 +170,4 @@ class Avaloir implements TimestampableInterface
         return $this;
     }
 
-    /**
-     * STOP
-     */
-
 }

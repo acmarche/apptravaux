@@ -33,9 +33,11 @@
 
     <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto ml-auto">
-            {% block menu_top %}
-                {% include '@AcMarcheTravaux/travaux/_menu.html.twig' %}
-            {% endblock %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% block menu_top %}
+                    {% include '@AcMarcheTravaux/travaux/_menu.html.twig' %}
+                {% endblock %}
+            {% endif %}
         </ul>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <ul class="navbar-nav">

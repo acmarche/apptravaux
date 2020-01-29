@@ -104,7 +104,7 @@ class RvQuartierControllerTest extends BaseUnit
 
         $form = $crawler->selectButton('Ajouter')->form(
             array(
-                'avaloir[dates][0][jour]' => '09/06/2015',
+                'avaloir[dates][0][jour]' => '2015-06-09',
                 'avaloir[numero]' => 666,
                 'avaloir[rue]' => $rue->getNom(),
                 'avaloir[rueId]' => $rue->getId(),
@@ -129,7 +129,7 @@ class RvQuartierControllerTest extends BaseUnit
 
         $form = $crawler->selectButton('Ajouter')->form(
             array(
-                'nettoyage_quartier[jour]' => '06/11/2015',
+                'nettoyage_quartier[jour]' => '2015-11-06',
             )
         );
 

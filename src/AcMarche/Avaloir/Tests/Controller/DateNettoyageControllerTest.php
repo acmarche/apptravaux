@@ -16,7 +16,7 @@ class DateNettoyageControllerTest extends BaseUnit
 
         $form = $crawler->selectButton('Ajouter')->form(
             array(
-                'date_nettoyage[jour]' => '01/11/2015',
+                'date_nettoyage[jour]' => '2015-11-01',
             )
         );
 

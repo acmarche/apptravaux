@@ -9,13 +9,13 @@
 namespace AcMarche\Avaloir\Tests\Controller;
 
 use AcMarche\Avaloir\Entity\Rue;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Panther\Client;
 
 class BaseUnit extends WebTestCase
 {
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
     /**
@@ -25,6 +25,7 @@ class BaseUnit extends WebTestCase
 
     public function setUp()
     {
+        static::ensureKernelShutdown();
         $this->client = static::createClient(
             array(),
             array(
