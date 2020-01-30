@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -69,7 +70,6 @@ class UtilisateurController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $utilisateur->setPassword(
                 $this->passwordEncoder->encodePassword($utilisateur, $form->getData()->getPlainPassword())
             );
@@ -119,7 +119,6 @@ class UtilisateurController extends AbstractController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
             $this->userRepository->save();
             $this->addFlash("success", "L'utilisateur a bien été modifié");
 
@@ -171,13 +170,13 @@ class UtilisateurController extends AbstractController
      *
      * @Route("/{id}", name="actravaux_utilisateur_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user)
+    public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
-            $this->addFlash("success", "L'utilisateur a bien été supprimé");
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a été supprimé');
         }
 
         return $this->redirectToRoute('actravaux_utilisateur');
