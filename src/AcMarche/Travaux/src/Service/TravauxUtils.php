@@ -108,10 +108,10 @@ class TravauxUtils
         return $destinataires;
     }
 
-    public function getCategorieDefault(string $slugname)
+    public function getCategorieDefault(string $name)
     {
         return $this->em->getRepository(Categorie::class)->findOneBy(
-            ['id' => $slugname]
+            ['intitule' => $name]
         );
     }
 

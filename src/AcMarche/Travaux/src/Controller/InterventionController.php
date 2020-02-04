@@ -81,8 +81,8 @@ class InterventionController extends AbstractController
             $data = unserialize($this->session->get($key));
         }
 
-        if ($categorieIntervention = $this->travauxUtils->getCategorieDefault('intervention')) {
-            $data['categorie'] = $categorieIntervention->getId(); //intervention
+        if ($categorieIntervention = $this->travauxUtils->getCategorieDefault('Intervention')) {
+            $data['categorie'] = $categorieIntervention->getId();
         }
 
         $user = $this->getUser();

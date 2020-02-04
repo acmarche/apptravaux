@@ -114,7 +114,7 @@ class ArchiveController extends AbstractController
             throw $this->createAccessDeniedException('Vous n\'avez pas le droit d\'archiver');
         }
 
-        if ($this->isCsrfTokenValid('archive'.$intervention->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('archive' . $intervention->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
 
             $event = new InterventionEvent($intervention, null);
@@ -126,7 +126,7 @@ class ArchiveController extends AbstractController
             } else {
                 $intervention->setArchive(true);
                 $intervention->setCurrentPlace('published');//force
-                $dispatcher->dispatch(InterventionEvent::INTERVENTION_ARCHIVE, $event);
+                $dispatcher->dispatch($event, InterventionEvent::INTERVENTION_ARCHIVE);
             }
 
             $em->persist($intervention);
