@@ -142,11 +142,11 @@ class InterventionRepository extends ServiceEntityRepository
         }
 
         if ($id) {
-            $qb->andWhere("intervention.id IN ('$id') OR intervention.old_id IN ('$id')");
+            $qb->andWhere("intervention.id IN ('$id')");
         }
 
         if ($numero) {
-            $qb->andWhere("intervention.id = :num OR intervention.old_id = :num")
+            $qb->andWhere("intervention.id = :num ")
                 ->setParameter('num', $numero);
         }
 
