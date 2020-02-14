@@ -5,7 +5,7 @@
         <h3>Détail du document</h3>
     </div>
 
-    {% include 'travaux/document/actions.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/document/actions.html.twig' %}
 
     {% if 'image' in entity.mime %}
         <img src="{{ entity | apptravaux_download | imagine_filter('actravaux_zoom') }}"
@@ -16,5 +16,5 @@
     <i class="fas fa-download"></i>
     <a href="{{ absolute_url(entity | apptravaux_download ) }}">Télécharger</a>
 
-    {% include 'travaux/document/delete.html.twig' %}
+    {% include '@AcMarcheTravaux/travaux/document/delete.html.twig' %}
 {% endblock %}
