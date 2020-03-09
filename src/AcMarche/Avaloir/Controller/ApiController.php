@@ -62,6 +62,8 @@ class ApiController extends AbstractController
     public function update(Avaloir $avaloir, Request $request)
     {
         $data = $request->request->get('avaloir');
+        $data = $request->getContent();
+
 
         //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
         //$avaloir->setUpdatedAt($date);
