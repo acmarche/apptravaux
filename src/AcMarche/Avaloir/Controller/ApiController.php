@@ -8,6 +8,7 @@ use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -55,12 +56,12 @@ class ApiController extends AbstractController
     /**
      * @param Avaloir $avaloir
      * @param int $quantite
-     * @param string $data
      * @Route("/update/{id}")
      * @return JsonResponse
      */
-    public function update(Avaloir $avaloir, string $data)
+    public function update(Avaloir $avaloir, Request $request)
     {
+        $data = $request->request->get('avaloir');
 
         //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
         //$avaloir->setUpdatedAt($date);
