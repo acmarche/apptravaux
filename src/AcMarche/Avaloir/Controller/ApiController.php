@@ -49,7 +49,7 @@ class ApiController extends AbstractController
 
         $data = ['avaloirs' => $avaloirs];
 
-        return new JsonResponse($data);
+        return new JsonResponse($avaloirs);
     }
 
     /**
