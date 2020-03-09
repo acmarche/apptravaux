@@ -23,4 +23,9 @@ class AvaloirNewRepository extends ServiceEntityRepository
     {
         $this->_em->flush();
     }
+
+    public function persist(AvaloirNew $avaloir)
+    {
+        $this->_em->persist($avaloir);
+    }
 }

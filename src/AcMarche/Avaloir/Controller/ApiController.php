@@ -3,6 +3,7 @@
 namespace AcMarche\Avaloir\Controller;
 
 use AcMarche\Avaloir\Entity\Avaloir;
+use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
@@ -62,8 +63,12 @@ class ApiController extends AbstractController
     public function update(Avaloir $avaloir, Request $request)
     {
         $data = $request->request->get('avaloir');
-        $data = $request->getContent();
-
+        $data = json_decode($request->getContent());
+        $avaloir = new AvaloirNew();
+        $avaloir->setLatitude($data['latitude']);
+        $avaloir->setLongitude($data['longitude']);
+        $this->avaloirRepository->persist($avaloir);
+        $this->avaloirRepository->flush();
 
         //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
         //$avaloir->setUpdatedAt($date);
@@ -71,7 +76,7 @@ class ApiController extends AbstractController
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => $data];
+        $data = ['error' => 0, 'message' => $data, 'avaloir'];
         return new JsonResponse($data);
     }
 }
