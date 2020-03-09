@@ -63,7 +63,7 @@ class ApiController extends AbstractController
     public function update(Avaloir $avaloir, Request $request)
     {
         $data = $request->request->get('avaloir');
-        $data = json_decode($request->getContent());
+        $data = json_decode($request->getContent(), true);
         $avaloir = new AvaloirNew();
         $avaloir->setLatitude($data['latitude']);
         $avaloir->setLongitude($data['longitude']);
