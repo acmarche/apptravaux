@@ -8,12 +8,32 @@
 
 namespace AcMarche\Stock\Service;
 
+use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Travaux\Entity\Security\User;
 
 class SerializeApi
 {
+    /**
+     * @param AvaloirNew[] $avaloirNews
+     * @return array
+     */
+    public function serializeAvaloirs(iterable $avaloirs)
+    {
+        $data = [];
+        foreach ($avaloirs as $avaloir) {
+            $std = new \stdClass();
+            $std->id = $avaloir->getId();
+            $std->latitude = $avaloir->getLatitude();
+            $std->longitude = $avaloir->getLongitude();
+            $std->description = $avaloir->getDescription();
+            $data[] = $std;
+        }
+
+        return $data;
+    }
+
     /**
      * @param Produit[] $produits
      * @return array
