@@ -28,6 +28,7 @@ class SerializeApi
             $std->idReferent = $avaloir->getId();
             $std->latitude = $avaloir->getLatitude();
             $std->longitude = $avaloir->getLongitude();
+            $std->rue = $avaloir->getRue();
             $std->description = $avaloir->getDescription();
             $data[] = $std;
         }
