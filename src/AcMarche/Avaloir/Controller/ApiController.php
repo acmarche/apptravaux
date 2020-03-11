@@ -76,7 +76,27 @@ class ApiController extends AbstractController
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => $data, 'avaloir'];
+        $data = ['error' => 0, 'message' => $data, 'avaloir' => $data];
         return new JsonResponse($data);
     }
+
+    /**
+     * @param Avaloir $avaloir
+     * @param int $quantite
+     * @Route("/clean/{id}/{date}")
+     * @return JsonResponse
+     */
+    public function clean(AvaloirNew $avaloir, string $date)
+    {
+        $dateNettoyage = \DateTime::createFromFormat('Y-m-d', $date);
+        $avaloir->setDescription($dateNettoyage);
+        $this->avaloirRepository->flush();
+
+        // $this->logger->log($avaloir, $quantite);
+
+        $data = ['error' => 0, 'message' => "ok", 'avaloir' => $avaloir];
+        return new JsonResponse($data);
+    }
+
+
 }
