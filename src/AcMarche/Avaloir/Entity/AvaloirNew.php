@@ -104,12 +104,12 @@ class AvaloirNew implements TimestampableInterface
         return $this;
     }
 
-    public function getRue(): ?Rue
+    public function getRue(): ?string
     {
         return $this->rue;
     }
 
-    public function setRue(?Rue $rue): self
+    public function setRue(?string $rue): self
     {
         $this->rue = $rue;
 

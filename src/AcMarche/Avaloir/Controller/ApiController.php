@@ -8,6 +8,7 @@ use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -118,13 +119,14 @@ class ApiController extends AbstractController
             return new JsonResponse($data);
         }
 
-        $dateNettoyage = \DateTime::createFromFormat('Y-m-d', $date);
-        $avaloir->setDescription($date);
-        $this->avaloirRepository->flush();
+        /**
+         * @var UploadedFile $image
+         */
+        $image  = $request->request->get('image');
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => "ok", 'avaloir' => $avaloir];
+        $data = ['error' => 0, 'message' => $image->getClientMimeType(), 'avaloir' => $avaloir];
         return new JsonResponse($data);
     }
 
