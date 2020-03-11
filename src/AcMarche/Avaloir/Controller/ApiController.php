@@ -86,9 +86,9 @@ class ApiController extends AbstractController
      * @Route("/clean/{id}/{date}")
      * @return JsonResponse
      */
-    public function clean(int $avaloirId, string $date)
+    public function clean(int $id, string $date)
     {
-        $avaloir = $this->avaloirRepository->find($avaloirId);
+        $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
             $data = ['error' => 404, 'message' => "Avaloir non trouvé", 'avaloir' => $avaloir];
             return new JsonResponse($data);
