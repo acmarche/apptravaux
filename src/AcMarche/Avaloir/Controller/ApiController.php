@@ -95,7 +95,7 @@ class ApiController extends AbstractController
         }
 
         $dateNettoyage = \DateTime::createFromFormat('Y-m-d', $date);
-        $avaloir->setDescription($dateNettoyage);
+        $avaloir->setDescription($date);
         $this->avaloirRepository->flush();
 
         // $this->logger->log($avaloir, $quantite);
