@@ -25,6 +25,7 @@ class SerializeApi
         foreach ($avaloirs as $avaloir) {
             $std = new \stdClass();
             $std->id = $avaloir->getId();
+            $std->idReferent = $avaloir->getId();
             $std->latitude = $avaloir->getLatitude();
             $std->longitude = $avaloir->getLongitude();
             $std->description = $avaloir->getDescription();
