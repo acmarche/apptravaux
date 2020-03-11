@@ -86,8 +86,14 @@ class ApiController extends AbstractController
      * @Route("/clean/{id}/{date}")
      * @return JsonResponse
      */
-    public function clean(AvaloirNew $avaloir, string $date)
+    public function clean(int $avaloirId, string $date)
     {
+        $avaloir = $this->avaloirRepository->find($avaloirId);
+        if (!$avaloir) {
+            $data = ['error' => 404, 'message' => "Avaloir non trouvé", 'avaloir' => $avaloir];
+            return new JsonResponse($data);
+        }
+
         $dateNettoyage = \DateTime::createFromFormat('Y-m-d', $date);
         $avaloir->setDescription($dateNettoyage);
         $this->avaloirRepository->flush();
