@@ -4,7 +4,9 @@ namespace AcMarche\Avaloir\Controller;
 
 use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
+use AcMarche\Avaloir\Repository\DateNettoyageRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,15 +41,21 @@ class ApiController extends AbstractController
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var DateNettoyageRepository
+     */
+    private $dateNettoyageRepository;
 
     public function __construct(
         AvaloirNewRepository $avaloirRepository,
+        DateNettoyageRepository $dateNettoyageRepository,
         SerializeApi $serializeApi,
         Logger $logger
     ) {
         $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
+        $this->dateNettoyageRepository = $dateNettoyageRepository;
     }
 
     /**
@@ -63,12 +71,12 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @param Avaloir $avaloir
+     * @param AvaloirNew $avaloir
      * @param int $quantite
      * @Route("/update/{id}")
      * @return JsonResponse
      */
-    public function update(Avaloir $avaloir, Request $request)
+    public function insert(AvaloirNew $avaloir, Request $request)
     {
         $data = $request->request->get('avaloir');
         $data = json_decode($request->getContent(), true);
@@ -76,7 +84,6 @@ class ApiController extends AbstractController
         $avaloir->setLatitude($data['latitude']);
         $avaloir->setLongitude($data['longitude']);
         $this->avaloirRepository->persist($avaloir);
-        $this->avaloirRepository->flush();
 
         //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
         //$avaloir->setUpdatedAt($date);
@@ -89,35 +96,40 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @param Avaloir $avaloir
+     * @param AvaloirNew $avaloir
      * @param int $quantite
      * @Route("/clean/{id}/{date}")
      * @return JsonResponse
      */
-    public function clean(int $id, string $date)
+    public function clean(int $id, string $dateString)
     {
         $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
             $data = [
                 'error' => 404,
                 'message' => "Avaloir non trouvé",
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => null
             ];
             return new JsonResponse($data);
         }
 
-        $dateNettoyage = \DateTime::createFromFormat('Y-m-d', $date);
-        $avaloir->setDescription($date);
-        $this->avaloirRepository->flush();
+        $date = \DateTime::createFromFormat('Y-m-d', $dateString);
+        $dateNettoyage = new DateNettoyage();
+        $dateNettoyage->setAvaloir($avaloir);
+        $dateNettoyage->setUpdatedAt($date);
+        $dateNettoyage->setCreatedAt($date);
 
-        // $this->logger->log($avaloir, $quantite);
+        $avaloir->addDate($dateNettoyage);
+
+        $this->dateNettoyageRepository->persist($dateNettoyage);
+        $this->dateNettoyageRepository->flush();
 
         $data = ['error' => 0, 'message' => "ok", 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
 
     /**
-     * @param Avaloir $avaloir
+     * @param AvaloirNew $avaloir
      * @param int $quantite
      * @Route("/photo/{id}")
      * @return JsonResponse

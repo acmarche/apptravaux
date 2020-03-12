@@ -18,4 +18,14 @@ class DateNettoyageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, DateNettoyage::class);
     }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(DateNettoyage $avaloir)
+    {
+        $this->_em->persist($avaloir);
+    }
 }

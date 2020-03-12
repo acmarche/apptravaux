@@ -66,6 +66,12 @@ class AvaloirNew implements TimestampableInterface
     protected $localite;
 
     /**
+     * @ORM\OneToMany(targetEntity="DateNettoyage", mappedBy="avaloirNew", cascade={"persist", "remove"}))
+     * @ORM\OrderBy({"jour"="DESC"})
+     */
+    private $dates;
+
+    /**
      *
      * @Vich\UploadableField(mapping="avaloir_image", fileNameProperty="imageName")
      *
@@ -77,6 +83,11 @@ class AvaloirNew implements TimestampableInterface
      * @ORM\Column(type="string", length=120, nullable=true)
      */
     private $imageName;
+
+    public function __construct()
+    {
+        $this->dates = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -226,5 +237,36 @@ class AvaloirNew implements TimestampableInterface
     public function setImageName($imageName): void
     {
         $this->imageName = $imageName;
+    }
+
+    /**
+     * @return Collection|DateNettoyage[]
+     */
+    public function getDates(): Collection
+    {
+        return $this->dates;
+    }
+
+    public function addDate(DateNettoyage $date): self
+    {
+        if (!$this->dates->contains($date)) {
+            $this->dates[] = $date;
+            $date->setAvaloir($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDate(DateNettoyage $date): self
+    {
+        if ($this->dates->contains($date)) {
+            $this->dates->removeElement($date);
+            // set the owning side to null (unless already changed)
+            if ($date->getAvaloir() === $this) {
+                $date->setAvaloir(null);
+            }
+        }
+
+        return $this;
     }
 }

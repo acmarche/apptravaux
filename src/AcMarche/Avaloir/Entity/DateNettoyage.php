@@ -30,10 +30,17 @@ class DateNettoyage implements TimestampableInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Avaloir", inversedBy="dates")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      *
      */
     protected $avaloir;
+
+      /**
+     * @ORM\ManyToOne(targetEntity="AvaloirNew", inversedBy="dates")
+     * @ORM\JoinColumn(nullable=true)
+     *
+     */
+    protected $avaloirNew;
 
     /**
      * pour ajouter une date a chaque rue
@@ -97,8 +104,16 @@ class DateNettoyage implements TimestampableInterface
         return $this;
     }
 
-    /**
-     * STOP
-     */
+    public function getAvaloirNew(): ?AvaloirNew
+    {
+        return $this->avaloirNew;
+    }
+
+    public function setAvaloirNew(?AvaloirNew $avaloir): self
+    {
+        $this->avaloirNew = $avaloir;
+
+        return $this;
+    }
 
 }
