@@ -115,7 +115,7 @@ class ApiController extends AbstractController
 
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
         $dateNettoyage = new DateNettoyage();
-        $dateNettoyage->setAvaloir($avaloir);
+        $dateNettoyage->setAvaloirNew($avaloir);
         $dateNettoyage->setUpdatedAt($date);
         $dateNettoyage->setCreatedAt($date);
 
