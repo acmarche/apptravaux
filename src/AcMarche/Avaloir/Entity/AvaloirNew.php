@@ -251,7 +251,7 @@ class AvaloirNew implements TimestampableInterface
     {
         if (!$this->dates->contains($date)) {
             $this->dates[] = $date;
-            $date->setAvaloir($this);
+            $date->setAvaloirNew($this);
         }
 
         return $this;
@@ -262,8 +262,8 @@ class AvaloirNew implements TimestampableInterface
         if ($this->dates->contains($date)) {
             $this->dates->removeElement($date);
             // set the owning side to null (unless already changed)
-            if ($date->getAvaloir() === $this) {
-                $date->setAvaloir(null);
+            if ($date->getAvaloirNew() === $this) {
+                $date->setAvaloirNew(null);
             }
         }
 
