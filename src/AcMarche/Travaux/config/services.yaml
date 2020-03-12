@@ -8,6 +8,8 @@ parameters:
     ac_marche_travaux.upload.directory: "%kernel.project_dir%/public/files"
     ac_marche_avaloir.upload.directory: "%kernel.project_dir%/public/avaloirs"
     ac_marche_travaux.download.directory: "/files"
+    acmarche_travaux.elastic.host: '%env(ELASTIC_HOST)%'
+    acmarche_travaux.elastic.index: '%env(ELASTIC_INDEX)%'
     router.request_context.host: '%env(APP_URL)%'
     router.request_context.scheme: http
     ac_marche_avaloir_destinataire: '%env(AVALOIR_EMAIL)%'
