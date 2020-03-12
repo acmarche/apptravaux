@@ -166,7 +166,6 @@ class ApiController extends AbstractController
         }
 
         return new JsonResponse($this->upload($avaloir, $image));
-        //$this->uploaderHelper->asset($avaloir, 'image');
     }
 
     private function upload(AvaloirNew $avaloir, UploadedFile $image)

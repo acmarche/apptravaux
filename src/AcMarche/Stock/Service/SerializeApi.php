@@ -12,6 +12,7 @@ use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Travaux\Entity\Security\User;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class SerializeApi
@@ -20,10 +21,19 @@ class SerializeApi
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
-    public function __construct(UploaderHelper $uploaderHelper)
+    public function __construct(UploaderHelper $uploaderHelper, RequestStack $requestStack)
     {
         $this->uploaderHelper = $uploaderHelper;
+        $this->requestStack = $requestStack;
+    }
+
+    public function getUrl() {
+        return $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
     }
 
     public function serializeAvaloir(AvaloirNew $avaloir)
@@ -36,7 +46,7 @@ class SerializeApi
         $std->rue = $avaloir->getRue();
         $std->description = $avaloir->getDescription();
         if ($avaloir->getImageName()) {
-            $std->imageUrl = $this->uploaderHelper->asset($avaloir, 'imageFile');
+            $std->imageUrl = $this->getUrl().$this->uploaderHelper->asset($avaloir, 'imageFile');
         }
         return $std;
     }
