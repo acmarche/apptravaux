@@ -8,10 +8,13 @@ use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Storage\FileSystemStorage;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * Class ApiController
@@ -32,15 +35,21 @@ class ApiController extends AbstractController
      * @var Logger
      */
     private $logger;
+    /**
+     * @var UploaderHelper
+     */
+    private $uploaderHelper;
 
     public function __construct(
         AvaloirNewRepository $avaloirRepository,
         SerializeApi $serializeApi,
-        Logger $logger
+        Logger $logger,
+        UploaderHelper $uploaderHelper
     ) {
         $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
+        $this->uploaderHelper = $uploaderHelper;
     }
 
     /**
@@ -132,11 +141,28 @@ class ApiController extends AbstractController
             return new JsonResponse(['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $avaloir]);
         }
 
-        if ($image instanceof UploadedFile) {
+        if (!$image instanceof UploadedFile) {
             return new JsonResponse(['error' => 0, 'message' => $image->getClientMimeType(), 'avaloir' => $avaloir]);
         }
 
-        return new JsonResponse(['error' => 0, 'message' => 'Error inconnue', 'avaloir' => $avaloir]);
+        return new JsonResponse($this->upload($avaloir, $image));
+        //$this->uploaderHelper->asset($avaloir, 'image');
+    }
+
+    private function upload(AvaloirNew $avaloir, UploadedFile $image)
+    {
+        $name = 'aval-' . $avaloir->getId() . '.jpg';
+        try {
+            $image->move(
+                $this->getParameter('ac_marche_avaloir.upload.directory') . DIRECTORY_SEPARATOR . $avaloir->getId(),
+                $name
+            );
+        } catch (FileException $e) {
+            return ['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $avaloir];
+        }
+
+        $avaloir->setImageName($name);
+        return ['error' => 0, 'message' => $name, 'avaloir' => $avaloir];
     }
 
 

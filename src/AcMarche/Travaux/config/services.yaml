@@ -6,6 +6,7 @@
 parameters:
     locale: 'fr'
     ac_marche_travaux.upload.directory: "%kernel.project_dir%/public/files"
+    ac_marche_avaloir.upload.directory: "%kernel.project_dir%/public/avaloirs"
     ac_marche_travaux.download.directory: "/files"
     router.request_context.host: '%env(APP_URL)%'
     router.request_context.scheme: http

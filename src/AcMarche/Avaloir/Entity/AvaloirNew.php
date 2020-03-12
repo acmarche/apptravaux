@@ -62,6 +62,11 @@ class AvaloirNew implements TimestampableInterface
      */
     protected $localite;
 
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     */
+    private $imageName;
+
     public function __construct()
     {
     }
@@ -178,5 +183,21 @@ class AvaloirNew implements TimestampableInterface
     public function setLongitude($longitude): void
     {
         $this->longitude = $longitude;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getImageName():?string
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param mixed $imageName
+     */
+    public function setImageName($imageName): void
+    {
+        $this->imageName = $imageName;
     }
 }
