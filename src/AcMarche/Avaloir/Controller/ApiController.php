@@ -28,7 +28,7 @@ class ApiController extends AbstractController
     /**
      * @var AvaloirNewRepository
      */
-    private $avaloirRepository;
+    private $avaloirNewRepository;
     /**
      * @var SerializeApi
      */
@@ -47,12 +47,12 @@ class ApiController extends AbstractController
     private $dateNettoyageRepository;
 
     public function __construct(
-        AvaloirNewRepository $avaloirRepository,
+        AvaloirNewRepository $avaloirNewRepository,
         DateNettoyageRepository $dateNettoyageRepository,
         SerializeApi $serializeApi,
         Logger $logger
     ) {
-        $this->avaloirRepository = $avaloirRepository;
+        $this->avaloirNewRepository = $avaloirNewRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
         $this->dateNettoyageRepository = $dateNettoyageRepository;
@@ -63,7 +63,7 @@ class ApiController extends AbstractController
      */
     public function index()
     {
-        $avaloirs = $this->serializeApi->serializeAvaloirs($this->avaloirRepository->findAll());
+        $avaloirs = $this->serializeApi->serializeAvaloirs($this->avaloirNewRepository->findAll());
 
         $data = ['avaloirs' => $avaloirs];
 
@@ -83,7 +83,7 @@ class ApiController extends AbstractController
         $avaloir = new AvaloirNew();
         $avaloir->setLatitude($data['latitude']);
         $avaloir->setLongitude($data['longitude']);
-        $this->avaloirRepository->persist($avaloir);
+        $this->avaloirNewRepository->persist($avaloir);
 
         //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
         //$avaloir->setUpdatedAt($date);
@@ -103,7 +103,7 @@ class ApiController extends AbstractController
      */
     public function clean(int $id, string $dateString)
     {
-        $avaloir = $this->avaloirRepository->find($id);
+        $avaloir = $this->avaloirNewRepository->find($id);
         if (!$avaloir) {
             $data = [
                 'error' => 404,
@@ -136,7 +136,7 @@ class ApiController extends AbstractController
      */
     public function photo(int $id, Request $request)
     {
-        $avaloir = $this->avaloirRepository->find($id);
+        $avaloir = $this->avaloirNewRepository->find($id);
         if (!$avaloir) {
             $data = [
                 'error' => 404,
