@@ -142,7 +142,7 @@ class SerializeApi
         return $data;
     }
 
-    private function serializeDate(DateNettoyage $date)
+    public function serializeDate(DateNettoyage $date)
     {
         $std = new \stdClass();
         $std->id = $date->getId();

@@ -109,7 +109,7 @@ class ApiController extends AbstractController
      * @Route("/clean/{id}/{dateString}")
      * @return JsonResponse
      */
-    public function clean(int $id, string $dateString)
+    public function addCleaning(int $id, string $dateString)
     {
         $avaloir = $this->avaloirNewRepository->find($id);
         if (!$avaloir) {
@@ -133,7 +133,7 @@ class ApiController extends AbstractController
         $this->dateNettoyageRepository->persist($dateNettoyage);
         $this->dateNettoyageRepository->flush();
 
-        $data = ['error' => 0, 'message' => "ok", 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
+        $data = ['error' => 0, 'message' => "ok", 'date' => $this->serializeApi->serializeDate($dateNettoyage)];
         return new JsonResponse($data);
     }
 
