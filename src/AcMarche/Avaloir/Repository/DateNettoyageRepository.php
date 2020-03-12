@@ -33,7 +33,7 @@ class DateNettoyageRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('date');
 
-        $qb->andWhere('date.avaloirNew != null');
+        $qb->andWhere('date.avaloirNew IS NOT NULL');
         $query = $qb->getQuery();
 
         return $query->getResult();
