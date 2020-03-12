@@ -12,9 +12,35 @@ use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Travaux\Entity\Security\User;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class SerializeApi
 {
+    /**
+     * @var UploaderHelper
+     */
+    private $uploaderHelper;
+
+    public function __construct(UploaderHelper $uploaderHelper)
+    {
+        $this->uploaderHelper = $uploaderHelper;
+    }
+
+    public function serializeAvaloir(AvaloirNew $avaloir)
+    {
+        $std = new \stdClass();
+        $std->id = $avaloir->getId();
+        $std->idReferent = $avaloir->getId();
+        $std->latitude = $avaloir->getLatitude();
+        $std->longitude = $avaloir->getLongitude();
+        $std->rue = $avaloir->getRue();
+        $std->description = $avaloir->getDescription();
+        if ($avaloir->getImageName()) {
+            $std->imageUrl = $this->uploaderHelper->asset($avaloir, 'imageFile');
+        }
+        return $std;
+    }
+
     /**
      * @param AvaloirNew[] $avaloirNews
      * @return array
@@ -23,13 +49,7 @@ class SerializeApi
     {
         $data = [];
         foreach ($avaloirs as $avaloir) {
-            $std = new \stdClass();
-            $std->id = $avaloir->getId();
-            $std->idReferent = $avaloir->getId();
-            $std->latitude = $avaloir->getLatitude();
-            $std->longitude = $avaloir->getLongitude();
-            $std->rue = $avaloir->getRue();
-            $std->description = $avaloir->getDescription();
+            $std = $this->serializeAvaloir($avaloir);
             $data[] = $std;
         }
 

@@ -43,13 +43,11 @@ class ApiController extends AbstractController
     public function __construct(
         AvaloirNewRepository $avaloirRepository,
         SerializeApi $serializeApi,
-        Logger $logger,
-        UploaderHelper $uploaderHelper
+        Logger $logger
     ) {
         $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
-        $this->uploaderHelper = $uploaderHelper;
     }
 
     /**
@@ -86,7 +84,7 @@ class ApiController extends AbstractController
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => $data, 'avaloir' => $data];
+        $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
         return new JsonResponse($data);
     }
 
@@ -100,7 +98,11 @@ class ApiController extends AbstractController
     {
         $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
-            $data = ['error' => 404, 'message' => "Avaloir non trouvé", 'avaloir' => $avaloir];
+            $data = [
+                'error' => 404,
+                'message' => "Avaloir non trouvé",
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
             return new JsonResponse($data);
         }
 
@@ -110,7 +112,7 @@ class ApiController extends AbstractController
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => "ok", 'avaloir' => $avaloir];
+        $data = ['error' => 0, 'message' => "ok", 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
 
@@ -124,7 +126,11 @@ class ApiController extends AbstractController
     {
         $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
-            $data = ['error' => 404, 'message' => "Avaloir non trouvé", 'avaloir' => $avaloir];
+            $data = [
+                'error' => 404,
+                'message' => "Avaloir non trouvé",
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
             return new JsonResponse($data);
         }
 
@@ -134,15 +140,29 @@ class ApiController extends AbstractController
         $image = $request->files->get('image');
 
         if (!$image instanceof UploadedFile) {
-            return new JsonResponse(['error' => 1, 'message' => 'Upload raté', 'avaloir' => $avaloir]);
+            return new JsonResponse(
+                ['error' => 1, 'message' => 'Upload raté', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)]
+            );
         }
 
         if ($image->getError()) {
-            return new JsonResponse(['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $avaloir]);
+            return new JsonResponse(
+                [
+                    'error' => 1,
+                    'message' => $image->getErrorMessage(),
+                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                ]
+            );
         }
 
         if (!$image instanceof UploadedFile) {
-            return new JsonResponse(['error' => 0, 'message' => $image->getClientMimeType(), 'avaloir' => $avaloir]);
+            return new JsonResponse(
+                [
+                    'error' => 0,
+                    'message' => $image->getClientMimeType(),
+                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                ]
+            );
         }
 
         return new JsonResponse($this->upload($avaloir, $image));
@@ -158,11 +178,11 @@ class ApiController extends AbstractController
                 $name
             );
         } catch (FileException $e) {
-            return ['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $avaloir];
+            return ['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         }
 
         $avaloir->setImageName($name);
-        return ['error' => 0, 'message' => $name, 'avaloir' => $avaloir];
+        return ['error' => 0, 'message' => $name, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
     }
 
 

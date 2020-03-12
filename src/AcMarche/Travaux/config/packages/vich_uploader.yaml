@@ -4,3 +4,7 @@ vich_uploader:
             uri_prefix: /files/interventions
             upload_destination: '%kernel.project_dir%/public/files/interventions'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+    avaloir_image:
+        uri_prefix: /avaloirs/
+        upload_destination: '%kernel.project_dir%/public/avaloirs'
+        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
