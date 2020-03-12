@@ -48,7 +48,7 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
                         $this->loadConfig($container, 'workflow');
                         $this->loadConfig($container, 'translation');
                         break;
-                    case 'vich_uploader22':
+                    case 'vich_uploader':
                         $this->loadConfig($container, 'vich_uploader');
                         break;
                     case 'api_platform222':
