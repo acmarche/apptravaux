@@ -123,14 +123,20 @@ class ApiController extends AbstractController
          * @var UploadedFile $image
          */
         $image = $request->files->get('image');
-        if ($image instanceof UploadedFile) {
-            var_dump($image->getClientMimeType());
+
+        if (!$image instanceof UploadedFile) {
+            return new JsonResponse(['error' => 1, 'message' => 'Upload raté', 'avaloir' => $avaloir]);
         }
 
-        // $this->logger->log($avaloir, $quantite);
+        if ($image->getError()) {
+            return new JsonResponse(['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $avaloir]);
+        }
 
-        $data = ['error' => 0, 'message' => $image, 'avaloir' => $avaloir];
-        return new JsonResponse($data);
+        if ($image instanceof UploadedFile) {
+            return new JsonResponse(['error' => 0, 'message' => $image->getClientMimeType(), 'avaloir' => $avaloir]);
+        }
+
+        return new JsonResponse(['error' => 0, 'message' => 'Error inconnue', 'avaloir' => $avaloir]);
     }
 
 
