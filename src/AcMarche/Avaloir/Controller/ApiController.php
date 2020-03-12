@@ -111,7 +111,7 @@ class ApiController extends AbstractController
      * @Route("/photo/{id}")
      * @return JsonResponse
      */
-    public function photo(int $id,Request $request)
+    public function photo(int $id, Request $request)
     {
         $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
@@ -122,11 +122,14 @@ class ApiController extends AbstractController
         /**
          * @var UploadedFile $image
          */
-        $image  = $request->request->get('image');
+        $image = $request->files->get('image');
+        if ($image instanceof UploadedFile) {
+            var_dump($image->getClientMimeType());
+        }
 
         // $this->logger->log($avaloir, $quantite);
 
-        $data = ['error' => 0, 'message' => $image->getClientMimeType(), 'avaloir' => $avaloir];
+        $data = ['error' => 0, 'message' => $image, 'avaloir' => $avaloir];
         return new JsonResponse($data);
     }
 
