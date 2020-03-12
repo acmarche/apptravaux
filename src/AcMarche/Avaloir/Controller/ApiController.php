@@ -98,7 +98,7 @@ class ApiController extends AbstractController
     /**
      * @param AvaloirNew $avaloir
      * @param int $quantite
-     * @Route("/clean/{id}/{date}")
+     * @Route("/clean/{id}/{dateString}")
      * @return JsonResponse
      */
     public function clean(int $id, string $dateString)
