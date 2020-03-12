@@ -33,7 +33,8 @@ class SerializeApi
         $this->requestStack = $requestStack;
     }
 
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
     }
 
@@ -47,7 +48,7 @@ class SerializeApi
         $std->rue = $avaloir->getRue();
         $std->description = $avaloir->getDescription();
         if ($avaloir->getImageName()) {
-            $std->imageUrl = $this->getUrl().$this->uploaderHelper->asset($avaloir, 'imageFile');
+            $std->imageUrl = $this->getUrl() . $this->uploaderHelper->asset($avaloir, 'imageFile');
         }
         return $std;
     }
@@ -132,7 +133,7 @@ class SerializeApi
      */
     public function serializeDates(array $dates)
     {
-         $data = [];
+        $data = [];
         foreach ($dates as $date) {
             $std = $this->serializeDate($date);
             $data[] = $std;

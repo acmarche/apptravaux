@@ -28,4 +28,14 @@ class DateNettoyageRepository extends ServiceEntityRepository
     {
         $this->_em->persist($avaloir);
     }
+
+    public function findForNew()
+    {
+        $qb = $this->createQueryBuilder('date');
+
+        $qb->andWhere('date.avaloirNew != null');
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

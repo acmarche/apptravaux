@@ -73,7 +73,7 @@ class ApiController extends AbstractController
      */
     public function dates()
     {
-        $dates = $this->serializeApi->serializeDates($this->dateNettoyageRepository->findAll());
+        $dates = $this->serializeApi->serializeDates($this->dateNettoyageRepository->findForNew());
 
         return new JsonResponse($dates);
     }
