@@ -105,6 +105,15 @@
     "egulias/email-validator": {
         "version": "2.1.15"
     },
+    "elasticsearch/elasticsearch": {
+        "version": "v7.6.1"
+    },
+    "ezimuel/guzzlestreams": {
+        "version": "3.0.1"
+    },
+    "ezimuel/ringphp": {
+        "version": "1.1.2"
+    },
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
     },
@@ -219,6 +228,9 @@
         "files": [
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
+    },
+    "react/promise": {
+        "version": "v2.7.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
