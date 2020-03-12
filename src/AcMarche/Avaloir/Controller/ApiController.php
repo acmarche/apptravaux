@@ -65,9 +65,17 @@ class ApiController extends AbstractController
     {
         $avaloirs = $this->serializeApi->serializeAvaloirs($this->avaloirNewRepository->findAll());
 
-        $data = ['avaloirs' => $avaloirs];
-
         return new JsonResponse($avaloirs);
+    }
+
+    /**
+     * @Route("/dates")
+     */
+    public function dates()
+    {
+        $dates = $this->serializeApi->serializeDates($this->dateNettoyageRepository->findAll());
+
+        return new JsonResponse($dates);
     }
 
     /**
@@ -190,7 +198,11 @@ class ApiController extends AbstractController
                 $name
             );
         } catch (FileException $e) {
-            return ['error' => 1, 'message' => $image->getErrorMessage(), 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
+            return [
+                'error' => 1,
+                'message' => $image->getErrorMessage(),
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
         }
 
         $avaloir->setImageName($name);

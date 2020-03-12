@@ -9,6 +9,7 @@
 namespace AcMarche\Stock\Service;
 
 use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Travaux\Entity\Security\User;
@@ -121,6 +122,31 @@ class SerializeApi
         $std->token = $token;
 
         $user->setToken($token);
+
+        return $std;
+    }
+
+    /**
+     * @param DateNettoyage[] $dates
+     * @return array
+     */
+    public function serializeDates(array $dates)
+    {
+         $data = [];
+        foreach ($dates as $date) {
+            $std = $this->serializeDate($date);
+            $data[] = $std;
+        }
+
+        return $data;
+    }
+
+    private function serializeDate(DateNettoyage $date)
+    {
+        $std = new \stdClass();
+        $std->id = $date->getId();
+        $std->avaloirId = $date->getAvaloirNew()->getId();
+        $std->date = $date->getJour()->format('Y-m-d');
 
         return $std;
     }
