@@ -40,3 +40,6 @@ services:
         $dn: '%env(ACLDAP_DN)%'
         $user: '%env(ACLDAP_USER)%'
         $password: '%env(ACLDAP_PASSWORD)%'
+
+    AcMarche\Avaloir\Namer\DirectoryNamer:
+        public: true
