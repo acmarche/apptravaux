@@ -122,6 +122,11 @@ class ApiController extends AbstractController
         }
 
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
+
+        if($this->dateNettoyageRepository->findOneBy(['avaloirNew'=>$avaloir,'jour'=>$date])) {
+            return new JsonResponse(['error' => 1, 'message' => "Un nettoyage existe à cette date"]);
+        }
+
         $dateNettoyage = new DateNettoyage();
         $dateNettoyage->setAvaloirNew($avaloir);
         $dateNettoyage->setJour($date);
