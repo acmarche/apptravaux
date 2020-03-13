@@ -231,8 +231,15 @@ class ApiController extends AbstractController
         $latitude = $request->request->get('latitude');
         $longitude = $request->request->get('longitude');
         $distance = $request->request->get('distance');
+         return new JsonResponse(
+                [
+                    'error' => 1,
+                    'message' => $latitude.'Latitude'.$longitude.' '.$distance,
+                    'avaloirs' => []
+                ]
+            );
 
-        if (!$latitude && !$longitude) {
+        if (!$latitude || !$longitude || !$distance) {
             return new JsonResponse(
                 [
                     'error' => 1,
