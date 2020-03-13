@@ -4,6 +4,7 @@ namespace AcMarche\Travaux\Command;
 
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
+use AcMarche\Travaux\Elastic\ElasticSearch;
 use AcMarche\Travaux\Elastic\ElasticServer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,12 +22,20 @@ class ElasticCommand extends Command
      * @var AvaloirNewRepository
      */
     private $avaloirRepository;
+    /**
+     * @var ElasticSearch
+     */
+    private $elasticSearch;
 
-    public function __construct(ElasticServer $elasticServer, AvaloirNewRepository $avaloirRepository)
-    {
+    public function __construct(
+        ElasticServer $elasticServer,
+        ElasticSearch $elasticSearch,
+        AvaloirNewRepository $avaloirRepository
+    ) {
         parent::__construct();
         $this->elasticServer = $elasticServer;
         $this->avaloirRepository = $avaloirRepository;
+        $this->elasticSearch = $elasticSearch;
     }
 
     protected function configure()
@@ -39,15 +48,22 @@ class ElasticCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $update = false;
+
         if ($update) {
-            $this->elasticServer->deleteIndex();
-            $this->elasticServer->createIndex();
-            $this->elasticServer->close();
-            $this->elasticServer->updateSettings();
-            $this->elasticServer->open();
-            $this->elasticServer->updateMappings();
+            try {
+                $this->elasticServer->deleteIndex();
+                $this->elasticServer->createIndex();
+                $this->elasticServer->close();
+                $this->elasticServer->updateSettings();
+                $this->elasticServer->open();
+                $this->elasticServer->updateMappings();
+            } catch (\Exception $e) {
+                $io->error($e->getMessage());
+            }
         }
+
         $this->updateAvaloirs();
+
         return 0;
     }
 
@@ -58,6 +74,7 @@ class ElasticCommand extends Command
                 'index' => 'avaloir',
                 'id' => $avaloir->getId(),
                 'body' => [
+                    'id' => $avaloir->getId(),
                     'location' => ['lat' => $avaloir->getLatitude(), 'lon' => $avaloir->getLongitude()],
                     'description' => $avaloir->getDescription()
                 ]

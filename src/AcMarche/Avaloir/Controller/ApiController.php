@@ -9,6 +9,7 @@ use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Avaloir\Repository\DateNettoyageRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
+use AcMarche\Travaux\Elastic\ElasticSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -45,17 +46,23 @@ class ApiController extends AbstractController
      * @var DateNettoyageRepository
      */
     private $dateNettoyageRepository;
+    /**
+     * @var ElasticSearch
+     */
+    private $elasticSearch;
 
     public function __construct(
         AvaloirNewRepository $avaloirNewRepository,
         DateNettoyageRepository $dateNettoyageRepository,
         SerializeApi $serializeApi,
-        Logger $logger
+        Logger $logger,
+        ElasticSearch $elasticSearch
     ) {
         $this->avaloirNewRepository = $avaloirNewRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
         $this->dateNettoyageRepository = $dateNettoyageRepository;
+        $this->elasticSearch = $elasticSearch;
     }
 
     /**
@@ -123,7 +130,7 @@ class ApiController extends AbstractController
 
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
 
-        if($this->dateNettoyageRepository->findOneBy(['avaloirNew'=>$avaloir,'jour'=>$date])) {
+        if ($this->dateNettoyageRepository->findOneBy(['avaloirNew' => $avaloir, 'jour' => $date])) {
             return new JsonResponse(['error' => 1, 'message' => "Un nettoyage existe à cette date"]);
         }
 
@@ -214,5 +221,43 @@ class ApiController extends AbstractController
         return ['error' => 0, 'message' => $name, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
     }
 
+    /**
+     *
+     * @Route("/search")
+     * @return JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $latitude = $request->request->get('latitude');
+        $longitude = $request->request->get('longitude');
+        $distance = $request->request->get('distance');
 
+        if (!$latitude && !$longitude) {
+            return new JsonResponse(
+                [
+                    'error' => 1,
+                    'message' => 'Latitude et longitude inconnue',
+                    'avaloir' => null
+                ]
+            );
+        }
+
+        $result = $this->elasticSearch->search($distance, $longitude, $latitude);
+        $hits = $result['hits'];
+        $total = $hits['total'];
+        $avaloirs = [];
+
+        foreach ($hits['hits'] as $hit) {
+            $score = $hit['_score'];
+            $post = $hit['_source'];
+            $id = $post['id'];
+            if ($avaloir = $this->avaloirNewRepository->find($id)) {
+                $avaloirs[] = $this->serializeApi->serializeAvaloir($avaloir);
+            }
+        }
+
+        return new JsonResponse(
+            $avaloirs
+        );
+    }
 }
