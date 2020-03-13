@@ -232,12 +232,13 @@ class ApiController extends AbstractController
         $params = $request->request->get('params');
         $longitude = $request->request->get('longitude');
         $distance = $request->request->get('distance');
+$data = $request->getContent();
 
          return new JsonResponse(
                 [
                     'error' => 1,
                     'message' => $latitude.' Latitude '.$longitude.' '.$distance,
-                    'avaloirs' => $params
+                    'avaloirs' => $data
                 ]
             );
 
