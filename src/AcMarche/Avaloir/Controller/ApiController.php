@@ -229,9 +229,9 @@ class ApiController extends AbstractController
     public function search(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $latitude = $data['latitude'];
-        $longitude = $data['longitude'];
-        $distance = $data['distance'];
+        $latitude = number_format($data['latitude'],10);
+        $longitude = number_format($data['longitude'],10);
+        $distance = (string)$data['distance'];
 
         if (!$latitude || !$longitude || !$distance) {
             return new JsonResponse(
@@ -243,8 +243,7 @@ class ApiController extends AbstractController
             );
         }
 
-        $result = $this->elasticSearch->search("500km", 50.2269067, 5.3448833);
-        //$result = $this->elasticSearch->search($distance, $longitude, $latitude);
+        $result = $this->elasticSearch->search($distance, $longitude, $latitude);
         $hits = $result['hits'];
         $total = $hits['total'];
         $avaloirs = [];
