@@ -237,7 +237,7 @@ class ApiController extends AbstractController
                 [
                     'error' => 1,
                     'message' => 'Latitude et longitude inconnue',
-                    'avaloir' => null
+                    'avaloirs' => []
                 ]
             );
         }
@@ -257,7 +257,11 @@ class ApiController extends AbstractController
         }
 
         return new JsonResponse(
-            $avaloirs
+            [
+                'error' => 0,
+                'message' => 'ok',
+                'avaloirs' => $avaloirs
+            ]
         );
     }
 }
