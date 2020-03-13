@@ -29,12 +29,12 @@ class AvaloirNew implements TimestampableInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
      */
     protected $latitude;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
      */
     protected $longitude;
 
