@@ -260,7 +260,7 @@ class ApiController extends AbstractController
         return new JsonResponse(
             [
                 'error' => 0,
-                'message' => 'ok',
+                'message' => 'ok count ' . $total['value'],
                 'avaloirs' => $avaloirs
             ]
         );
