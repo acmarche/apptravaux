@@ -228,13 +228,14 @@ class ApiController extends AbstractController
      */
     public function search(Request $request)
     {
-        $latitude = $request->request->get('latitude');
-        $longitude = $request->request->get('longitude');
-        $distance = $request->request->get('distance');
+        $params = $request->request->get('params');
+        $latitude = $params['latitude'];
+        $longitude = $params['longitude'];
+        $distance = $params['distance'];
          return new JsonResponse(
                 [
                     'error' => 1,
-                    'message' => $latitude.'Latitude'.$longitude.' '.$distance,
+                    'message' => $latitude.' Latitude '.$longitude.' '.$distance,
                     'avaloirs' => []
                 ]
             );
