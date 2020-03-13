@@ -47,7 +47,6 @@ class ElasticSearch
             'body' => $json
         ];
 
-
         return $this->elasticServer->getClient()->search($params);
     }
 

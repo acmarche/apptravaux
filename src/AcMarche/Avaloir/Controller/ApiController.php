@@ -229,21 +229,21 @@ class ApiController extends AbstractController
     public function search(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $latitude = number_format($data['latitude'],10);
-        $longitude = number_format($data['longitude'],10);
+        $latitude = number_format($data['latitude'], 10);
+        $longitude = number_format($data['longitude'], 10);
         $distance = (string)$data['distance'];
 
         if (!$latitude || !$longitude || !$distance) {
             return new JsonResponse(
                 [
                     'error' => 1,
-                    'message' => 'Latitude et longitude inconnue',
+                    'message' => 'Latitude, longitude et distance obligatoire',
                     'avaloirs' => []
                 ]
             );
         }
 
-        $result = $this->elasticSearch->search($distance, $longitude, $latitude);
+        $result = $this->elasticSearch->search($distance, $latitude, $longitude);
         $hits = $result['hits'];
         $total = $hits['total'];
         $avaloirs = [];
@@ -260,7 +260,7 @@ class ApiController extends AbstractController
         return new JsonResponse(
             [
                 'error' => 0,
-                'message' => 'distance: '.$distance.' latitude: '.$latitude.' longitude: '.$longitude.'ok count ' . $total['value'],
+                'message' => 'distance: ' . $distance . ' latitude: ' . $latitude . ' longitude: ' . $longitude . 'ok count ' . $total['value'],
                 'avaloirs' => $avaloirs
             ]
         );
