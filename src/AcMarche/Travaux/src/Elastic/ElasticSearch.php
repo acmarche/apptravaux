@@ -22,7 +22,7 @@ class ElasticSearch
      * @param float $longitude
      * @return array
      */
-    public function search(string $distance, float $latitude, float $longitude)
+    public function search(string $distance, $latitude, $longitude)
     {
         $json = '{
      "query": {
