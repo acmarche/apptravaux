@@ -62,8 +62,9 @@ class ElasticCommand extends Command
             }
         }
 
-        $this->elasticSearch->search("1km", 50.2,5.1);
-      //  $this->updateAvaloirs();
+        $result = $this->elasticSearch->search("500km", 50.2269067, 5.3448833);
+        var_dump($result);
+        //  $this->updateAvaloirs();
 
         return 0;
     }

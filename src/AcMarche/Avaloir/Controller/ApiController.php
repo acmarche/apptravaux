@@ -243,7 +243,8 @@ class ApiController extends AbstractController
             );
         }
 
-        $result = $this->elasticSearch->search($distance, $longitude, $latitude);
+        $result = $this->elasticSearch->search("500km", 50.2269067, 5.3448833);
+        //$result = $this->elasticSearch->search($distance, $longitude, $latitude);
         $hits = $result['hits'];
         $total = $hits['total'];
         $avaloirs = [];
