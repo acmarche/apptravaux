@@ -114,7 +114,7 @@ class ApiController extends AbstractController
             $data = [
                 'error' => 404,
                 'message' => "Avaloir non trouvé",
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => null
             ];
             return new JsonResponse($data);
         }
@@ -178,7 +178,7 @@ class ApiController extends AbstractController
             $data = [
                 'error' => 404,
                 'message' => "Avaloir non trouvé",
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => "id $id envoye"
             ];
             return new JsonResponse($data);
         }
