@@ -98,6 +98,12 @@ class ApiController extends AbstractController
         $this->avaloirNewRepository->persist($avaloir);
         $this->avaloirNewRepository->flush();
 
+        $result = $this->uploadImage($avaloir, $request);
+
+        if (count($result) > 0) {
+            return new JsonResponse($result);
+        }
+
         $data = ['error' => 0, 'message' => 'oki', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
@@ -166,55 +172,41 @@ class ApiController extends AbstractController
         return new JsonResponse($data);
     }
 
-    /**
-     * @param int $quantite
-     * @Route("/photo/{id}")
-     * @return JsonResponse
-     */
-    public function photo(int $id, Request $request)
+    public function uploadImage(AvaloirNew $avaloir, Request $request)
     {
-        $avaloir = $this->avaloirNewRepository->find($id);
-        if (!$avaloir) {
-            $data = [
-                'error' => 404,
-                'message' => "Avaloir non trouvé",
-                'avaloir' => "id $id envoye"
-            ];
-            return new JsonResponse($data);
-        }
-
         /**
          * @var UploadedFile $image
          */
         $image = $request->files->get('image');
 
         if (!$image instanceof UploadedFile) {
-            return new JsonResponse(
-                ['error' => 1, 'message' => 'Upload raté', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)]
-            );
+            return
+                [
+                    'error' => 1,
+                    'message' => 'Upload raté',
+                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                ];
         }
 
         if ($image->getError()) {
-            return new JsonResponse(
+            return
                 [
                     'error' => 1,
                     'message' => $image->getErrorMessage(),
                     'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
-                ]
-            );
+                ];
         }
 
         if (!$image instanceof UploadedFile) {
-            return new JsonResponse(
+            return
                 [
                     'error' => 0,
                     'message' => $image->getClientMimeType(),
                     'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
-                ]
-            );
+                ];
         }
 
-        return new JsonResponse($this->upload($avaloir, $image));
+        return [];
     }
 
     private function upload(AvaloirNew $avaloir, UploadedFile $image)
