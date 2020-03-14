@@ -98,7 +98,7 @@ class ApiController extends AbstractController
         $this->avaloirNewRepository->persist($avaloir);
         $this->avaloirNewRepository->flush();
 
-        $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
+        $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
 
