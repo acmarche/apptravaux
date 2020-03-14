@@ -86,25 +86,42 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @param AvaloirNew $avaloir
-     * @param int $quantite
-     * @Route("/update/{id}")
+     * @Route("/insert")
      * @return JsonResponse
      */
-    public function insert(AvaloirNew $avaloir, Request $request)
+    public function insert(Request $request)
     {
-        $data = $request->request->get('avaloir');
         $data = json_decode($request->getContent(), true);
         $avaloir = new AvaloirNew();
         $avaloir->setLatitude($data['latitude']);
         $avaloir->setLongitude($data['longitude']);
         $this->avaloirNewRepository->persist($avaloir);
+        $this->avaloirNewRepository->flush();
 
-        //$date = \DateTime::createFromFormat('Y-m-d', $dateNettoyage);
-        //$avaloir->setUpdatedAt($date);
-        //$this->avaloirRepository->flush();
+        $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
+        return new JsonResponse($data);
+    }
 
-        // $this->logger->log($avaloir, $quantite);
+    /**
+     * @param int $id
+     * @Route("/update/{id}")
+     * @return JsonResponse
+     */
+    public function update(int $id, Request $request)
+    {
+        $avaloir = $this->avaloirNewRepository->find($id);
+        if (!$avaloir) {
+            $data = [
+                'error' => 404,
+                'message' => "Avaloir non trouvé",
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
+            return new JsonResponse($data);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $this->avaloirNewRepository->persist($avaloir);
 
         $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
         return new JsonResponse($data);
@@ -150,7 +167,6 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @param AvaloirNew $avaloir
      * @param int $quantite
      * @Route("/photo/{id}")
      * @return JsonResponse
