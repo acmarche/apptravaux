@@ -91,16 +91,16 @@ class ApiController extends AbstractController
      */
     public function insert(Request $request)
     {
-        $t = $request->request->get('avaloir');
-        $data = json_decode($request->getContent(), true);
+        $avaloirData = $request->request->get('avaloir');
+        $image = json_decode($request->getContent(), true);
         try {
             $avaloir = new AvaloirNew();
-            $avaloir->setLatitude($data['latitude']);
-            $avaloir->setLongitude($data['longitude']);
+            $avaloir->setLatitude($avaloirData['latitude']);
+            $avaloir->setLongitude($avaloirData['longitude']);
             $this->avaloirNewRepository->persist($avaloir);
             $this->avaloirNewRepository->flush();
         } catch (\Exception $exception) {
-            $data = ['error' => 0, 'message' => $t, 'avaloir' => $exception->getMessage()];
+            $data = ['error' => 0, 'message' => $image, 'avaloir' => $exception->getMessage()];
             return new JsonResponse($data);
         }
 
