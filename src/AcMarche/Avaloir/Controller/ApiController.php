@@ -92,7 +92,8 @@ class ApiController extends AbstractController
     public function insert(Request $request)
     {
         $avaloirJson = $request->request->get('avaloir');
-        $image = $request->getContent();
+        $image = $request->files->get('image');
+
         try {
             $avaloirData = json_decode($avaloirJson, true);
             $avaloir = new AvaloirNew();
