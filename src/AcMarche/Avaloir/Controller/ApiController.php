@@ -91,6 +91,7 @@ class ApiController extends AbstractController
      */
     public function insert(Request $request)
     {
+        $t = $request->request->get('avaloir');
         $data = json_decode($request->getContent(), true);
         $avaloir = new AvaloirNew();
         $avaloir->setLatitude($data['latitude']);
@@ -98,13 +99,13 @@ class ApiController extends AbstractController
         $this->avaloirNewRepository->persist($avaloir);
         $this->avaloirNewRepository->flush();
 
-        $result = $this->uploadImage($avaloir, $request);
+     /*   $result = $this->uploadImage($avaloir, $request);
 
         if (count($result) > 0) {
             return new JsonResponse($result);
-        }
+        }*/
 
-        $data = ['error' => 0, 'message' => 'oki', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
+        $data = ['error' => 0, 'message' => $t, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
 
