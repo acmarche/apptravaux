@@ -92,7 +92,6 @@ class ApiController extends AbstractController
     public function insert(Request $request)
     {
         $avaloirJson = $request->request->get('avaloir');
-        $image = $request->files->get('image');
 
         try {
             $avaloirData = json_decode($avaloirJson, true);
@@ -102,17 +101,21 @@ class ApiController extends AbstractController
             $this->avaloirNewRepository->persist($avaloir);
             $this->avaloirNewRepository->flush();
         } catch (\Exception $exception) {
-            $data = ['error' => 0, 'message' => $image, 'avaloir' => $exception->getMessage()];
+            $data = [
+                'error' => 0,
+                'message' => 'Avaloir non insérer dans la base de données',
+                'avaloir' => $exception->getMessage()
+            ];
             return new JsonResponse($data);
         }
 
-        /*   $result = $this->uploadImage($avaloir, $request);
+        $result = $this->uploadImage($avaloir, $request);
 
-           if (count($result) > 0) {
-               return new JsonResponse($result);
-           }*/
+        if ($result['error'] > 0) {
+            return new JsonResponse($result);
+        }
 
-        $data = ['error' => 0, 'message' => $t, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
+        $data = ['error' => 0, 'message' => 'ok', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
     }
 
@@ -205,13 +208,8 @@ class ApiController extends AbstractController
                 ];
         }
 
-        if (!$image instanceof UploadedFile) {
-            return
-                [
-                    'error' => 0,
-                    'message' => $image->getClientMimeType(),
-                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
-                ];
+        if ($image instanceof UploadedFile) {
+            $this->upload($avaloir, $image);
         }
 
         return [];
@@ -234,6 +232,7 @@ class ApiController extends AbstractController
         }
 
         $avaloir->setImageName($name);
+        $this->avaloirNewRepository->flush();
         return ['error' => 0, 'message' => $name, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
     }
 
