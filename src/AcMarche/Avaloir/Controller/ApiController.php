@@ -93,17 +93,22 @@ class ApiController extends AbstractController
     {
         $t = $request->request->get('avaloir');
         $data = json_decode($request->getContent(), true);
-        $avaloir = new AvaloirNew();
-        $avaloir->setLatitude($data['latitude']);
-        $avaloir->setLongitude($data['longitude']);
-        $this->avaloirNewRepository->persist($avaloir);
-        $this->avaloirNewRepository->flush();
+        try {
+            $avaloir = new AvaloirNew();
+            $avaloir->setLatitude($data['latitude']);
+            $avaloir->setLongitude($data['longitude']);
+            $this->avaloirNewRepository->persist($avaloir);
+            $this->avaloirNewRepository->flush();
+        } catch (\Exception $exception) {
+            $data = ['error' => 0, 'message' => $t, 'avaloir' => $exception->getMessage()];
+            return new JsonResponse($data);
+        }
 
-     /*   $result = $this->uploadImage($avaloir, $request);
+        /*   $result = $this->uploadImage($avaloir, $request);
 
-        if (count($result) > 0) {
-            return new JsonResponse($result);
-        }*/
+           if (count($result) > 0) {
+               return new JsonResponse($result);
+           }*/
 
         $data = ['error' => 0, 'message' => $t, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
         return new JsonResponse($data);
