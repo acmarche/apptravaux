@@ -91,9 +91,10 @@ class ApiController extends AbstractController
      */
     public function insert(Request $request)
     {
-        $avaloirData = $request->request->get('avaloir');
-        $image = json_decode($request->getContent(), true);
+        $avaloirJson = $request->request->get('avaloir');
+        $image = $request->getContent();
         try {
+            $avaloirData = json_decode($avaloirJson, true);
             $avaloir = new AvaloirNew();
             $avaloir->setLatitude($avaloirData['latitude']);
             $avaloir->setLongitude($avaloirData['longitude']);
