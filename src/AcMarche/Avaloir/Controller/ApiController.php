@@ -2,7 +2,6 @@
 
 namespace AcMarche\Avaloir\Controller;
 
-use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Vich\UploaderBundle\Storage\FileSystemStorage;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
