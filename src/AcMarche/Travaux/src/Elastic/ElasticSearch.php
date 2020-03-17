@@ -50,6 +50,20 @@ class ElasticSearch
         return $this->elasticServer->getClient()->search($params);
     }
 
+    /**
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function updateData(array $avaloir)
+    {
+        try {
+            return $this->elasticServer->getClient()->index($avaloir);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
     private function test()
     {
         $params = [

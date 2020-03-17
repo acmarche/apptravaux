@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * Class ApiController
@@ -36,10 +35,6 @@ class ApiController extends AbstractController
      * @var Logger
      */
     private $logger;
-    /**
-     * @var UploaderHelper
-     */
-    private $uploaderHelper;
     /**
      * @var DateNettoyageRepository
      */
@@ -111,6 +106,17 @@ class ApiController extends AbstractController
 
         if ($result['error'] > 0) {
             return new JsonResponse($result);
+        }
+
+        try {
+            $this->elasticSearch->updateData($avaloir);
+        } catch (\Exception $e) {
+            $data = [
+                'error' => 1,
+                'message' => $e->getMessage(),
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
+            return new JsonResponse($data);
         }
 
         $data = ['error' => 0, 'message' => 'ok', 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
