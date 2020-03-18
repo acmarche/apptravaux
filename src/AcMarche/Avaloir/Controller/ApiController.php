@@ -109,7 +109,7 @@ class ApiController extends AbstractController
         }
 
         try {
-            $this->elasticSearch->updateData($avaloir);
+            $this->elasticSearch->updateData($this->serializeApi->serializeAvaloir($avaloir));
         } catch (\Exception $e) {
             $data = [
                 'error' => 1,
