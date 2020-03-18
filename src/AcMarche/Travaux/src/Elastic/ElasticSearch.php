@@ -52,25 +52,6 @@ class ElasticSearch
         return $this->elasticServer->getClient()->search($params);
     }
 
-    /**
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function updateData(\stdClass $avaloir)
-    {
-        $data = [
-            'index' => 'bottin',
-            'id' => $avaloir->id,
-            'body' => $avaloir
-        ];
-        try {
-            return $this->elasticServer->getClient()->index($data);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-    }
-
     private function test()
     {
         $params = [

@@ -9,6 +9,7 @@ use AcMarche\Avaloir\Repository\DateNettoyageRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use AcMarche\Travaux\Elastic\ElasticSearch;
+use AcMarche\Travaux\Elastic\ElasticServer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -43,19 +44,25 @@ class ApiController extends AbstractController
      * @var ElasticSearch
      */
     private $elasticSearch;
+    /**
+     * @var ElasticServer
+     */
+    private $elasticServer;
 
     public function __construct(
         AvaloirNewRepository $avaloirNewRepository,
         DateNettoyageRepository $dateNettoyageRepository,
         SerializeApi $serializeApi,
         Logger $logger,
-        ElasticSearch $elasticSearch
+        ElasticSearch $elasticSearch,
+        ElasticServer $elasticServer
     ) {
         $this->avaloirNewRepository = $avaloirNewRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
         $this->dateNettoyageRepository = $dateNettoyageRepository;
         $this->elasticSearch = $elasticSearch;
+        $this->elasticServer = $elasticServer;
     }
 
     /**
@@ -109,7 +116,8 @@ class ApiController extends AbstractController
         }
 
         try {
-            $this->elasticSearch->updateData($this->serializeApi->serializeAvaloir($avaloir));
+            $result = $this->elasticServer->updateData($avaloir);
+            $this->elasticServer->getClient()->indices()->refresh();
         } catch (\Exception $e) {
             $data = [
                 'error' => 1,

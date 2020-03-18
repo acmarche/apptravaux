@@ -3,6 +3,7 @@
 
 namespace AcMarche\Travaux\Elastic;
 
+use AcMarche\Avaloir\Entity\AvaloirNew;
 use Elasticsearch\ClientBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -157,10 +158,20 @@ class ElasticServer
      * @return array
      * @throws \Exception
      */
-    public function updateData(array $avaloir)
+    public function updateData(AvaloirNew $avaloir)
     {
+        $data = [
+            'index' => 'avaloir',
+            'id' => $avaloir->getId(),
+            'body' => [
+                'id' => $avaloir->getId(),
+                'location' => ['lat' => $avaloir->getLatitude(), 'lon' => $avaloir->getLongitude()],
+                'description' => $avaloir->getDescription()
+            ]
+        ];
+
         try {
-            return $this->client->index($avaloir);
+            return $this->client->index($data);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

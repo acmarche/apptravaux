@@ -62,9 +62,9 @@ class ElasticCommand extends Command
             }
         }
 
-        $result = $this->elasticSearch->search("500km", 50.2269067000, 5.3448833000);
-        var_dump($result);
-        //  $this->updateAvaloirs();
+        $result = $this->elasticSearch->search("500km", 50.22403140, 5.29429060);
+      //  var_dump($result);
+          $this->updateAvaloirs();
 
         return 0;
     }
@@ -72,17 +72,10 @@ class ElasticCommand extends Command
     private function updateAvaloirs()
     {
         foreach ($this->avaloirRepository->findAll() as $avaloir) {
-            $data = [
-                'index' => 'avaloir',
-                'id' => $avaloir->getId(),
-                'body' => [
-                    'id' => $avaloir->getId(),
-                    'location' => ['lat' => $avaloir->getLatitude(), 'lon' => $avaloir->getLongitude()],
-                    'description' => $avaloir->getDescription()
-                ]
-            ];
-            $this->elasticServer->updateData($data);
+            $result = $this->elasticServer->updateData($avaloir);
+            var_dump($result);
         }
         $this->elasticServer->getClient()->indices()->refresh();
+        return [];
     }
 }
