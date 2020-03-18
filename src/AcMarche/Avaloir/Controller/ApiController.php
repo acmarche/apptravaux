@@ -118,7 +118,12 @@ class ApiController extends AbstractController
         try {
             $result = $this->elasticServer->updateData($avaloir);
             $this->elasticServer->getClient()->indices()->refresh();
-            $data = ['error' => 0, 'message' => $result, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
+            $data = [
+                'error' => 0,
+                'elastic' => $result,
+                'message' => 'ok',
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+            ];
             return new JsonResponse($data);
         } catch (\Exception $e) {
             $data = [
