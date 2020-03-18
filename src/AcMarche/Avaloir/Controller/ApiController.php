@@ -117,7 +117,7 @@ class ApiController extends AbstractController
 
         try {
             $result = $this->elasticServer->updateData($avaloir);
-            $this->elasticServer->getClient()->indices()->refresh();
+            //$this->elasticServer->getClient()->indices()->refresh();
             $data = [
                 'error' => 0,
                 'elastic' => $result,

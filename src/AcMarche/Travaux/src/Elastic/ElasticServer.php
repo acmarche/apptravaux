@@ -171,9 +171,46 @@ class ElasticServer
         ];
 
         try {
-            return $this->client->index($data);
+            return $this->formatResponse($this->client->index($data));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+    }
+
+    /**
+     * array(8) {
+     * ["_index"]=>
+     * string(7) "avaloir"
+     * ["_type"]=>
+     * string(4) "_doc"
+     * ["_id"]=>
+     * string(1) "1"
+     * ["_version"]=>
+     * int(1)
+     * ["result"]=>
+     * string(7) "created"
+     * ["_shards"]=>
+     * array(3) {
+     * ["total"]=>
+     * int(1)
+     * ["successful"]=>
+     * int(1)
+     * ["failed"]=>
+     * int(0)
+     * }
+     * ["_seq_no"]=>
+     * int(0)
+     * ["_primary_term"]=>
+     * int(3)
+     * }
+     * @param array $result
+     */
+    protected function formatResponse(array $result)
+    {
+        $data = [];
+        $data['result'] = $result["result"];
+        $data['successful'] = $result["successful"];
+        $data['failed'] = $result["failed"];
+        return $data;
     }
 }
