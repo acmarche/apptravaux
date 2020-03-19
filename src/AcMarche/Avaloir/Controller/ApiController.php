@@ -66,7 +66,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/all")
+     * @Route("/all", format="json")
      */
     public function index()
     {
@@ -76,7 +76,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/dates")
+     * @Route("/dates", format="json")
      */
     public function dates()
     {
@@ -91,7 +91,7 @@ class ApiController extends AbstractController
      */
     public function insert(Request $request)
     {
-        $coordinatesJson = $request->reques2t->get('coordinates');
+        $coordinatesJson = $request->request->get('coordinates');
 
         try {
             $data = json_decode($coordinatesJson, true);
@@ -137,7 +137,7 @@ class ApiController extends AbstractController
 
     /**
      * @param int $id
-     * @Route("/update/{id}")
+     * @Route("/update/{id}", format="json")
      * @return JsonResponse
      */
     public function update(int $id, Request $request)
@@ -163,7 +163,7 @@ class ApiController extends AbstractController
     /**
      * @param AvaloirNew $avaloir
      * @param int $quantite
-     * @Route("/clean/{id}/{dateString}")
+     * @Route("/clean/{id}/{dateString}", format="json")
      * @return JsonResponse
      */
     public function addCleaning(int $id, string $dateString)
@@ -254,7 +254,7 @@ class ApiController extends AbstractController
 
     /**
      *
-     * @Route("/search")
+     * @Route("/search", format="json")
      * @return JsonResponse
      */
     public function search(Request $request)
