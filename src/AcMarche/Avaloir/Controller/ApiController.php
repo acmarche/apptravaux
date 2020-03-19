@@ -86,7 +86,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/insert")
+     * @Route("/insert", format="json")
      * @return JsonResponse
      */
     public function insert(Request $request)
