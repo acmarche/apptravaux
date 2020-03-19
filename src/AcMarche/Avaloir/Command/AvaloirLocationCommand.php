@@ -2,6 +2,7 @@
 
 namespace AcMarche\Avaloir\Command;
 
+use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Avaloir\Location\LocationReverse;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -57,21 +58,31 @@ class AvaloirLocationCommand extends Command
                 $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
                 if (!isset($result['error'])) {
                     $adresse = $result['address'];
-                    if (isset($adresse['road'])) {
-                        $avaloir->setRue($adresse['road']);
-                    } else {
-                        $this->sendemail($result);
-                    }
                     $avaloir->setLocalite($adresse['town']);
+                    $this->setRoad($avaloir, $adresse);
                 } else {
                     $this->sendemail($result);
                 }
             }
         }
 
-        //   $this->avaloirRepository->flush();
+        $this->avaloirRepository->flush();
 
         return 0;
+    }
+
+    protected function setRoad(AvaloirNew $avaloir, $address)
+    {
+        if (isset($adresse['road'])) {
+            $avaloir->setRue($address['road']);
+            return;
+        }
+        if (isset($adresse['pedestrian'])) {
+            $avaloir->setRue($address['pedestrian']);
+            return;
+        }
+
+        $this->sendemail($address);
     }
 
     protected function sendemail(array $result)
@@ -86,7 +97,6 @@ class AvaloirLocationCommand extends Command
         try {
             $this->mailer->send($mail);
         } catch (TransportExceptionInterface $e) {
-
         }
     }
 }
