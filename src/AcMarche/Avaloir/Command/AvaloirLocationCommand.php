@@ -73,11 +73,11 @@ class AvaloirLocationCommand extends Command
 
     protected function setRoad(AvaloirNew $avaloir, $address)
     {
-        if (isset($adresse['road'])) {
+        if (isset($address['road'])) {
             $avaloir->setRue($address['road']);
             return;
         }
-        if (isset($adresse['pedestrian'])) {
+        if (isset($address['pedestrian'])) {
             $avaloir->setRue($address['pedestrian']);
             return;
         }
