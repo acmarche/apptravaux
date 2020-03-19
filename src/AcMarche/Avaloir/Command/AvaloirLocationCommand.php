@@ -4,10 +4,13 @@ namespace AcMarche\Avaloir\Command;
 
 use AcMarche\Avaloir\Location\LocationReverse;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class AvaloirLocationCommand extends Command
 {
@@ -21,15 +24,21 @@ class AvaloirLocationCommand extends Command
      * @var LocationReverse
      */
     private $locationReverse;
+    /**
+     * @var MailerInterface
+     */
+    private $mailer;
 
     public function __construct(
         AvaloirNewRepository $avaloirRepository,
         LocationReverse $locationReverse,
+        MailerInterface $mailer,
         string $name = null
     ) {
         parent::__construct($name);
         $this->avaloirRepository = $avaloirRepository;
         $this->locationReverse = $locationReverse;
+        $this->mailer = $mailer;
     }
 
     protected function configure()
@@ -46,19 +55,38 @@ class AvaloirLocationCommand extends Command
         foreach ($avaloirs as $avaloir) {
             if (!$avaloir->getRue()) {
                 $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
-                //var_dump($result);
                 if (!isset($result['error'])) {
                     $adresse = $result['address'];
-                    $avaloir->setRue($adresse['road']);
+                    if (isset($adresse['road'])) {
+                        $avaloir->setRue($adresse['road']);
+                    } else {
+                        $this->sendemail($result);
+                    }
                     $avaloir->setLocalite($adresse['town']);
                 } else {
-                    $io->error($result['message']);
+                    $this->sendemail($result);
                 }
             }
         }
 
-        $this->avaloirRepository->flush();
+        //   $this->avaloirRepository->flush();
 
         return 0;
+    }
+
+    protected function sendemail(array $result)
+    {
+        $mail = (new TemplatedEmail())
+            ->subject('Travaux reverse error')
+            ->from("webmaster@marche.be")
+            ->to("webmaster@marche.be")
+            ->textTemplate("@AcMarcheAvaloir/mail/reverse.txt.twig")
+            ->context(['result' => $result]);
+
+        try {
+            $this->mailer->send($mail);
+        } catch (TransportExceptionInterface $e) {
+
+        }
     }
 }

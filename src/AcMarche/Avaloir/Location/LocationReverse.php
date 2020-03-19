@@ -14,7 +14,7 @@ class LocationReverse
 {
     public function __construct()
     {
-        $this->baseUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&namedetails=1&extratags=1';
+        $this->baseUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&namedetails=0&extratags=0';
         $this->client = HttpClient::create();
     }
 
