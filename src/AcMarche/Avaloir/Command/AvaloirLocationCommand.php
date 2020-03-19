@@ -5,6 +5,7 @@ namespace AcMarche\Avaloir\Command;
 use AcMarche\Avaloir\Entity\AvaloirNew;
 use AcMarche\Avaloir\Location\LocationReverse;
 use AcMarche\Avaloir\Repository\AvaloirNewRepository;
+use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,17 +30,23 @@ class AvaloirLocationCommand extends Command
      * @var MailerInterface
      */
     private $mailer;
+    /**
+     * @var SerializeApi
+     */
+    private $serializeApi;
 
     public function __construct(
         AvaloirNewRepository $avaloirRepository,
         LocationReverse $locationReverse,
         MailerInterface $mailer,
+        SerializeApi $serializeApi,
         string $name = null
     ) {
         parent::__construct($name);
         $this->avaloirRepository = $avaloirRepository;
         $this->locationReverse = $locationReverse;
         $this->mailer = $mailer;
+        $this->serializeApi = $serializeApi;
     }
 
     protected function configure()
@@ -54,6 +61,7 @@ class AvaloirLocationCommand extends Command
         $avaloirs = $this->avaloirRepository->findAll();
 
         foreach ($avaloirs as $avaloir) {
+            //$this->serializeApi->serializeAvaloir($avaloir);
             if (!$avaloir->getRue()) {
                 $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
                 if (!isset($result['error'])) {

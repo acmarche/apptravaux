@@ -13,6 +13,8 @@ use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
 use AcMarche\Travaux\Entity\Security\User;
+use Liip\ImagineBundle\Service\FilterService;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -26,16 +28,33 @@ class SerializeApi
      * @var RequestStack
      */
     private $requestStack;
+    /**
+     * @var FilterService
+     */
+    private $filterService;
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
 
-    public function __construct(UploaderHelper $uploaderHelper, RequestStack $requestStack)
-    {
+    public function __construct(
+        UploaderHelper $uploaderHelper,
+        RequestStack $requestStack,
+        FilterService $filterService,
+        ParameterBagInterface $parameterBag
+    ) {
         $this->uploaderHelper = $uploaderHelper;
         $this->requestStack = $requestStack;
+        $this->filterService = $filterService;
+        $this->parameterBag = $parameterBag;
     }
 
     public function getUrl()
     {
-        return $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
+        if ($this->requestStack->getMasterRequest()) {
+            return $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
+        }
+        return '';
     }
 
     public function serializeAvaloir(AvaloirNew $avaloir)
@@ -48,7 +67,17 @@ class SerializeApi
         $std->rue = $avaloir->getRue();
         $std->description = $avaloir->getDescription();
         if ($avaloir->getImageName()) {
-            $std->imageUrl = $this->getUrl() . $this->uploaderHelper->asset($avaloir, 'imageFile');
+            $root = $this->parameterBag->get('ac_marche_travaux_dir_public');
+            $pathImg = $this->uploaderHelper->asset($avaloir, 'imageFile');
+            $fullPath = $root . $pathImg;
+            if (is_readable($fullPath)) {
+                $thumb = $this->filterService->getUrlOfFilteredImage($pathImg, 'actravaux_thumb');
+                if ($thumb) {
+                    $std->imageUrl = $thumb;
+                } else {
+                    $std->imageUrl = $this->getUrl() . $this->uploaderHelper->asset($avaloir, 'imageFile');
+                }
+            }
         }
         return $std;
     }

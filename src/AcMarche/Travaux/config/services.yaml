@@ -7,6 +7,7 @@ parameters:
     locale: 'fr'
     ac_marche_travaux.upload.directory: "%kernel.project_dir%/public/files"
     ac_marche_avaloir.upload.directory: "%kernel.project_dir%/public/avaloirs"
+    ac_marche_travaux_dir_public: "%kernel.project_dir%/public"
     ac_marche_travaux.download.directory: "/files"
     acmarche_travaux.elastic.host: '%env(ELASTIC_HOST)%'
     acmarche_travaux.elastic.index: '%env(ELASTIC_INDEX)%'
@@ -45,3 +46,6 @@ services:
 
     AcMarche\Avaloir\Namer\DirectoryNamer:
         public: true
+
+    Liip\ImagineBundle\Service\FilterService:
+        alias: 'liip_imagine.service.filter'
