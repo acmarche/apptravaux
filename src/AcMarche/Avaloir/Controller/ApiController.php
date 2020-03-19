@@ -91,7 +91,7 @@ class ApiController extends AbstractController
      */
     public function insert(Request $request)
     {
-        $coordinatesJson = $request->request->get('coordinates');
+        $coordinatesJson = $request->reques2t->get('coordinates');
 
         try {
             $data = json_decode($coordinatesJson, true);
