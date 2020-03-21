@@ -41,7 +41,7 @@ class Avaloir implements TimestampableInterface
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $descriptif;
+    protected $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="Rue", inversedBy="avaloirs")
@@ -66,11 +66,6 @@ class Avaloir implements TimestampableInterface
      * @ORM\Column(type="string", nullable=true)
      */
     protected $numero;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
 
     /**
      * @ORM\OneToMany(targetEntity="DateNettoyage", mappedBy="avaloir", cascade={"persist", "remove"}))
@@ -178,18 +173,6 @@ class Avaloir implements TimestampableInterface
         return $this;
     }
 
-    public function getDescriptif(): ?string
-    {
-        return $this->descriptif;
-    }
-
-    public function setDescriptif(?string $descriptif): self
-    {
-        $this->descriptif = $descriptif;
-
-        return $this;
-    }
-
     public function getRue(): ?string
     {
         return $this->rue;
@@ -289,6 +272,18 @@ class Avaloir implements TimestampableInterface
                 $date->setAvaloir(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
