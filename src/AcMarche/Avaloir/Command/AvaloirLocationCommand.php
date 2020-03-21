@@ -2,9 +2,9 @@
 
 namespace AcMarche\Avaloir\Command;
 
-use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Location\LocationReverse;
-use AcMarche\Avaloir\Repository\AvaloirNewRepository;
+use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ class AvaloirLocationCommand extends Command
     protected static $defaultName = 'avaloir:location';
 
     /**
-     * @var AvaloirNewRepository
+     * @var AvaloirRepository
      */
     private $avaloirRepository;
     /**
@@ -36,7 +36,7 @@ class AvaloirLocationCommand extends Command
     private $serializeApi;
 
     public function __construct(
-        AvaloirNewRepository $avaloirRepository,
+        AvaloirRepository $avaloirRepository,
         LocationReverse $locationReverse,
         MailerInterface $mailer,
         SerializeApi $serializeApi,
@@ -79,7 +79,7 @@ class AvaloirLocationCommand extends Command
         return 0;
     }
 
-    protected function setRoad(AvaloirNew $avaloir, $address)
+    protected function setRoad(Avaloir $avaloir, $address)
     {
         if (isset($address['road'])) {
             $avaloir->setRue($address['road']);

@@ -1,42 +1,65 @@
 {% extends '@AcMarcheAvaloir/layout_avaloir.html.twig' %}
 
 {% block body -%}
-    <div class="page-header">
-        <h3>Détail de l'avaloir <strong>{{ avaloir }}</strong></h3>
+
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h3>Détail de l'avaloir <strong>{{ avaloir }}</strong></h3>
+        </div>
+        <div class="card-body">
+            {% include '@AcMarcheAvaloir/avaloir/actions.html.twig' %}
+            <br/>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Localisation</th>
+                    <td>
+                        <a href="https://www.openstreetmap.org/#map=17/{{avaloir.latitude}}/{{avaloir.longitude}}" target="_blank">
+                            {{ avaloir.latitude }}, {{ avaloir.longitude }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date de rappel</th>
+                    <td>
+                        {% if avaloir.dateRappel %}
+                            <br/>
+                            <p>
+                                <strong>Date de rappel : {{ avaloir.dateRappel | date('d-m-Y') }}</strong>
+                            </p>
+                            <br/>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <h4>Liste des dates de nettoyages</h4>
+
+            <ul class='list-group'>
+                {% for date in avaloir.dates %}
+                    {% set datenettoyage = date.jour %}
+                    <li class='list-group-item'>
+                        <a title='' href='{{ path('datenettoyage_show', { 'id': date.id }) }}'>
+                            {{ datenettoyage | date('d-m-Y') }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class='list-group-item'>Aucune</li>
+                {% endfor %}
+            </ul>
+            <br/>
+
+            <p>{{ avaloir.descriptif | nl2br }}</p>
+
+            {{ include('@AcMarcheAvaloir/avaloir/_images.html.twig') }}
+        </div>
+        <div class="card-footer text-muted">
+
+            {{ 'Created' | trans }} {{ avaloir.createdAt|date('d-m-Y H:i:s') }}
+            . {{ 'Updated' | trans }} {{ avaloir.updatedAt|date('d-m-Y H:i:s') }}
+
+        </div>
     </div>
 
-    {% include '@AcMarcheAvaloir/avaloir/actions.html.twig' %}
-
-    {% if avaloir.dateRappel %}
-        <br />
-        <p>
-        <strong>Date de rappel : {{ avaloir.dateRappel | date('d-m-Y') }}</strong>
-        </p>
-        <br />
-    {% endif %}
- <br />
-    <h4>Liste des dates de nettoyages</h4>
-
-    <ul class='list-group'>
-        {% for date in avaloir.dates %}
-            {% set datenettoyage = date.jour %}
-            <li class='list-group-item'>
-                <a title='' href='{{ path('datenettoyage_show', { 'id': date.id }) }}'>
-                    {{ datenettoyage | date('d-m-Y') }}
-                </a>
-            </li>
-        {% else %}
-            <li class='list-group-item'>Aucune</li>
-        {% endfor %}
-    </ul>
-    <br />
-
-    <p>{{ avaloir.descriptif | nl2br }}</p>
-    <p class="text-muted">
-        {{ 'Created' | trans }} {{ avaloir.createdAt|date('d-m-Y H:i:s') }}
-        . {{ 'Updated' | trans }} {{ avaloir.updatedAt|date('d-m-Y H:i:s') }}
-    </p>
-
-    {% include '@AcMarcheAvaloir/avaloir/delete.html.twig'  %}
+    {% include '@AcMarcheAvaloir/avaloir/delete.html.twig' %}
 
 {% endblock %}

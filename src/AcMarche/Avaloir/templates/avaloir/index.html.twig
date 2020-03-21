@@ -2,18 +2,12 @@
 
 {% block body -%}
     <div class="page-header">
-        <h3>Liste des avaloirs ({{ entities | length }}) </h3>
+        <h3>Liste des avaloirs ({{ avaloirs | length }}) </h3>
     </div>
-
-    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
-        <a href="{{ path('avaloir_new') }}" class="btn btn-primary" role="button">
-            <i class="fas fa-plus"></i> Ajouter</a>
-        <br/>
-    {% endif %}
 
     {% include '@AcMarcheAvaloir/search/avaloir.html.twig' %}
 
-    {% if entities | length > 0 %}
+    {% if avaloirs | length > 0 %}
         <table class='table table-bordered table-hover'>
             <thead>
             <tr>
@@ -28,33 +22,33 @@
             </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
+            {% for avaloir in avaloirs %}
                 <tr>
                     <td>
-                        {{ entity.id }}
+                        <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': avaloir.id }) }}">
+                          Num  {{ avaloir.id }}
+                        </a>
                     </td>
-                    <td>{{ entity.rue.village }}</td>
+                    <td>{{ avaloir.localite }}</td>
                     <td>
-                        {% if entity.rue.quartier %}
-                            <a href="{{ path('quartier_show', { 'id': entity.rue.quartier.id }) }}">
-                                {{ entity.rue.quartier }}
+                        {% if avaloir.rueEntity and avaloir.rue.quartier %}
+                            <a href="{{ path('quartier_show', { 'id': avaloir.rue.quartier.id }) }}">
+                                {{ avaloir.rue.quartier }}
                             </a>
                         {% endif %}
                     </td>
                     <td>
-                        <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': entity.id }) }}">
-                            {{ entity.rue }} {{ entity.numero }}
-                        </a>
+                        {{ avaloir.rue }} {{ avaloir.numero }}
                     </td>
                     <td>
-                        {% if entity.dates | length > 0 %}
-                            {% set jour = entity.dates | first %}
+                        {% if avaloir.dates | length > 0 %}
+                            {% set jour = avaloir.dates | first %}
                             {{ jour }}
                         {% endif %}
                     </td>
                     {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
                         <td>
-                            <a href="{{ path('datenettoyage_new', { 'id': entity.id }) }}"
+                            <a href="{{ path('datenettoyage_new', { 'id': avaloir.id }) }}"
                                class="btn btn-primary btn-xs" role="button">
                                 <i class="far fa-calendar-alt"></i>
                                 Ajouter une date

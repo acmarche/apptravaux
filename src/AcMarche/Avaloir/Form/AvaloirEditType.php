@@ -2,11 +2,14 @@
 
 namespace AcMarche\Avaloir\Form;
 
+use AcMarche\Avaloir\Data\Localite;
 use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Repository\RueRepository;
+use AcMarche\Avaloir\Repository\VillageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,6 +19,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AvaloirEditType extends AbstractType
 {
+    /**
+     * @var VillageRepository
+     */
+    private $villageRepository;
+
+    public function __construct(VillageRepository $villageRepository)
+    {
+        $this->villageRepository = $villageRepository;
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -34,22 +46,38 @@ class AvaloirEditType extends AbstractType
             )
             ->add(
                 'rue',
-                EntityType::class,
-                array(
-                    'class' => Rue::class,
-                    'required' => true,
-                    'placeholder' => 'Sélectionnez une rue',
-                    'group_by' => 'village',
-                    'query_builder' => function (RueRepository $er) {
-                        return $er->getForList();
-                    },
-                )
+                TextType::class,
+                [
+                    'help' => 'Le nom de la rue a été trouvé suivant les coordonnées gps',
+                    'attr' => ['readonly' => true]
+                ]
             )
+            ->add(
+                'localite',
+                ChoiceType::class,
+                [
+                    'required'=>false,
+                    'choices' => $this->villageRepository->getForSearch()
+                ]
+            )
+            /*     ->add(
+                     'rueEntity',
+                     EntityType::class,
+                     array(
+                         'class' => Rue::class,
+                         'required' => true,
+                         'placeholder' => 'Sélectionnez une rue',
+                         'group_by' => 'village',
+                         'query_builder' => function (RueRepository $er) {
+                             return $er->getForList();
+                         },
+                     )
+                 )*/
             ->add(
                 'numero',
                 TextType::class,
                 [
-                    'help' => 'Emplacement approximatif dans la rue',
+                    'label' => 'Numéro de maison',
                     'required' => false,
                 ]
             )
@@ -68,7 +96,7 @@ class AvaloirEditType extends AbstractType
                     'widget' => 'single_text',
                     'required' => false,
                     'label' => 'Date de rappel',
-                    'attr' => array( 'autocomplete' => 'off'),
+                    'attr' => array('autocomplete' => 'off'),
                 )
             );
     }

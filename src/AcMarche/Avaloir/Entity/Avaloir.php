@@ -7,11 +7,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\AvaloirRepository")
  * @ORM\Table(name="avaloir")
+ * @Vich\Uploadable
  *
  */
 class Avaloir implements TimestampableInterface
@@ -26,21 +29,48 @@ class Avaloir implements TimestampableInterface
     protected $id;
 
     /**
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
+     */
+    protected $latitude;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
+     */
+    protected $longitude;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $descriptif;
 
     /**
      * @ORM\ManyToOne(targetEntity="Rue", inversedBy="avaloirs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     *
+     */
+    protected $rueEntity;
+
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
      *
      */
     protected $rue;
 
     /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     *
+     */
+    protected $localite;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $numero;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
 
     /**
      * @ORM\OneToMany(targetEntity="DateNettoyage", mappedBy="avaloir", cascade={"persist", "remove"}))
@@ -53,6 +83,19 @@ class Avaloir implements TimestampableInterface
      * @Assert\DateTime()
      */
     protected $date_rappel;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="avaloir_image", fileNameProperty="imageName")
+     *
+     * @var File|null
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=120, nullable=true)
+     */
+    private $imageName;
 
     /**
      * Utilise pour l'ajout d'un avoloir (ajax)
@@ -86,9 +129,53 @@ class Avaloir implements TimestampableInterface
         return $this->rue . " " . $this->numero;
     }
 
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     * @throws \Exception
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
     }
 
     public function getDescriptif(): ?string
@@ -99,6 +186,30 @@ class Avaloir implements TimestampableInterface
     public function setDescriptif(?string $descriptif): self
     {
         $this->descriptif = $descriptif;
+
+        return $this;
+    }
+
+    public function getRue(): ?string
+    {
+        return $this->rue;
+    }
+
+    public function setRue(?string $rue): self
+    {
+        $this->rue = $rue;
+
+        return $this;
+    }
+
+    public function getLocalite(): ?string
+    {
+        return $this->localite;
+    }
+
+    public function setLocalite(?string $localite): self
+    {
+        $this->localite = $localite;
 
         return $this;
     }
@@ -127,14 +238,26 @@ class Avaloir implements TimestampableInterface
         return $this;
     }
 
-    public function getRue(): ?Rue
+    public function getImageName(): ?string
     {
-        return $this->rue;
+        return $this->imageName;
     }
 
-    public function setRue(?Rue $rue): self
+    public function setImageName(?string $imageName): self
     {
-        $this->rue = $rue;
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getRueEntity(): ?Rue
+    {
+        return $this->rueEntity;
+    }
+
+    public function setRueEntity(?Rue $rueEntity): self
+    {
+        $this->rueEntity = $rueEntity;
 
         return $this;
     }
@@ -169,5 +292,7 @@ class Avaloir implements TimestampableInterface
 
         return $this;
     }
+
+
 
 }

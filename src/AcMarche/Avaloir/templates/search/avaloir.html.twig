@@ -3,11 +3,11 @@
     {{ form_start(search_form, { 'attr': {'class': 'form-inline'}}) }}
     {{ form_errors(search_form) }}
 
+    {{ form_row(search_form.rue, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
     {{ form_row(search_form.village, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
 
     {{ form_row(search_form.quartier, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
 
-    {{ form_row(search_form.nom, {label_attr: {class: 'sr-only'} }) }}
     {{ form_row(search_form.date_debut, {label_attr: {class: 'sr-only'} }) }}
     {{ form_row(search_form.date_fin, {label_attr: {class: 'sr-only'} }) }}
 

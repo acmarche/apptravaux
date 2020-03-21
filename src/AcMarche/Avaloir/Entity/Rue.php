@@ -41,7 +41,7 @@ class Rue
     protected $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="Avaloir", mappedBy="rue")
+     * @ORM\OneToMany(targetEntity="Avaloir", mappedBy="rueEntity")
      *
      */
     private $avaloirs;

@@ -58,12 +58,12 @@ class ExportController extends AbstractController
         /**
          * titre des colonnes
          */
-        $colonnes = array('Id', 'Village', 'Rue', 'Descriptif', 'Dates');
+        $colonnes = array('Id', 'Village', 'Rue', 'latitude', 'longitude', 'Descriptif', 'Dates');
 
         $lettre = "A";
         foreach ($colonnes as $colonne) {
             //$sheet->getColumnDimension('A')->setWidth(20);
-            $sheet->setCellValue($lettre.$ligne, $colonne);
+            $sheet->setCellValue($lettre . $ligne, $colonne);
             //    $sheet->getStyle($lettre.$ligne)->applyFromArray($font);
             $lettre++;
         }
@@ -74,14 +74,16 @@ class ExportController extends AbstractController
             $dates = $avaloir->getDates();
 
             $lettre = "A";
-            $sheet->setCellValue($lettre++.$ligne, $avaloir->getId());
-            $sheet->setCellValue($lettre++.$ligne, $avaloir->getRue()->getVillage());
-            $sheet->setCellValue($lettre++.$ligne, $avaloir->getRue());
-            $sheet->setCellValue($lettre++.$ligne, $avaloir->getDescriptif());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getId());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getLocalite());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getLatitude());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getLongitude());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getRue());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getDescriptif());
 
             foreach ($dates as $date) {
                 $jour = $date->getJour();
-                $sheet->setCellValue($lettre++.$ligne, $jour->format('d-m-Y'));
+                $sheet->setCellValue($lettre++ . $ligne, $jour->format('d-m-Y'));
             }
 
             $ligne++;

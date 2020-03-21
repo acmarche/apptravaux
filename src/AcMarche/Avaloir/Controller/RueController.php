@@ -2,6 +2,7 @@
 
 namespace AcMarche\Avaloir\Controller;
 
+use AcMarche\Avaloir\Data\Localite;
 use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Form\RueType;
 use AcMarche\Avaloir\Form\Search\SearchRueType;
@@ -21,6 +22,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RueController extends AbstractController
 {
+    /**
+     * @var Localite
+     */
+    private $localite;
+
+    public function __construct(Localite $localite)
+    {
+        $this->localite = $localite;
+    }
 
     /**
      * Lists all Rue entities.
@@ -30,45 +40,12 @@ class RueController extends AbstractController
      */
     public function index(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $session = $request->getSession();
-
-        $data = array();
-
-        if ($session->has("rue_search")) {
-            $data = unserialize($session->get("rue_search"));
-        }
-
-        $search_form = $this->createForm(
-            SearchRueType::class,
-            $data,
-            array(
-                'action' => $this->generateUrl('rue'),
-                'method' => 'GET',
-            )
-        );
-
-        $search_form->handleRequest($request);
-
-        if ($search_form->isSubmitted() && $search_form->isValid()) {
-            $data = $search_form->getData();
-
-            if ($search_form->get('raz')->isClicked()) {
-                $session->remove("rue_search");
-                $this->addFlash('info', 'La recherche a bien été réinitialisée.');
-
-                return $this->redirectToRoute('rue');
-            }
-        }
-
-        $session->set('rue_search', serialize($data));
-        $entities = $em->getRepository(Rue::class)->search($data);
+        $rues = $this->localite->getListRues();
 
         return $this->render(
             '@AcMarcheAvaloir/rue/index.html.twig',
             array(
-                'search_form' => $search_form->createView(),
-                'entities' => $entities,
+                'rues' => $rues,
             )
         );
     }
@@ -161,8 +138,7 @@ class RueController extends AbstractController
      */
     public function delete(Request $request, Rue $rue)
     {
-        if ($this->isCsrfTokenValid('delete'.$rue->getId(), $request->request->get('_token'))) {
-
+        if ($this->isCsrfTokenValid('delete' . $rue->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
 
             $avaloirs = $rue->getAvaloirs();

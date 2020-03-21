@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AvaloirController extends AbstractController
 {
-
     /**
      * Lists all Avaloir entities.
      *
@@ -66,13 +65,13 @@ class AvaloirController extends AbstractController
         }
 
         $session->set($key, serialize($data));
-        $entities = $em->getRepository(Avaloir::class)->search($data);
+        $avaloirs = $em->getRepository(Avaloir::class)->search($data);
 
         return $this->render(
             '@AcMarcheAvaloir/avaloir/index.html.twig',
             array(
                 'search_form' => $search_form->createView(),
-                'entities' => $entities,
+                'avaloirs' => $avaloirs,
             )
         );
     }
@@ -80,7 +79,7 @@ class AvaloirController extends AbstractController
     /**
      * Displays a form to create a new Avaloir entity.
      *
-     * @Route("/new", name="avaloir_new", methods={"GET","POST"})
+     * Route("/new", name="avaloir_new", methods={"GET","POST"})
      *
      */
     public function new(Request $request)

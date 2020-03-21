@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Avaloir\Repository\DateNettoyageRepository")
- * @ORM\Table(name="dates")
+ * @ORM\Table(name="dates_nettoyage")
  *
  */
 class DateNettoyage implements TimestampableInterface
@@ -24,6 +24,7 @@ class DateNettoyage implements TimestampableInterface
     protected $id;
 
     /**
+     * @var \DateTimeInterface $jour
      * @ORM\Column(type="date", nullable=false)
      */
     protected $jour;
@@ -35,13 +36,6 @@ class DateNettoyage implements TimestampableInterface
      */
     protected $avaloir;
 
-      /**
-     * @ORM\ManyToOne(targetEntity="AvaloirNew", inversedBy="dates")
-     * @ORM\JoinColumn(nullable=true)
-     *
-     */
-    protected $avaloirNew;
-
     /**
      * pour ajouter une date a chaque rue
      * @var
@@ -50,7 +44,7 @@ class DateNettoyage implements TimestampableInterface
 
     public function __toString()
     {
-        $txt = $this->getJour()->format('d-m-Y');
+        $txt = $this->jour->format('d-m-Y');
         return $txt;
     }
 
@@ -80,12 +74,7 @@ class DateNettoyage implements TimestampableInterface
         return $this->jour;
     }
 
-    /**
-     * Attention ajouter ?
-     * @param \DateTimeInterface|null $jour
-     * @return $this
-     */
-    public function setJour(?\DateTimeInterface $jour): self
+    public function setJour(\DateTimeInterface $jour): self
     {
         $this->jour = $jour;
 
@@ -103,17 +92,4 @@ class DateNettoyage implements TimestampableInterface
 
         return $this;
     }
-
-    public function getAvaloirNew(): ?AvaloirNew
-    {
-        return $this->avaloirNew;
-    }
-
-    public function setAvaloirNew(?AvaloirNew $avaloir): self
-    {
-        $this->avaloirNew = $avaloir;
-
-        return $this;
-    }
-
 }

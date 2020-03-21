@@ -1,14 +1,14 @@
 <?php
-
 namespace AcMarche\Avaloir\Location;
 
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class LocationReverse
+class StreetView
 {
     /**
      * @var string
@@ -18,31 +18,65 @@ class LocationReverse
      * @var \Symfony\Contracts\HttpClient\HttpClientInterface
      */
     private $client;
+    /**
+     * @var string
+     */
+    private $size;
+    /**
+     * @var ?int
+     */
+    private $heading;
+    /**
+     * @var int
+     */
+    private $fov;
+    /**
+     * @var int
+     */
+    private $pitch;
+    /**
+     * @var string
+     */
+    private $key;
 
-    public function __construct()
+    public function __construct(string $apiKeyGoogle)
     {
-        $this->baseUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&namedetails=0&extratags=0';
+        $this->baseUrl = "https://maps.googleapis.com/maps/api/streetview";
         $this->client = HttpClient::create();
+        $this->size = "1024x768";
+        $this->heading = null; //0 => 360 90 =>EST, 180 => SUD
+        $this->fov = 90; //zoom 1 => 120
+        $this->pitch = 0; //90 vers le haut, -90 vers le bas
+        $this->key = $apiKeyGoogle;
     }
 
-    public function reverse($latitude, $longitude): array
+    public function getPhoto($latitude, $longitude)
     {
+        $query = [
+            'key' => $this->key,
+            'location' => "$latitude, $longitude",
+            'size' => $this->size,
+            'fov' => $this->fov,
+            'pitch' => $this->pitch
+        ];
+
+        if ($this->heading) {
+            $query['heading'] = $this->heading;
+        }
+
         try {
             $request = $this->client->request(
                 'GET',
                 $this->baseUrl,
                 [
-                    'query' => [
-                        'lat' => $latitude,
-                        'lon' => $longitude,
-                    ]
+                    'query' => $query
                 ]
             );
         } catch (TransportExceptionInterface $e) {
         }
 
         try {
-            return json_decode($request->getContent(), true);
+            return $request->getContent();
         } catch (ClientExceptionInterface $e) {
             return $this->createError($e->getMessage());
         } catch (RedirectionExceptionInterface $e) {
@@ -59,30 +93,5 @@ class LocationReverse
         return ['error' => true, 'message' => $message];
     }
 
-    /**
-     * {
-     * "place_id":188259342,
-     * "licence":"Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-     * "osm_type":"way",
-     * "osm_id":458163018,
-     * "lat":"50.23603135598228",
-     * "lon":"5.36188848497033",
-     * "display_name":"Chaussée de l'Ourthe, Marche-en-Famenne, Luxembourg, Wallonie, 6900, België - Belgique - Belgien",
-     * "address":{
-     * "road":"Chaussée de l'Ourthe",
-     * "town":"Marche-en-Famenne",
-     * "county":"Luxembourg",
-     * "state":"Wallonie",
-     * "postcode":"6900",
-     * "country":"België - Belgique - Belgien",
-     * "country_code":"be"
-     * },
-     * "boundingbox":[
-     * "50.23454",
-     * "50.2394055",
-     * "5.3576441",
-     * "5.3723272"
-     * ]
-     * }
-     */
+
 }

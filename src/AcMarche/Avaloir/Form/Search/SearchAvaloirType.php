@@ -2,6 +2,7 @@
 
 namespace AcMarche\Avaloir\Form\Search;
 
+use AcMarche\Avaloir\Data\Localite;
 use AcMarche\Avaloir\Repository\QuartierRepository;
 use AcMarche\Avaloir\Repository\VillageRepository;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +15,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchAvaloirType extends AbstractType
 {
-
     /**
      * @var VillageRepository
      */
@@ -23,11 +23,19 @@ class SearchAvaloirType extends AbstractType
      * @var QuartierRepository
      */
     private $quartierRepository;
+    /**
+     * @var Localite
+     */
+    private $localite;
 
-    public function __construct(VillageRepository $villageRepository, QuartierRepository $quartierRepository)
-    {
+    public function __construct(
+        VillageRepository $villageRepository,
+        QuartierRepository $quartierRepository,
+        Localite $localite
+    ) {
         $this->villageRepository = $villageRepository;
         $this->quartierRepository = $quartierRepository;
+        $this->localite = $localite;
     }
 
     /**
@@ -38,8 +46,19 @@ class SearchAvaloirType extends AbstractType
     {
         $villages = $this->villageRepository->getForSearch();
         $quartiers = $this->quartierRepository->getForSearch();
+        $rues = $this->localite->getListRues();
+        $rues = array_combine($rues, $rues);
 
         $builder
+            ->add(
+                'rue',
+                ChoiceType::class,
+                array(
+                    'choices' => $rues,
+                    'required' => false,
+                    'placeholder' => 'Choisissez une rue',
+                )
+            )
             ->add(
                 'village',
                 ChoiceType::class,
@@ -59,16 +78,6 @@ class SearchAvaloirType extends AbstractType
                 )
             )
             ->add(
-                'nom',
-                SearchType::class,
-                array(
-                    'required' => false,
-                    'attr' => array(
-                        'placeholder' => 'Rue',
-                    ),
-                )
-            )
-            ->add(
                 'id',
                 IntegerType::class,
                 array(
@@ -83,7 +92,7 @@ class SearchAvaloirType extends AbstractType
                 DateType::class,
                 array(
                     'widget' => 'single_text',
-                    'label' => 'Date d\'introduction',
+                    'label' => 'Date de début',
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Entre le',
@@ -96,11 +105,10 @@ class SearchAvaloirType extends AbstractType
                 DateType::class,
                 array(
                     'widget' => 'single_text',
-                    'label' => 'Date d\'introduction',
+                    'label' => 'Date de fin',
                     'required' => false,
                     'attr' => array(
                         'placeholder' => 'Et le',
-
                     ),
                 )
             )
@@ -108,7 +116,7 @@ class SearchAvaloirType extends AbstractType
                 'raz',
                 SubmitType::class,
                 [
-                    'attr' => ['class'=>' mr-1 btn-primary ','title'=>'Réinitialiser la recherche'],
+                    'attr' => ['class' => ' mr-1 btn-primary ', 'title' => 'Réinitialiser la recherche'],
                 ]
             );
     }

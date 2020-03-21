@@ -2,9 +2,9 @@
 
 namespace AcMarche\Avaloir\Controller;
 
-use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\DateNettoyage;
-use AcMarche\Avaloir\Repository\AvaloirNewRepository;
+use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Avaloir\Repository\DateNettoyageRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
@@ -25,9 +25,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     /**
-     * @var AvaloirNewRepository
+     * @var AvaloirRepository
      */
-    private $avaloirNewRepository;
+    private $avaloirRepository;
     /**
      * @var SerializeApi
      */
@@ -50,14 +50,14 @@ class ApiController extends AbstractController
     private $elasticServer;
 
     public function __construct(
-        AvaloirNewRepository $avaloirNewRepository,
+        AvaloirRepository $avaloirRepository,
         DateNettoyageRepository $dateNettoyageRepository,
         SerializeApi $serializeApi,
         Logger $logger,
         ElasticSearch $elasticSearch,
         ElasticServer $elasticServer
     ) {
-        $this->avaloirNewRepository = $avaloirNewRepository;
+        $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
         $this->logger = $logger;
         $this->dateNettoyageRepository = $dateNettoyageRepository;
@@ -70,7 +70,7 @@ class ApiController extends AbstractController
      */
     public function index()
     {
-        $avaloirs = $this->serializeApi->serializeAvaloirs($this->avaloirNewRepository->findAll());
+        $avaloirs = $this->serializeApi->serializeAvaloirs($this->avaloirRepository->findAll());
 
         return new JsonResponse($avaloirs);
     }
@@ -95,11 +95,11 @@ class ApiController extends AbstractController
 
         try {
             $data = json_decode($coordinatesJson, true);
-            $avaloir = new AvaloirNew();
+            $avaloir = new Avaloir();
             $avaloir->setLatitude($data['latitude']);
             $avaloir->setLongitude($data['longitude']);
-            $this->avaloirNewRepository->persist($avaloir);
-            $this->avaloirNewRepository->flush();
+            $this->avaloirRepository->persist($avaloir);
+            $this->avaloirRepository->flush();
         } catch (\Exception $exception) {
             $data = [
                 'error' => 0,
@@ -142,7 +142,7 @@ class ApiController extends AbstractController
      */
     public function update(int $id, Request $request)
     {
-        $avaloir = $this->avaloirNewRepository->find($id);
+        $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
             $data = [
                 'error' => 404,
@@ -154,21 +154,21 @@ class ApiController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $this->avaloirNewRepository->persist($avaloir);
+        $this->avaloirRepository->persist($avaloir);
 
         $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
         return new JsonResponse($data);
     }
 
     /**
-     * @param AvaloirNew $avaloir
+     * @param Avaloir $avaloir
      * @param int $quantite
      * @Route("/clean/{id}/{dateString}", format="json")
      * @return JsonResponse
      */
     public function addCleaning(int $id, string $dateString)
     {
-        $avaloir = $this->avaloirNewRepository->find($id);
+        $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
             $data = [
                 'error' => 404,
@@ -185,7 +185,7 @@ class ApiController extends AbstractController
         }
 
         $dateNettoyage = new DateNettoyage();
-        $dateNettoyage->setAvaloirNew($avaloir);
+        $dateNettoyage->setAvaloir($avaloir);
         $dateNettoyage->setJour($date);
         $dateNettoyage->setUpdatedAt($date);
         $dateNettoyage->setCreatedAt($date);
@@ -199,7 +199,7 @@ class ApiController extends AbstractController
         return new JsonResponse($data);
     }
 
-    public function uploadImage(AvaloirNew $avaloir, Request $request)
+    public function uploadImage(Avaloir $avaloir, Request $request)
     {
         /**
          * @var UploadedFile $image
@@ -231,7 +231,7 @@ class ApiController extends AbstractController
         return [];
     }
 
-    private function upload(AvaloirNew $avaloir, UploadedFile $image)
+    private function upload(Avaloir $avaloir, UploadedFile $image)
     {
         $name = 'aval-' . $avaloir->getId() . '.jpg';
         try {
@@ -248,7 +248,7 @@ class ApiController extends AbstractController
         }
 
         $avaloir->setImageName($name);
-        $this->avaloirNewRepository->flush();
+        $this->avaloirRepository->flush();
         return ['error' => 0, 'message' => $name, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
     }
 
@@ -283,7 +283,7 @@ class ApiController extends AbstractController
             $score = $hit['_score'];
             $post = $hit['_source'];
             $id = $post['id'];
-            if ($avaloir = $this->avaloirNewRepository->find($id)) {
+            if ($avaloir = $this->avaloirRepository->find($id)) {
                 $avaloirs[] = $this->serializeApi->serializeAvaloir($avaloir);
             }
         }

@@ -1,0 +1,11 @@
+{% if avaloir.imageName %}
+    <img src="{{ vich_uploader_asset(avaloir, 'imageFile') | imagine_filter('avaloir_thumb') }}"
+         alt="{{ avaloir.imageName }}"/>
+    <br/>    <br/>
+
+    <h4>Image Google SteetView</h4>    <br/>
+
+    <img src="data:image/jpeg;base64,{{ avaloir|street_view(avaloir.latitude, avaloir.longitude) }}" alt="google">
+
+{% endif %}
+<br/>

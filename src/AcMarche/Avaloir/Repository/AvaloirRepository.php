@@ -19,6 +19,16 @@ class AvaloirRepository extends ServiceEntityRepository
         parent::__construct($registry, Avaloir::class);
     }
 
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
+    public function persist(Avaloir $avaloir)
+    {
+        $this->_em->persist($avaloir);
+    }
+
     /**
      * @return Avaloir[]
      */
@@ -51,6 +61,7 @@ class AvaloirRepository extends ServiceEntityRepository
     {
         $nom = isset($args['nom']) ? $args['nom'] : null;
         $village = isset($args['village']) ? $args['village'] : null;
+        $rue = isset($args['rue']) ? $args['rue'] : null;
         $id = isset($args['id']) ? $args['id'] : 0;
         $date_debut = isset($args['date_debut']) ? $args['date_debut'] : null;
         $date_fin = isset($args['date_fin']) ? $args['date_fin'] : null;
@@ -58,17 +69,22 @@ class AvaloirRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('avaloir');
         $qb->leftJoin('avaloir.dates', 'dates', 'WITH');
-        $qb->leftJoin('avaloir.rue', 'rue', 'WITH');
-        $qb->leftJoin('rue.quartier', 'quartier', 'WITH');
-        $qb->addSelect('quartier', 'rue', 'dates');
+        $qb->leftJoin('avaloir.rueEntity', 'rueEntity', 'WITH');
+        $qb->leftJoin('rueEntity.quartier', 'quartier', 'WITH');
+        $qb->addSelect('quartier', 'rueEntity', 'dates');
 
         if ($nom) {
-            $qb->andWhere('rue.nom LIKE :mot OR avaloir.descriptif LIKE :mot ')
-                ->setParameter('mot', '%'.$nom.'%');
+            $qb->andWhere('avaloir.descriptif LIKE :mot ')
+                ->setParameter('mot', '%' . $nom . '%');
+        }
+
+        if ($rue) {
+            $qb->andWhere('avaloir.rue = :rue')
+                ->setParameter('rue', $rue);
         }
 
         if ($village) {
-            $qb->andWhere('rue.village = :village')
+            $qb->andWhere('rueEntity.village = :village')
                 ->setParameter('village', $village);
         }
 
@@ -95,8 +111,8 @@ class AvaloirRepository extends ServiceEntityRepository
             $qb->andWhere("avaloir.id IN ('$id')");
         }
 
-        $qb->addOrderBy('rue.village', 'ASC');
-        $qb->addOrderBy('rue.nom', 'ASC');
+        $qb->addOrderBy('avaloir.rue', 'ASC');
+        //$qb->addOrderBy('rue.nom', 'ASC');
 
         return $qb;
     }
