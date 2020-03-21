@@ -71,7 +71,7 @@ class SerializeApi
             $pathImg = $this->uploaderHelper->asset($avaloir, 'imageFile');
             $fullPath = $root . $pathImg;
             if (is_readable($fullPath)) {
-                $thumb = $this->filterService->getUrlOfFilteredImage($pathImg, 'actravaux_thumb');
+                $thumb = $this->filterService->getUrlOfFilteredImage($pathImg, 'avaloir_thumb');
                 if ($thumb) {
                     $std->imageUrl = $thumb;
                 } else {
