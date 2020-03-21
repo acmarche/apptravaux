@@ -83,7 +83,7 @@ class SerializeApi
     }
 
     /**
-     * @param Avaloir[] $avaloirNews
+     * @param Avaloir[] $avaloirs
      * @return array
      */
     public function serializeAvaloirs(iterable $avaloirs)
