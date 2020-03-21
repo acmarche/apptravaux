@@ -19,6 +19,7 @@
 .idea/
 /public/media/
 /public/uploads/
+/public/avaloirs/
 /public/files/
 /*.sql
 /runtests.sh
