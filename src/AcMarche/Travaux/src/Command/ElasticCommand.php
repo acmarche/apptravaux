@@ -2,7 +2,6 @@
 
 namespace AcMarche\Travaux\Command;
 
-use AcMarche\Avaloir\Repository\AvaloirNewRepository;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Travaux\Elastic\ElasticSearch;
 use AcMarche\Travaux\Elastic\ElasticServer;
@@ -19,7 +18,7 @@ class ElasticCommand extends Command
      */
     private $elasticServer;
     /**
-     * @var AvaloirNewRepository
+     * @var AvaloirRepository
      */
     private $avaloirRepository;
     /**
@@ -30,7 +29,7 @@ class ElasticCommand extends Command
     public function __construct(
         ElasticServer $elasticServer,
         ElasticSearch $elasticSearch,
-        AvaloirNewRepository $avaloirRepository
+        AvaloirRepository $avaloirRepository
     ) {
         parent::__construct();
         $this->elasticServer = $elasticServer;

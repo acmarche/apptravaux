@@ -2,12 +2,17 @@ liip_imagine:
     filter_sets:
       cache: ~
       actravaux_thumb:
-        quality: 100
+        quality: 95
         cache: default
         filters:
           thumbnail: { size: [250, 188], mode: outbound }
       actravaux_zoom:
-        quality: 100
+        quality: 95
         cache: default
         filters:
           thumbnail: { size: [1024, 768], mode: inset }
+      avaloir_thumb:
+        quality: 95
+        cache: default
+        filters:
+          thumbnail: { size: [800, 600], mode: outbound }

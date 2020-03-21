@@ -3,7 +3,7 @@
 
 namespace AcMarche\Travaux\Elastic;
 
-use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\Avaloir;
 use Elasticsearch\ClientBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -158,7 +158,7 @@ class ElasticServer
      * @return array
      * @throws \Exception
      */
-    public function updateData(AvaloirNew $avaloir)
+    public function updateData(Avaloir $avaloir)
     {
         $data = [
             'index' => 'avaloir',

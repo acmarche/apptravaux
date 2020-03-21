@@ -8,7 +8,7 @@
 
 namespace AcMarche\Stock\Service;
 
-use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
@@ -57,7 +57,7 @@ class SerializeApi
         return '';
     }
 
-    public function serializeAvaloir(AvaloirNew $avaloir)
+    public function serializeAvaloir(Avaloir $avaloir)
     {
         $std = new \stdClass();
         $std->id = $avaloir->getId();
@@ -83,7 +83,7 @@ class SerializeApi
     }
 
     /**
-     * @param AvaloirNew[] $avaloirNews
+     * @param Avaloir[] $avaloirNews
      * @return array
      */
     public function serializeAvaloirs(iterable $avaloirs)
@@ -175,7 +175,7 @@ class SerializeApi
     {
         $std = new \stdClass();
         $std->id = $date->getId();
-        $std->avaloirId = $date->getAvaloirNew()->getId();
+        $std->avaloirId = $date->getAvaloir()->getId();
         $std->date = $date->getJour()->format('Y-m-d');
 
         return $std;

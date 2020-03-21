@@ -4,7 +4,7 @@
 namespace AcMarche\Travaux\Elastic;
 
 
-use AcMarche\Avaloir\Entity\AvaloirNew;
+use AcMarche\Avaloir\Entity\Avaloir;
 
 class ElasticSearch
 {
