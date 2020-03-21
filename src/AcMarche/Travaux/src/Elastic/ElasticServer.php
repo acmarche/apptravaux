@@ -207,10 +207,20 @@ class ElasticServer
      */
     protected function formatResponse(array $result)
     {
-        $data = [];
-        $data['result'] = $result["result"];
-        $data['successful'] = $result["successful"];
-        $data['failed'] = $result["failed"];
+        $data = ['result' => $result["result"]];
+
+        if (isset($result['_shards'])) {
+            $data['successful'] = $result['_shards']["successful"];
+            $data['failed'] = $result['_shards']["failed"];
+            return $data;
+        }
+
+        if (isset($result['result'])) {
+            $data['successful'] = $result["successful"];
+            $data['failed'] = $result["failed"];
+            return $data;
+        }
+
         return $data;
     }
 }

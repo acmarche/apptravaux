@@ -1,18 +1,20 @@
 <?php
 
-namespace AcMarche\Travaux\Command;
+namespace AcMarche\Avaloir\Command;
 
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Travaux\Elastic\ElasticSearch;
 use AcMarche\Travaux\Elastic\ElasticServer;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ElasticCommand extends Command
 {
-    protected static $defaultName = 'ElasticCommand';
+    protected static $defaultName = 'avaloir:elastic';
     /**
      * @var ElasticServer
      */
@@ -29,9 +31,10 @@ class ElasticCommand extends Command
     public function __construct(
         ElasticServer $elasticServer,
         ElasticSearch $elasticSearch,
-        AvaloirRepository $avaloirRepository
+        AvaloirRepository $avaloirRepository,
+        string $name = null
     ) {
-        parent::__construct();
+        parent::__construct($name);
         $this->elasticServer = $elasticServer;
         $this->avaloirRepository = $avaloirRepository;
         $this->elasticSearch = $elasticSearch;
@@ -40,15 +43,16 @@ class ElasticCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command');
+            ->setDescription('Mise à jour du moteur de recherche')
+            ->addOption('raz', null, InputOption::VALUE_NONE, 'Remise à zéro du moteur');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $update = false;
+        $raz = $input->getOption('raz');
 
-        if ($update) {
+        if ($raz) {
             try {
                 $this->elasticServer->deleteIndex();
                 $this->elasticServer->createIndex();
@@ -61,8 +65,8 @@ class ElasticCommand extends Command
             }
         }
 
-        $result = $this->elasticSearch->search("500km", 50.22403140, 5.29429060);
-        var_dump($result);
+        //$result = $this->elasticSearch->search("500km", 50.22403140, 5.29429060);
+
         $this->updateAvaloirs();
 
         return 0;
@@ -74,7 +78,7 @@ class ElasticCommand extends Command
             $result = $this->elasticServer->updateData($avaloir);
             var_dump($result);
         }
-        $this->elasticServer->getClient()->indices()->refresh();
+        //$this->elasticServer->getClient()->indices()->refresh();
         return [];
     }
 }
