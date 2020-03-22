@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
-class AvaloirLocationCommand extends Command
+class LocationCommand extends Command
 {
     protected static $defaultName = 'avaloir:location';
 
