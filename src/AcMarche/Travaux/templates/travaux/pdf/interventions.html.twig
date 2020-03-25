@@ -1,9 +1,9 @@
-{% extends 'travaux/pdf/basePdf.html.twig' %}
+{% extends '@AcMarcheTravaux/travaux/pdf/basePdf.html.twig' %}
 
 {% block content %}
 
     {% for intervention in interventions %}
-        {{ include('travaux/pdf/_panel.html.twig') }}
+        {{ include('@AcMarcheTravaux/travaux/pdf/_panel.html.twig') }}
     {% endfor %}
 
 {% endblock %}

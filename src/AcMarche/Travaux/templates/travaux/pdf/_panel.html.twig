@@ -25,7 +25,7 @@
                 <i class="far fa-calendar-alt"></i> Demandé le:
             </th>
             <td>
-                {{ intervention.created | date('d-m-Y') }}
+                {{ intervention.createdAt | date('d-m-Y') }}
             </td>
         </tr>
         {% if intervention.datevalidation %}
@@ -217,8 +217,8 @@
 
 <div class="panel-footer">
             <span class="text-muted">
-                {{ 'Created' | trans }} {{ intervention.created|date('d-m-Y H:i:s') }} par {{ intervention.useradd }}
-                . {{ 'Updated' | trans }} {{ intervention.updated|date('d-m-Y H:i:s') }}
+                {{ 'Created' | trans }} {{ intervention.createdAt|date('d-m-Y H:i:s') }} par {{ intervention.useradd }}
+                . {{ 'Updated' | trans }} {{ intervention.updatedAt|date('d-m-Y H:i:s') }}
             </span>
     {% if intervention.archive %}
         <span class="float-right"><i class="fas fa-archive" title="Archive"></i> Archive</span>
