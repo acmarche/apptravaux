@@ -4,7 +4,7 @@
 
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <h3>Détail de l'avaloir <strong>{{ avaloir }}</strong></h3>
+            <h3>Détail de l'avaloir <strong>{{ avaloir.id }} {{ avaloir }}</strong></h3>
         </div>
         <div class="card-body">
             {% include '@AcMarcheAvaloir/avaloir/actions.html.twig' %}
@@ -16,6 +16,12 @@
                         <a href="https://www.openstreetmap.org/#map=17/{{avaloir.latitude}}/{{avaloir.longitude}}" target="_blank">
                             {{ avaloir.latitude }}, {{ avaloir.longitude }}
                         </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Localité</th>
+                    <td>
+                        {{ avaloir.localite }}
                     </td>
                 </tr>
                 <tr>

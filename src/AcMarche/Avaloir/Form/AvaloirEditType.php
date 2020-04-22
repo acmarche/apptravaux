@@ -49,7 +49,7 @@ class AvaloirEditType extends AbstractType
                 TextType::class,
                 [
                     'help' => 'Le nom de la rue a été trouvé suivant les coordonnées gps',
-                    'attr' => ['readonly' => true]
+                    'attr' => ['readonly' => false]
                 ]
             )
             ->add(
@@ -60,19 +60,6 @@ class AvaloirEditType extends AbstractType
                     'choices' => $this->villageRepository->getForSearch()
                 ]
             )
-            /*     ->add(
-                     'rueEntity',
-                     EntityType::class,
-                     array(
-                         'class' => Rue::class,
-                         'required' => true,
-                         'placeholder' => 'Sélectionnez une rue',
-                         'group_by' => 'village',
-                         'query_builder' => function (RueRepository $er) {
-                             return $er->getForList();
-                         },
-                     )
-                 )*/
             ->add(
                 'numero',
                 TextType::class,
