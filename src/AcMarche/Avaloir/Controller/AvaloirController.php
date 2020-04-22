@@ -178,7 +178,7 @@ class AvaloirController extends AbstractController
         return $this->render(
             '@AcMarcheAvaloir/avaloir/edit.html.twig',
             array(
-                'entity' => $avaloir,
+                'avaloir' => $avaloir,
                 'edit_form' => $editForm->createView(),
             )
         );
