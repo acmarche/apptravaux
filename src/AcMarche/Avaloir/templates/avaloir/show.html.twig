@@ -13,7 +13,8 @@
                 <tr>
                     <th>Localisation</th>
                     <td>
-                        <a href="https://www.openstreetmap.org/#map=17/{{avaloir.latitude}}/{{avaloir.longitude}}" target="_blank">
+                        <a href="https://www.openstreetmap.org/#map=17/{{ avaloir.latitude }}/{{ avaloir.longitude }}"
+                           target="_blank">
                             {{ avaloir.latitude }}, {{ avaloir.longitude }}
                         </a>
                     </td>
@@ -28,11 +29,7 @@
                     <th>Date de rappel</th>
                     <td>
                         {% if avaloir.dateRappel %}
-                            <br/>
-                            <p>
-                                <strong>Date de rappel : {{ avaloir.dateRappel | date('d-m-Y') }}</strong>
-                            </p>
-                            <br/>
+                            {{ avaloir.dateRappel | date('d-m-Y') }}
                         {% endif %}
                     </td>
                 </tr>
