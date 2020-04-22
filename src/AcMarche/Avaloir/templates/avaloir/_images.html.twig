@@ -5,6 +5,10 @@
 
     <h4>Image Google SteetView</h4>    <br/>
 
+    <div class="alert alert-info">
+        Test avec le système de google :-P
+    </div>
+
     <img src="data:image/jpeg;base64,{{ avaloir|street_view(avaloir.latitude, avaloir.longitude) }}" alt="google">
 
 {% endif %}

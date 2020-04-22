@@ -2,8 +2,14 @@
 
 {% block body -%}
     <div class="page-header">
-        <h3>Avaloir <strong>{{ entity.avaloir }}</strong> au <strong>{{ entity}}</strong> </h3>
+        <h3>Avaloir <strong>{{ date.avaloir }}</strong> au <strong>{{ date}}</strong> </h3>
     </div>
+
+    <br />
+    <br />
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+        <i class="fas fa-trash"></i> Supprimer la date de nettoyage
+    </button>
 
     {% include '@AcMarcheAvaloir/date_nettoyage/delete.html.twig' %}
 

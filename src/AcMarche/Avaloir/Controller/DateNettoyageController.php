@@ -31,7 +31,7 @@ class DateNettoyageController extends AbstractController
     public function show(DateNettoyage $date)
     {
         return $this->render('@AcMarcheAvaloir/date_nettoyage/show.html.twig', array(
-            'entity' => $date,
+            'date' => $date,
         ));
     }
 

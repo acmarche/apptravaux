@@ -13,6 +13,8 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class RappelCommand extends Command
 {
+    protected static $defaultName = 'avaloir:rappel';
+
     private $mailer;
     /**
      * @var AvaloirRepository
@@ -26,10 +28,11 @@ class RappelCommand extends Command
     private function __construct(
         MailerInterface $mailer,
         AvaloirRepository $avaloirRepository,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        string $name = null
     ) {
+        parent::__construct($name);
         $this->mailer = $mailer;
-        parent::__construct();
         $this->avaloirRepository = $avaloirRepository;
         $this->parameterBag = $parameterBag;
     }
@@ -37,8 +40,8 @@ class RappelCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('acavaloir:rappel')
-            ->setDescription('Verifie les pieces jointes');
+            ->setName('avaloir:rappel')
+            ->setDescription('Lance les rappels');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

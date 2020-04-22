@@ -75,7 +75,7 @@ class Avaloir implements TimestampableInterface
 
     /**
      * @ORM\Column(type="date", nullable=true, options={"comment" = "date de rappel"})
-     * @Assert\DateTime()
+     * @Assert\Type("DateTime")
      */
     protected $date_rappel;
 
