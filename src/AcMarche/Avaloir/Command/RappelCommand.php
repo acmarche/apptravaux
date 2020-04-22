@@ -66,7 +66,7 @@ class RappelCommand extends Command
                 ->subject("Rappel avaloir")
                 ->from($destinataire)
                 ->to($destinataire)
-                ->textTemplate('email/rappel.txt.twig')
+                ->textTemplate('@AcMarcheAvaloir/mail/rappel.txt.twig')
                 ->context(
                     array(
                         'avaloirs' => $avaloirs,
