@@ -23,6 +23,7 @@ class ElasticSearch
      * @param float $latitude
      * @param float $longitude
      * @return array
+     * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-distance-feature-query.html
      */
     public function search(string $distance, $latitude, $longitude)
     {

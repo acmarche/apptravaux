@@ -82,7 +82,7 @@ class AvaloirEditType extends AbstractType
                 ]
             )
             ->add(
-                'descriptif',
+                'description',
                 TextareaType::class,
                 array(
                     'required' => false,
