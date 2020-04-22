@@ -1,4 +1,8 @@
 
+{% for avaloir in avaloirs %}
+
 Rappel pour l'avoir {{ avoiloir.id }} {{ avoiloir.rue }} {{ avoiloir.localite }}
 
 {{ absolute_url(path('avaloir_show', { 'id': avaloir.id })) }}
+
+{% endfor %}
