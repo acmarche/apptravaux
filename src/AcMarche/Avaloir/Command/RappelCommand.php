@@ -40,11 +40,10 @@ class RappelCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('avaloir:rappel')
             ->setDescription('Lance les rappels');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $destinataire = $this->parameterBag->get('ac_marche_avaloir_destinataire');
 
