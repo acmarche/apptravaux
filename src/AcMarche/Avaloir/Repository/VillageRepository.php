@@ -32,7 +32,7 @@ class VillageRepository extends ServiceEntityRepository
         $villages = array();
 
         foreach ($results as $village) {
-            $villages[$village->getNom()] = $village->getId();
+            $villages[$village->getNom()] = $village->getNom();
         }
 
         return $villages;
