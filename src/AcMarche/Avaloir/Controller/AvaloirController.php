@@ -145,6 +145,11 @@ class AvaloirController extends AbstractController
      */
     public function show(Avaloir $avaloir)
     {
+       /* $avaloir->getImageName();
+        $magick = new \Imagick();
+
+        $magick->getImageOrientation();*/
+
         return $this->render(
             '@AcMarcheAvaloir/avaloir/show.html.twig',
             array(
@@ -192,7 +197,6 @@ class AvaloirController extends AbstractController
     public function delete(Request $request, Avaloir $avaloir)
     {
         if ($this->isCsrfTokenValid('delete'.$avaloir->getId(), $request->request->get('_token'))) {
-
             $em = $this->getDoctrine()->getManager();
             $em->remove($avaloir);
             $em->flush();

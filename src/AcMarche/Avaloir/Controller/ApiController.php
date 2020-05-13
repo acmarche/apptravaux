@@ -104,8 +104,9 @@ class ApiController extends AbstractController
             $data = [
                 'error' => 0,
                 'message' => 'Avaloir non insérer dans la base de données',
-                'avaloir' => $exception->getMessage()
+                'avaloir' => $exception->getMessage(),
             ];
+
             return new JsonResponse($data);
         }
 
@@ -122,15 +123,17 @@ class ApiController extends AbstractController
                 'error' => 0,
                 'elastic' => $result,
                 'message' => 'ok',
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
             ];
+
             return new JsonResponse($data);
         } catch (\Exception $e) {
             $data = [
                 'error' => 1,
                 'message' => $e->getMessage(),
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
             ];
+
             return new JsonResponse($data);
         }
     }
@@ -147,8 +150,9 @@ class ApiController extends AbstractController
             $data = [
                 'error' => 404,
                 'message' => "Avaloir non trouvé",
-                'avaloir' => null
+                'avaloir' => null,
             ];
+
             return new JsonResponse($data);
         }
 
@@ -157,6 +161,7 @@ class ApiController extends AbstractController
         $this->avaloirRepository->persist($avaloir);
 
         $data = ['error' => 0, 'message' => $data, 'avaloir' => $this->serializeApi->serializeAvaloir($data)];
+
         return new JsonResponse($data);
     }
 
@@ -173,8 +178,9 @@ class ApiController extends AbstractController
             $data = [
                 'error' => 404,
                 'message' => "Avaloir non trouvé",
-                'avaloir' => null
+                'avaloir' => null,
             ];
+
             return new JsonResponse($data);
         }
 
@@ -196,6 +202,35 @@ class ApiController extends AbstractController
         $this->dateNettoyageRepository->flush();
 
         $data = ['error' => 0, 'message' => "ok", 'date' => $this->serializeApi->serializeDate($dateNettoyage)];
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @param Avaloir $avaloir
+     * @param int $quantite
+     * @Route("/commentaire/{id}/{commentaire}", format="json")
+     * @return JsonResponse
+     */
+    public function addComment(int $id, string $commentaire)
+    {
+        $avaloir = $this->avaloirRepository->find($id);
+        if (!$avaloir) {
+            $data = [
+                'error' => 404,
+                'message' => "Avaloir non trouvé",
+                'avaloir' => null,
+            ];
+
+            return new JsonResponse($data);
+        }
+
+        $avaloir->setDescription($commentaire);
+
+        $this->avaloirRepository->flush();
+
+        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $commentaire];
+
         return new JsonResponse($data);
     }
 
@@ -211,7 +246,7 @@ class ApiController extends AbstractController
                 [
                     'error' => 1,
                     'message' => 'Upload raté',
-                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
                 ];
         }
 
@@ -220,7 +255,7 @@ class ApiController extends AbstractController
                 [
                     'error' => 1,
                     'message' => $image->getErrorMessage(),
-                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                    'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
                 ];
         }
 
@@ -233,22 +268,23 @@ class ApiController extends AbstractController
 
     private function upload(Avaloir $avaloir, UploadedFile $image)
     {
-        $name = 'aval-' . $avaloir->getId() . '.jpg';
+        $name = 'aval-'.$avaloir->getId().'.jpg';
         try {
             $image->move(
-                $this->getParameter('ac_marche_avaloir.upload.directory') . DIRECTORY_SEPARATOR . $avaloir->getId(),
+                $this->getParameter('ac_marche_avaloir.upload.directory').DIRECTORY_SEPARATOR.$avaloir->getId(),
                 $name
             );
         } catch (FileException $e) {
             return [
                 'error' => 1,
                 'message' => $image->getErrorMessage(),
-                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)
+                'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
             ];
         }
 
         $avaloir->setImageName($name);
         $this->avaloirRepository->flush();
+
         return ['error' => 0, 'message' => $name, 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir)];
     }
 
@@ -269,7 +305,7 @@ class ApiController extends AbstractController
                 [
                     'error' => 1,
                     'message' => 'Latitude, longitude et distance obligatoire',
-                    'avaloirs' => []
+                    'avaloirs' => [],
                 ]
             );
         }
@@ -291,8 +327,8 @@ class ApiController extends AbstractController
         return new JsonResponse(
             [
                 'error' => 0,
-                'message' => 'distance: ' . $distance . ' latitude: ' . $latitude . ' longitude: ' . $longitude . 'ok count ' . $total['value'],
-                'avaloirs' => $avaloirs
+                'message' => 'distance: '.$distance.' latitude: '.$latitude.' longitude: '.$longitude.'ok count '.$total['value'],
+                'avaloirs' => $avaloirs,
             ]
         );
     }
