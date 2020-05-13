@@ -55,6 +55,7 @@ class SerializeApi
         if ($this->requestStack->getMasterRequest()) {
             return $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
         }
+
         return '';
     }
 
@@ -70,16 +71,17 @@ class SerializeApi
         if ($avaloir->getImageName()) {
             $root = $this->parameterBag->get('ac_marche_travaux_dir_public');
             $pathImg = $this->uploaderHelper->asset($avaloir, 'imageFile');
-            $fullPath = $root . $pathImg;
+            $fullPath = $root.$pathImg;
             if (is_readable($fullPath)) {
                 $thumb = $this->filterService->getUrlOfFilteredImage($pathImg, 'avaloir_thumb');
                 if ($thumb) {
                     $std->imageUrl = $thumb;
                 } else {
-                    $std->imageUrl = $this->getUrl() . $this->uploaderHelper->asset($avaloir, 'imageFile');
+                    $std->imageUrl = $this->getUrl().$this->uploaderHelper->asset($avaloir, 'imageFile');
                 }
             }
         }
+
         return $std;
     }
 
@@ -203,6 +205,7 @@ class SerializeApi
         $std->id = $commentaire->getId();
         $std->avaloirId = $commentaire->getAvaloir()->getId();
         $std->content = $commentaire->getContent();
+        $std->createdAt = $commentaire->getCreatedAt()->format('Y-m-d');
 
         return $std;
     }
