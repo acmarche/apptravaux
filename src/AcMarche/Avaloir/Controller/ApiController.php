@@ -217,10 +217,10 @@ class ApiController extends AbstractController
     /**
      * @param Avaloir $avaloir
      * @param int $quantite
-     * @Route("/commentaire/{id}/{commentaire}", format="json")
+     * @Route("/commentaire/{id}/{content}", format="json")
      * @return JsonResponse
      */
-    public function addComment(int $id, string $commentaireString)
+    public function addComment(int $id, string $content)
     {
         $avaloir = $this->avaloirRepository->find($id);
         if (!$avaloir) {
@@ -234,7 +234,7 @@ class ApiController extends AbstractController
         }
 
         $commentaire = new Commentaire($avaloir);
-        $commentaire->setContent($commentaireString);
+        $commentaire->setContent($content);
 
         $this->commentaireRepository->persist($commentaire);
         $this->commentaireRepository->flush();
