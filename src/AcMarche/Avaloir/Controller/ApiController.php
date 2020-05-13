@@ -249,7 +249,7 @@ class ApiController extends AbstractController
         $this->commentaireRepository->persist($commentaire);
         $this->commentaireRepository->flush();
 
-        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $commentaire->getContent()];
+        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $this->serializeApi->serializeCommentaire($commentaire)];
 
         return new JsonResponse($data);
     }
