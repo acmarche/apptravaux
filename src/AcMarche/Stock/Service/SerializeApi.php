@@ -9,6 +9,7 @@
 namespace AcMarche\Stock\Service;
 
 use AcMarche\Avaloir\Entity\Avaloir;
+use AcMarche\Avaloir\Entity\Commentaire;
 use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Stock\Entity\Categorie;
 use AcMarche\Stock\Entity\Produit;
@@ -171,12 +172,37 @@ class SerializeApi
         return $data;
     }
 
+    /**
+     * @param Commentaire[] $commentaires
+     * @return array
+     */
+    public function serializeCommentaires(array $commentaires)
+    {
+        $data = [];
+        foreach ($commentaires as $commentaire) {
+            $std = $this->serializeCommentaire($commentaire);
+            $data[] = $std;
+        }
+
+        return $data;
+    }
+
     public function serializeDate(DateNettoyage $date)
     {
         $std = new \stdClass();
         $std->id = $date->getId();
         $std->avaloirId = $date->getAvaloir()->getId();
         $std->date = $date->getJour()->format('Y-m-d');
+
+        return $std;
+    }
+
+    public function serializeCommentaire(Commentaire $commentaire)
+    {
+        $std = new \stdClass();
+        $std->id = $commentaire->getId();
+        $std->avaloirId = $commentaire->getAvaloir()->getId();
+        $std->content = $commentaire->getContent();
 
         return $std;
     }

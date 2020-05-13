@@ -94,6 +94,16 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/commentaires", format="json")
+     */
+    public function commentaires()
+    {
+        $commentaires = $this->serializeApi->serializeCommentaires($this->commentaireRepository->findAll());
+
+        return new JsonResponse($commentaires);
+    }
+
+    /**
      * @Route("/insert", format="json")
      * @return JsonResponse
      */
