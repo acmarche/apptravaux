@@ -52,7 +52,11 @@
             <br/>
 
             <p>{{ avaloir.description | nl2br }}</p>
+            <br/>
 
+            {{ include('@AcMarcheAvaloir/avaloir/_commentaires.html.twig') }}
+
+            <br/>
             {{ include('@AcMarcheAvaloir/avaloir/_images.html.twig') }}
         </div>
         <div class="card-footer text-muted">

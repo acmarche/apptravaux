@@ -74,6 +74,12 @@ class Avaloir implements TimestampableInterface
     private $dates;
 
     /**
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="avaloir", cascade={"persist", "remove"}))
+     * @ORM\OrderBy({"createdAt"="DESC"})
+     */
+    private $commentaires;
+
+    /**
      * @ORM\Column(type="date", nullable=true, options={"comment" = "date de rappel"})
      * @Assert\Type("DateTime")
      */
@@ -101,6 +107,7 @@ class Avaloir implements TimestampableInterface
     public function __construct()
     {
         $this->dates = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     /**
@@ -284,6 +291,37 @@ class Avaloir implements TimestampableInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setAvaloir($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getAvaloir() === $this) {
+                $commentaire->setAvaloir(null);
+            }
+        }
 
         return $this;
     }

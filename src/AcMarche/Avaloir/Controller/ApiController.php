@@ -3,8 +3,10 @@
 namespace AcMarche\Avaloir\Controller;
 
 use AcMarche\Avaloir\Entity\Avaloir;
+use AcMarche\Avaloir\Entity\Commentaire;
 use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
+use AcMarche\Avaloir\Repository\CommentaireRepository;
 use AcMarche\Avaloir\Repository\DateNettoyageRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
@@ -48,10 +50,15 @@ class ApiController extends AbstractController
      * @var ElasticServer
      */
     private $elasticServer;
+    /**
+     * @var CommentaireRepository
+     */
+    private $commentaireRepository;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
         DateNettoyageRepository $dateNettoyageRepository,
+        CommentaireRepository $commentaireRepository,
         SerializeApi $serializeApi,
         Logger $logger,
         ElasticSearch $elasticSearch,
@@ -63,6 +70,7 @@ class ApiController extends AbstractController
         $this->dateNettoyageRepository = $dateNettoyageRepository;
         $this->elasticSearch = $elasticSearch;
         $this->elasticServer = $elasticServer;
+        $this->commentaireRepository = $commentaireRepository;
     }
 
     /**
@@ -225,11 +233,13 @@ class ApiController extends AbstractController
             return new JsonResponse($data);
         }
 
-        $avaloir->setDescription($commentaire);
+        $commentaire = new Commentaire($avaloir);
+        $commentaire->setContent($commentaire);
 
-        $this->avaloirRepository->flush();
+        $this->commentaireRepository->persist($commentaire);
+        $this->commentaireRepository->flush();
 
-        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $commentaire];
+        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $commentaire->getContent()];
 
         return new JsonResponse($data);
     }
