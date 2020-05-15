@@ -6,6 +6,11 @@ liip_imagine:
         cache: default
         filters:
           thumbnail: { size: [250, 188], mode: outbound }
+      aval_thumb:
+        quality: 95
+        cache: default
+        filters:
+          thumbnail: { size: [150, 70], mode: outbound }
       actravaux_zoom:
         quality: 95
         cache: default

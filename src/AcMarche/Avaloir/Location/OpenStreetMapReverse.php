@@ -2,13 +2,10 @@
 
 namespace AcMarche\Avaloir\Location;
 
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class LocationReverse
+class OpenStreetMapReverse implements LocationReverseInterface
 {
     /**
      * @var string
@@ -19,12 +16,23 @@ class LocationReverse
      */
     private $client;
 
+    /**
+     * @var array
+     */
+    private $result = [];
+
     public function __construct()
     {
         $this->baseUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&namedetails=0&extratags=0';
         $this->client = HttpClient::create();
     }
 
+    /**
+     * @param $latitude
+     * @param $longitude
+     * @return array
+     * @throws \Exception
+     */
     public function reverse($latitude, $longitude): array
     {
         try {
@@ -35,28 +43,41 @@ class LocationReverse
                     'query' => [
                         'lat' => $latitude,
                         'lon' => $longitude,
-                    ]
+                    ],
                 ]
             );
-        } catch (TransportExceptionInterface $e) {
-        }
 
-        try {
-            return json_decode($request->getContent(), true);
-        } catch (ClientExceptionInterface $e) {
-            return $this->createError($e->getMessage());
-        } catch (RedirectionExceptionInterface $e) {
-            return $this->createError($e->getMessage());
-        } catch (ServerExceptionInterface $e) {
-            return $this->createError($e->getMessage());
-        } catch (TransportExceptionInterface $e) {
-            return $this->createError($e->getMessage());
+            $this->result = json_decode($request->getContent(), true);
+
+            return $this->result;
+        } catch (ClientException $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
-    protected function createError(string $message)
+    public function getRoad(): string
     {
-        return ['error' => true, 'message' => $message];
+        return $this->extractRoad();
+    }
+
+    protected function extractRoad(): ?string
+    {
+        $address = $this->result['address'];
+
+        if (isset($address['road'])) {
+            return $address['road'];
+        }
+
+        if (isset($address['pedestrian'])) {
+            return $address['pedestrian'];
+        }
+
+        return null;
+    }
+
+    public function getLocality(): string
+    {
+        return $this->result['address']['town'];
     }
 
     /**

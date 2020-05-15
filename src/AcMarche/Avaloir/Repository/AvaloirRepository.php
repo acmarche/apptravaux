@@ -111,7 +111,7 @@ class AvaloirRepository extends ServiceEntityRepository
             $qb->andWhere("avaloir.id IN ('$id')");
         }
 
-        $qb->addOrderBy('avaloir.rue', 'ASC');
+        $qb->addOrderBy('avaloir.createdAt', 'DESC');
         //$qb->addOrderBy('rue.nom', 'ASC');
 
         return $qb;

@@ -9,6 +9,7 @@ use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Form\AvaloirEditType;
 use AcMarche\Avaloir\Form\AvaloirType;
 use AcMarche\Avaloir\Form\Search\SearchAvaloirType;
+use AcMarche\Avaloir\Repository\AvaloirRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +26,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class AvaloirController extends AbstractController
 {
     /**
+     * @var AvaloirRepository
+     */
+    private $avaloirRepository;
+
+    public function __construct(AvaloirRepository $avaloirRepository)
+    {
+        $this->avaloirRepository = $avaloirRepository;
+    }
+
+    /**
      * Lists all Avaloir entities.
      *
      * @Route("/", name="avaloir", methods={"GET"})
@@ -32,7 +43,6 @@ class AvaloirController extends AbstractController
      */
     public function index(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $key = 'avaloir_search';
 
@@ -65,7 +75,7 @@ class AvaloirController extends AbstractController
         }
 
         $session->set($key, serialize($data));
-        $avaloirs = $em->getRepository(Avaloir::class)->search($data);
+        $avaloirs = $this->avaloirRepository->search($data);
 
         return $this->render(
             '@AcMarcheAvaloir/avaloir/index.html.twig',

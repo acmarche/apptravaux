@@ -2,6 +2,8 @@
 
 namespace AcMarche\Travaux\DependencyInjection;
 
+use AcMarche\Avaloir\Location\LocationReverseInterface;
+use AcMarche\Avaloir\Location\OpenStreetMapReverse;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -31,6 +33,8 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
     {
         // get all bundles
         $bundles = $container->getParameter('kernel.bundles');
+        //register by default reverse service
+        $container->setAlias(LocationReverseInterface::class, OpenStreetMapReverse::class);
 
         if (isset($bundles['DoctrineBundle'])) {
             foreach ($container->getExtensions() as $name => $extension) {

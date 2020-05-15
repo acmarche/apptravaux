@@ -3,7 +3,7 @@
 namespace AcMarche\Avaloir\Command;
 
 use AcMarche\Avaloir\Entity\Avaloir;
-use AcMarche\Avaloir\Location\LocationReverse;
+use AcMarche\Avaloir\Location\LocationReverseInterface;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -23,7 +23,7 @@ class LocationCommand extends Command
      */
     private $avaloirRepository;
     /**
-     * @var LocationReverse
+     * @var LocationReverseInterface
      */
     private $locationReverse;
     /**
@@ -34,10 +34,14 @@ class LocationCommand extends Command
      * @var SerializeApi
      */
     private $serializeApi;
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
-        LocationReverse $locationReverse,
+        LocationReverseInterface $locationReverse,
         MailerInterface $mailer,
         SerializeApi $serializeApi,
         string $name = null
@@ -52,23 +56,28 @@ class LocationCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Reverse address');
+            ->setDescription('Reverse address')
+            ->addArgument('latitude')
+            ->addArgument('longitude');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $this->io = new SymfonyStyle($input, $output);
+
+        $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+
+        return 0;
         $avaloirs = $this->avaloirRepository->findAll();
 
         foreach ($avaloirs as $avaloir) {
             //$this->serializeApi->serializeAvaloir($avaloir);
             if (!$avaloir->getRue()) {
-                $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
-                if (!isset($result['error'])) {
-                    $adresse = $result['address'];
-                    $avaloir->setLocalite($adresse['town']);
-                    $this->setRoad($avaloir, $adresse);
-                } else {
+                try {
+                    $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
+                    $avaloir->setLocalite($this->locationReverse->getLocality());
+                    $avaloir->setRue($this->locationReverse->getRoad());
+                } catch (\Exception $e) {
                     $this->sendemail($result);
                 }
             }
@@ -79,24 +88,18 @@ class LocationCommand extends Command
         return 0;
     }
 
-    protected function setRoad(Avaloir $avaloir, $address)
+    protected function testLocation(string $latitude, string $longitude)
     {
-        if (isset($address['road'])) {
-            $avaloir->setRue($address['road']);
-            return;
-        }
-        if (isset($address['pedestrian'])) {
-            $avaloir->setRue($address['pedestrian']);
-            return;
-        }
-
-        $this->sendemail($address);
+        $result = $this->locationReverse->reverse($latitude, $longitude);
+        $this->io->writeln($this->locationReverse->getRoad());
+        $this->io->writeln($this->locationReverse->getLocality());
+        //  print_r($result);
     }
 
     protected function sendemail(array $result)
     {
         $mail = (new TemplatedEmail())
-            ->subject('Travaux reverse error')
+            ->subject('[Avaloir] reverse error')
             ->from("webmaster@marche.be")
             ->to("webmaster@marche.be")
             ->textTemplate("@AcMarcheAvaloir/mail/reverse.txt.twig")
