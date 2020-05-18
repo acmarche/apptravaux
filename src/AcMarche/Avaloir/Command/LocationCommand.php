@@ -75,9 +75,8 @@ class LocationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->imageService->rotateImage('/home/jfsenechal/Bureau/avaloirs/36/aval-36.jpg');
 
-//        $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+      //  $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
 
         return 0;
         $avaloirs = $this->avaloirRepository->findAll();

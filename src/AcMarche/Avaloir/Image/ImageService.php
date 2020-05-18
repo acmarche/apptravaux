@@ -19,7 +19,6 @@ class ImageService
         var_dump($imagick->getImageOrientation());
         $color = $imagick->getImageBackgroundColor();
         if ($imagick->getImageOrientation() == 6) {
-            var_dump(123);
             $imagick->rotateimage($color, 90);
         }
 
