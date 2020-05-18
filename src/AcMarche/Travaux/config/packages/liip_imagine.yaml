@@ -22,6 +22,7 @@ liip_imagine:
         filters:
           thumbnail: { size: [800, 600], mode: outbound }
       avaloir_heighten_filter:
+        quality: 95
         filters:
           # use and setup the "relative_resize" filter
           relative_resize:

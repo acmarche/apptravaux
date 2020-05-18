@@ -74,6 +74,7 @@ class SerializeApi
             $fullPath = $root.$pathImg;
             if (is_readable($fullPath)) {
                 $thumb = $this->filterService->getUrlOfFilteredImage($pathImg, 'avaloir_heighten_filter');
+                $thumb = false;
                 if ($thumb) {
                     $std->imageUrl = $thumb;
                 } else {

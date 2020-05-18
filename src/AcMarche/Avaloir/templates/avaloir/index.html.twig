@@ -13,10 +13,10 @@
                 <div class="col mb-4">
                     <div class="card h-100">
                         <div class="card-header">
-                            {{ avaloir.id }}
+                        {{ avaloir.rue }} {{ avaloir.numero }}     {{ avaloir.id }}
                         </div>
                         {% if avaloir.imageName %}
-                            <img src="{{ vich_uploader_asset(avaloir, 'imageFile') | imagine_filter('avaloir_heighten_filter') }}"
+                            <img src="{{ vich_uploader_asset(avaloir, 'imageFile')  }}"
                                  alt="{{ avaloir.imageName }}" class="card-img-top"/>
                         {% endif %}
                         <div class="card-body">
