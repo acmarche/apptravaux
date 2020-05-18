@@ -8,56 +8,49 @@
     {% include '@AcMarcheAvaloir/search/avaloir.html.twig' %}
 
     {% if avaloirs | length > 0 %}
-        <table class='table table-bordered table-hover'>
-            <thead>
-            <tr>
-                <th>Numéro</th>
-                <th>Village</th>
-                <th>Quartier</th>
-                <th>Rue et numéro</th>
-                <th>Dernière date de nettoyage</th>
-                {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
-                    <th>Actions</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
+        <div class="row row-cols-1 row-cols-md-3">
             {% for avaloir in avaloirs %}
-                <tr>
-                    <td>
-                        <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': avaloir.id }) }}">
-                          Num  {{ avaloir.id }}
-                        </a>
-                    </td>
-                    <td>{{ avaloir.localite }}</td>
-                    <td>
-                        {% if avaloir.rueEntity and avaloir.rue.quartier %}
-                            <a href="{{ path('quartier_show', { 'id': avaloir.rue.quartier.id }) }}">
-                                {{ avaloir.rue.quartier }}
-                            </a>
+                <div class="col mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            {{ avaloir.id }}
+                        </div>
+                        {% if avaloir.imageName %}
+                            <img src="{{ vich_uploader_asset(avaloir, 'imageFile') | imagine_filter('avaloir_heighten_filter') }}"
+                                 alt="{{ avaloir.imageName }}" class="card-img-top"/>
                         {% endif %}
-                    </td>
-                    <td>
-                        {{ avaloir.rue }} {{ avaloir.numero }}
-                    </td>
-                    <td>
-                        {% if avaloir.dates | length > 0 %}
-                            {% set jour = avaloir.dates | first %}
-                            {{ jour }}
-                        {% endif %}
-                    </td>
-                    {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
-                        <td>
-                            <a href="{{ path('datenettoyage_new', { 'id': avaloir.id }) }}"
-                               class="btn btn-primary btn-xs" role="button">
-                                <i class="far fa-calendar-alt"></i>
-                                Ajouter une date
-                            </a>
-                        </td>
-                    {% endif %}
-                </tr>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': avaloir.id }) }}">
+                                    {{ avaloir.rue }} {{ avaloir.numero }} <br /> {{ avaloir.localite }}
+                                </a>
+                            </h5>
+                            <strong>Situation :</strong> {{ avaloir.latitude }} {{ avaloir.longitude }}
+                            <p class="card-text">
+
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
+                                <a href="{{ path('datenettoyage_new', { 'id': avaloir.id }) }}"
+                                   class="btn btn-primary btn-xs float-right" role="button">
+                                    <i class="far fa-calendar-alt"></i>
+                                    Ajouter
+                                </a>
+                            {% endif %}
+                            {% if avaloir.dates | length > 0 %}
+                                {% set jour = avaloir.dates | first %}
+                                Le {{ jour }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     {% endif %}
 {% endblock %}

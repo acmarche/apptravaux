@@ -8,43 +8,50 @@
             <h3>Détail de l'avaloir <strong>{{ avaloir.id }} {{ avaloir }}</strong></h3>
         </div>
 
-        {{ include('@AcMarcheAvaloir/avaloir/_images.html.twig') }}
 
         <div class="card-body">
-            {% include '@AcMarcheAvaloir/avaloir/actions.html.twig' %}
-            <br/>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Localisation</th>
-                    <td>
-                        <a href="https://www.openstreetmap.org/#map=17/{{ avaloir.latitude }}/{{ avaloir.longitude }}"
-                           target="_blank">
-                            {{ avaloir.latitude }}, {{ avaloir.longitude }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Localité</th>
-                    <td>
-                        {{ avaloir.localite }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Date de rappel</th>
-                    <td>
-                        {% if avaloir.dateRappel %}
-                            {{ avaloir.dateRappel | date('d-m-Y') }}
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
 
-            <p>{{ avaloir.description | nl2br }}</p>
+            {% include '@AcMarcheAvaloir/avaloir/actions.html.twig' %}
+
+
+            <div class="row no-gutters pl-1">
+                <div class="col-md-3 mt-4">
+                    {{ include('@AcMarcheAvaloir/avaloir/_images.html.twig') }}
+                </div>
+                <div class="col-md-9 mt-4">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Localisation</th>
+                            <td>
+                                <a href="https://www.openstreetmap.org/#map=17/{{ avaloir.latitude }}/{{ avaloir.longitude }}"
+                                   target="_blank">
+                                    {{ avaloir.latitude }}, {{ avaloir.longitude }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Localité</th>
+                            <td>
+                                {{ avaloir.localite }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date de rappel</th>
+                            <td>
+                                {% if avaloir.dateRappel %}
+                                    {{ avaloir.dateRappel | date('d-m-Y') }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>{{ avaloir.description | nl2br }}</p>
+                </div>
+            </div>
 
             {{ include('@AcMarcheAvaloir/avaloir/_carte.html.twig') }}
 
             {{ include('@AcMarcheAvaloir/avaloir/_dates_nettoyages.html.twig') }}
-            <br/>
 
             {{ include('@AcMarcheAvaloir/avaloir/_commentaires.html.twig') }}
 
