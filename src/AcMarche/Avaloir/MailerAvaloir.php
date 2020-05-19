@@ -20,10 +20,10 @@ class MailerAvaloir
         $this->mailer = $mailer;
     }
 
-    public function sendError(array $result)
+    public function sendError(string $sujet, array $result)
     {
         $mail = (new TemplatedEmail())
-            ->subject('[Avaloir] reverse error')
+            ->subject('[Avaloir] '.$sujet)
             ->from("webmaster@marche.be")
             ->to("webmaster@marche.be")
             ->textTemplate("@AcMarcheAvaloir/mail/reverse.txt.twig")

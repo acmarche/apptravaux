@@ -44,13 +44,6 @@ class Avaloir implements TimestampableInterface
     protected $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Rue", inversedBy="avaloirs")
-     * @ORM\JoinColumn(nullable=true)
-     *
-     */
-    protected $rueEntity;
-
-    /**
      * @ORM\Column(type="string", length=120, nullable=true)
      *
      */
@@ -98,32 +91,10 @@ class Avaloir implements TimestampableInterface
      */
     private $imageName;
 
-    /**
-     * Utilise pour l'ajout d'un avoloir (ajax)
-     * @var int
-     */
-    private $rueId;
-
     public function __construct()
     {
         $this->dates = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRueId()
-    {
-        return $this->rueId;
-    }
-
-    /**
-     * @param mixed $rueId
-     */
-    public function setRueId($rueId)
-    {
-        $this->rueId = $rueId;
     }
 
     public function __toString()
@@ -236,18 +207,6 @@ class Avaloir implements TimestampableInterface
     public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function getRueEntity(): ?Rue
-    {
-        return $this->rueEntity;
-    }
-
-    public function setRueEntity(?Rue $rueEntity): self
-    {
-        $this->rueEntity = $rueEntity;
 
         return $this;
     }

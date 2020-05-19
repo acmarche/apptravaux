@@ -3,6 +3,7 @@
 namespace AcMarche\Avaloir\Repository;
 
 use AcMarche\Avaloir\Entity\Avaloir;
+use AcMarche\Avaloir\Entity\Rue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -70,22 +71,20 @@ class AvaloirRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('avaloir');
         $qb->leftJoin('avaloir.dates', 'dates', 'WITH');
         $qb->leftJoin('avaloir.commentaires', 'commentaires', 'WITH');
-        $qb->leftJoin('avaloir.rueEntity', 'rueEntity', 'WITH');
-        $qb->leftJoin('rueEntity.quartier', 'quartier', 'WITH');
-        $qb->addSelect('quartier', 'rueEntity', 'dates', 'commentaires');
+        $qb->addSelect('dates', 'commentaires');
 
         if ($nom) {
             $qb->andWhere('avaloir.descriptif LIKE :mot ')
                 ->setParameter('mot', '%'.$nom.'%');
         }
 
-        if ($rue) {
+        if ($rue instanceof Rue) {
             $qb->andWhere('avaloir.rue = :rue')
-                ->setParameter('rue', $rue);
+                ->setParameter('rue', $rue->getNom());
         }
 
         if ($village) {
-            $qb->andWhere('rueEntity.village = :village')
+            $qb->andWhere('avaloir.localite = :village')
                 ->setParameter('village', $village);
         }
 

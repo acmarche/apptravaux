@@ -2,40 +2,26 @@
 
 namespace AcMarche\Avaloir\Form\Search;
 
-use AcMarche\Avaloir\Data\Localite;
-use AcMarche\Avaloir\Repository\QuartierRepository;
-use AcMarche\Avaloir\Repository\VillageRepository;
+use AcMarche\Avaloir\Entity\Rue;
+use AcMarche\Avaloir\Repository\RueRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchAvaloirType extends AbstractType
 {
     /**
-     * @var VillageRepository
+     * @var RueRepository
      */
-    private $villageRepository;
-    /**
-     * @var QuartierRepository
-     */
-    private $quartierRepository;
-    /**
-     * @var Localite
-     */
-    private $localite;
+    private $rueRepository;
 
-    public function __construct(
-        VillageRepository $villageRepository,
-        QuartierRepository $quartierRepository,
-        Localite $localite
-    ) {
-        $this->villageRepository = $villageRepository;
-        $this->quartierRepository = $quartierRepository;
-        $this->localite = $localite;
+    public function __construct(RueRepository $rueRepository)
+    {
+        $this->rueRepository = $rueRepository;
     }
 
     /**
@@ -44,17 +30,18 @@ class SearchAvaloirType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $villages = $this->villageRepository->getForSearch();
-        $quartiers = $this->quartierRepository->getForSearch();
-        $rues = $this->localite->getListRues();
-        $rues = array_combine($rues, $rues);
+        $villages = $this->rueRepository->getVillages();
 
         $builder
             ->add(
                 'rue',
-                ChoiceType::class,
+                EntityType::class,
                 array(
-                    'choices' => $rues,
+                    'class' => Rue::class,
+                    'query_builder'=> function(RueRepository $rueRepository) {
+                     return   $rueRepository->getForList();
+                    },
+                    'group_by'=>'village',
                     'required' => false,
                     'placeholder' => 'Choisissez une rue',
                 )
@@ -66,15 +53,6 @@ class SearchAvaloirType extends AbstractType
                     'choices' => $villages,
                     'required' => false,
                     'placeholder' => 'Choisissez un village',
-                )
-            )
-            ->add(
-                'quartier',
-                ChoiceType::class,
-                array(
-                    'choices' => $quartiers,
-                    'required' => false,
-                    'placeholder' => 'Choisissez un quartier',
                 )
             )
             ->add(
@@ -111,13 +89,6 @@ class SearchAvaloirType extends AbstractType
                         'placeholder' => 'Et le',
                     ),
                 )
-            )
-            ->add(
-                'raz',
-                SubmitType::class,
-                [
-                    'attr' => ['class' => ' mr-1 btn-primary ', 'title' => 'Réinitialiser la recherche'],
-                ]
             );
     }
 }

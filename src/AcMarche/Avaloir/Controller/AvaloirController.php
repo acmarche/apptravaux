@@ -47,16 +47,10 @@ class AvaloirController extends AbstractController
     {
         $session = $request->getSession();
         $key = 'avaloir_search';
-
-        $data = array();
-
-        if ($session->has($key)) {
-            $data = unserialize($session->get($key));
-        }
-
+        $session->remove($key);
         $search_form = $this->createForm(
             SearchAvaloirType::class,
-            $data,
+            [],
             array(
                 'action' => $this->generateUrl('avaloir'),
                 'method' => 'GET',
@@ -67,17 +61,11 @@ class AvaloirController extends AbstractController
 
         if ($search_form->isSubmitted() && $search_form->isValid()) {
             $data = $search_form->getData();
-
-            if ($search_form->get('raz')->isClicked()) {
-                $session->remove($key);
-                $this->addFlash('info', 'La recherche a bien été réinitialisée.');
-
-                return $this->redirectToRoute('avaloir');
-            }
+            $session->set($key, serialize($data));
+            $avaloirs = $this->avaloirRepository->search($data);
+        } else {
+            $avaloirs = $this->avaloirRepository->search([]);
         }
-
-        $session->set($key, serialize($data));
-        $avaloirs = $this->avaloirRepository->search($data);
 
         return $this->render(
             '@AcMarcheAvaloir/avaloir/index.html.twig',

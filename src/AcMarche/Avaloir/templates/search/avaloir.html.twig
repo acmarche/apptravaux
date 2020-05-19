@@ -6,17 +6,13 @@
     {{ form_row(search_form.rue, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
     {{ form_row(search_form.village, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
 
-    {{ form_row(search_form.quartier, {label_attr: {class: 'sr-only'}, attr:{'class': ' my-1 mr-sm-2'}}) }}
-
     {{ form_row(search_form.date_debut, {label_attr: {class: 'sr-only'} }) }}
     {{ form_row(search_form.date_fin, {label_attr: {class: 'sr-only'} }) }}
-
 
     <br/><br/>
     {{ form_widget(search_form.id) }}
 
     <input type="submit" class="btn btn-primary mr-1" value="Rechercher" name="submit">
-    {{ form_row(search_form.raz) }}
 
     <a href="{{ path('export_avaloirs_xls') }}" class="btn btn-success" role="button"><i class="fas fa-download"></i> En
         Xls</a>

@@ -6,7 +6,6 @@ use AcMarche\Avaloir\Entity\Avaloir;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AvaloirType extends AbstractType
 {
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -22,13 +20,6 @@ class AvaloirType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'rueId',
-                HiddenType::class,
-                array(
-                    'required' => true,
-                )
-            )
             ->add(
                 'dates',
                 CollectionType::class,
@@ -55,7 +46,7 @@ class AvaloirType extends AbstractType
                 TextType::class,
                 [
                     'required' => false,
-                    'help' => 'Emplacement approximatif dans la rue'
+                    'help' => 'Emplacement approximatif dans la rue',
                 ]
             )
             ->add(
@@ -73,7 +64,7 @@ class AvaloirType extends AbstractType
                     'widget' => 'single_text',
                     'required' => false,
                     'label' => 'Date de rappel',
-                    'attr' => array( 'autocomplete' => 'off'),
+                    'attr' => array('autocomplete' => 'off'),
                 )
             );
     }

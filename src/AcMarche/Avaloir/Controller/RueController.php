@@ -6,6 +6,7 @@ use AcMarche\Avaloir\Data\Localite;
 use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Form\RueType;
 use AcMarche\Avaloir\Form\Search\SearchRueType;
+use AcMarche\Avaloir\Repository\RueRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,13 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class RueController extends AbstractController
 {
     /**
-     * @var Localite
+     * @var RueRepository
      */
-    private $localite;
+    private $rueRepository;
 
-    public function __construct(Localite $localite)
+    public function __construct(RueRepository $rueRepository)
     {
-        $this->localite = $localite;
+        $this->rueRepository = $rueRepository;
     }
 
     /**
@@ -40,7 +41,7 @@ class RueController extends AbstractController
      */
     public function index(Request $request)
     {
-        $rues = $this->localite->getListRues();
+        $rues = $this->rueRepository->findAll();
 
         return $this->render(
             '@AcMarcheAvaloir/rue/index.html.twig',
@@ -140,11 +141,6 @@ class RueController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $rue->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-
-            $avaloirs = $rue->getAvaloirs();
-            foreach ($avaloirs as $avaloir) {
-                $em->remove($avaloir);
-            }
 
             $em->remove($rue);
             $em->flush();

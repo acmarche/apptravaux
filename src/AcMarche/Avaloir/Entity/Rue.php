@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="rue")
  *
  */
-
 class Rue
 {
     /**
@@ -23,6 +22,7 @@ class Rue
     protected $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", nullable=false)
      * @ORM\OrderBy({"nom"="ASC"})
      * @Assert\NotBlank()
@@ -30,21 +30,17 @@ class Rue
     protected $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AcMarche\Avaloir\Entity\Village", inversedBy="rue")
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank()
      */
     protected $village;
 
     /**
+     * @var integer
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $code;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Avaloir", mappedBy="rueEntity")
-     *
-     */
-    private $avaloirs;
 
     /**
      * @ORM\ManyToOne(targetEntity="Quartier", inversedBy="rues", cascade={"remove"})
@@ -91,49 +87,6 @@ class Rue
         return $this;
     }
 
-    public function getVillage(): ?Village
-    {
-        return $this->village;
-    }
-
-    public function setVillage(?Village $village): self
-    {
-        $this->village = $village;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Avaloir[]
-     */
-    public function getAvaloirs(): Collection
-    {
-        return $this->avaloirs;
-    }
-
-    public function addAvaloir(Avaloir $avaloir): self
-    {
-        if (!$this->avaloirs->contains($avaloir)) {
-            $this->avaloirs[] = $avaloir;
-            $avaloir->setRue($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAvaloir(Avaloir $avaloir): self
-    {
-        if ($this->avaloirs->contains($avaloir)) {
-            $this->avaloirs->removeElement($avaloir);
-            // set the owning side to null (unless already changed)
-            if ($avaloir->getRue() === $this) {
-                $avaloir->setRue(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getQuartier(): ?Quartier
     {
         return $this->quartier;
@@ -146,8 +99,16 @@ class Rue
         return $this;
     }
 
-    /**
-     * STOP
-     */
+    public function getVillage(): ?string
+    {
+        return $this->village;
+    }
+
+    public function setVillage(string $village): self
+    {
+        $this->village = $village;
+
+        return $this;
+    }
 
 }

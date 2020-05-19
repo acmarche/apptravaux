@@ -75,9 +75,10 @@ class RueRepository extends ServiceEntityRepository
      */
     public function getForList()
     {
-        $qb = $this->createQueryBuilder('r');
-        $qb->addOrderBy('r.village', 'ASC');
-        $qb->addOrderBy('r.nom', 'ASC');
+        $qb = $this
+            ->createQueryBuilder('r')
+            ->addOrderBy('r.village', 'ASC')
+            ->addOrderBy('r.nom', 'ASC');
 
         return $qb;
     }
@@ -98,13 +99,14 @@ class RueRepository extends ServiceEntityRepository
         $results = $query->getResult();
 
         foreach ($results as $result) {
-            $villages[$result->getVillage()->getId()] = $result->getVillage();
+            $villages[$result->getVillage()] = $result->getVillage();
         }
 
         ksort($villages);
 
         return $villages;
     }
+
 
     /**
      * @param Quartier $quartier
@@ -115,10 +117,9 @@ class RueRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('rue');
 
-        $qb->leftJoin('rue.avaloirs', 'avaloirs', 'WITH');
         $qb->leftJoin('rue.quartier', 'quartier', 'WITH');
         $qb->leftJoin('rue.village', 'village', 'WITH');
-        $qb->addSelect('avaloirs', 'quartier', 'village');
+        $qb->addSelect('quartier', 'village');
 
         $qb->andWhere('quartier.id = :quartier')
             ->setParameter('quartier', $quartier);
@@ -138,5 +139,12 @@ class RueRepository extends ServiceEntityRepository
         }
 
         return $rues;
+    }
+
+    public function findOneByRue(string $road): ?Rue
+    {
+        return $this->createQueryBuilder('rue')
+            ->andWhere('rue.nom = :road')
+            ->setParameter('road', $road)->getQuery()->getOneOrNullResult();
     }
 }

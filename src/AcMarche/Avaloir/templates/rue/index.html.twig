@@ -5,23 +5,19 @@
         <h3>Liste des rues</h3>
     </div>
 
-    <div class="alert alert-warning">
-        La liste des rues est générées automatiquement suivant les coordonnées gps des avaloirs
-    </div>
-
     {% if rues | length > 0 %}
         <table class='table table-bordered table-hover'>
             <thead>
             <tr>
                 <th>Nom</th>
-                <th>Nbre d'avaloirs</th>
+                <th>Village</th>
             </tr>
             </thead>
             <tbody>
             {% for rue in rues %}
                 <tr>
-                    <td>{{ rue }}</td>
-                    <td>todo</td>
+                    <td>{{ rue.nom }}</td>
+                    <td>{{ rue.village }}</td>
                 </tr>
             {% endfor %}
             </tbody>

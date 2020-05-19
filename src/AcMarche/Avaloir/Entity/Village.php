@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Village
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -45,17 +44,10 @@ class Village
      */
     private $icone;
 
-    /**
-     * @ORM\OneToMany(targetEntity="AcMarche\Avaloir\Entity\Rue", mappedBy="village")
-     *
-     */
-    private $rue;
-
     public function __construct()
     {
-        $this->rue = new ArrayCollection();
     }
-    
+
     public function __toString()
     {
         return $this->getNom();
@@ -101,40 +93,4 @@ class Village
 
         return $this;
     }
-
-    /**
-     * @return Collection|Rue[]
-     */
-    public function getRue(): Collection
-    {
-        return $this->rue;
-    }
-
-    public function addRue(Rue $rue): self
-    {
-        if (!$this->rue->contains($rue)) {
-            $this->rue[] = $rue;
-            $rue->setVillage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRue(Rue $rue): self
-    {
-        if ($this->rue->contains($rue)) {
-            $this->rue->removeElement($rue);
-            // set the owning side to null (unless already changed)
-            if ($rue->getVillage() === $this) {
-                $rue->setVillage(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * STOP
-     */
-
 }

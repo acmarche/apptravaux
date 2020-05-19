@@ -2,29 +2,22 @@
 
 namespace AcMarche\Avaloir\Form\Search;
 
-use AcMarche\Avaloir\Repository\QuartierRepository;
-use AcMarche\Avaloir\Repository\VillageRepository;
+use AcMarche\Avaloir\Repository\RueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchRueType extends AbstractType
 {
     /**
-     * @var VillageRepository
+     * @var RueRepository
      */
-    private $villageRepository;
-    /**
-     * @var QuartierRepository
-     */
-    private $quartierRepository;
+    private $rueRepository;
 
-    public function __construct(VillageRepository $villageRepository, QuartierRepository $quartierRepository)
+    public function __construct(RueRepository $rueRepository)
     {
-        $this->villageRepository = $villageRepository;
-        $this->quartierRepository = $quartierRepository;
+        $this->rueRepository = $rueRepository;
     }
 
     /**
@@ -33,9 +26,7 @@ class SearchRueType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $villages = $this->villageRepository->getForSearch();
-        $quartiers = $this->quartierRepository->getForSearch();
-
+        $villages = $this->rueRepository->getVillages();
         $builder
             ->add(
                 'village',
@@ -47,29 +38,14 @@ class SearchRueType extends AbstractType
                 )
             )
             ->add(
-                'quartier',
-                ChoiceType::class,
-                array(
-                    'choices' => $quartiers,
-                    'required' => false,
-                    'placeholder' => 'Choisissez un quartier',
-                )
-            )
-            ->add(
                 'nom',
                 SearchType::class,
                 array(
                     'required' => false,
                     'attr' => array(
-                        'placeholder' => 'Rue',
+                        'placeholder' => 'Nom de la rue',
                     ),
                 )
-            ) ->add(
-                'raz',
-                SubmitType::class,
-                [
-                    'attr' => ['class'=>' mr-1 btn-primary ','title'=>'Réinitialiser la recherche'],
-                ]
             );
     }
 

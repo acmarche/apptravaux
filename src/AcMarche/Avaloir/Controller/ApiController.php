@@ -6,10 +6,12 @@ use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\Commentaire;
 use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Avaloir\Location\LocationReverseInterface;
+use AcMarche\Avaloir\Location\LocationUpdater;
 use AcMarche\Avaloir\MailerAvaloir;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Avaloir\Repository\CommentaireRepository;
 use AcMarche\Avaloir\Repository\DateNettoyageRepository;
+use AcMarche\Avaloir\Repository\RueRepository;
 use AcMarche\Stock\Service\Logger;
 use AcMarche\Stock\Service\SerializeApi;
 use AcMarche\Travaux\Elastic\ElasticSearch;
@@ -64,6 +66,10 @@ class ApiController extends AbstractController
      * @var MailerAvaloir
      */
     private $mailerAvaloir;
+    /**
+     * @var LocationUpdater
+     */
+    private $locationUpdater;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
@@ -74,7 +80,8 @@ class ApiController extends AbstractController
         ElasticSearch $elasticSearch,
         ElasticServer $elasticServer,
         LocationReverseInterface $locationReverse,
-        MailerAvaloir $mailerAvaloir
+        MailerAvaloir $mailerAvaloir,
+        LocationUpdater $locationUpdater
     ) {
         $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
@@ -85,6 +92,7 @@ class ApiController extends AbstractController
         $this->commentaireRepository = $commentaireRepository;
         $this->locationReverse = $locationReverse;
         $this->mailerAvaloir = $mailerAvaloir;
+        $this->locationUpdater = $locationUpdater;
     }
 
     /**
@@ -144,13 +152,7 @@ class ApiController extends AbstractController
             return new JsonResponse($data);
         }
 
-        $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
-        if ($result['statuts'] == 'OK') {
-            $avaloir->setRue($this->locationReverse->getRoad());
-            $avaloir->setLocalite($this->locationReverse->getLocality());
-        } else {
-            $this->mailerAvaloir->sendError($result);
-        }
+        $this->locationUpdater->updateRueAndLocalite($avaloir);
 
         $result = $this->uploadImage($avaloir, $request);
 

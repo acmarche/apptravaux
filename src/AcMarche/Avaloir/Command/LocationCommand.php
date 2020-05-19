@@ -3,7 +3,10 @@
 namespace AcMarche\Avaloir\Command;
 
 use AcMarche\Avaloir\Location\LocationReverseInterface;
+use AcMarche\Avaloir\Location\LocationUpdater;
+use AcMarche\Avaloir\MailerAvaloir;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
+use AcMarche\Avaloir\Repository\RueRepository;
 use AcMarche\Stock\Service\SerializeApi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,10 +27,6 @@ class LocationCommand extends Command
      */
     private $locationReverse;
     /**
-     * @var MailerInterface
-     */
-    private $mailer;
-    /**
      * @var SerializeApi
      */
     private $serializeApi;
@@ -35,19 +34,29 @@ class LocationCommand extends Command
      * @var SymfonyStyle
      */
     private $io;
+    /**
+     * @var RueRepository
+     */
+    private $rueRepository;
+    /**
+     * @var MailerAvaloir
+     */
+    private $mailerAvaloir;
+    /**
+     * @var LocationUpdater
+     */
+    private $locationUpdater;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
         LocationReverseInterface $locationReverse,
-        MailerInterface $mailer,
-        SerializeApi $serializeApi,
+        LocationUpdater $locationUpdater,
         string $name = null
     ) {
         parent::__construct($name);
         $this->avaloirRepository = $avaloirRepository;
         $this->locationReverse = $locationReverse;
-        $this->mailer = $mailer;
-        $this->serializeApi = $serializeApi;
+        $this->locationUpdater = $locationUpdater;
     }
 
     protected function configure()
@@ -62,7 +71,12 @@ class LocationCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+        $avaloir = $this->avaloirRepository->find(1);
+        $this->locationUpdater->updateRueAndLocalite($avaloir);
+
+     //   $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+
+        // $this->reverseAll();
 
         return 0;
     }
@@ -81,16 +95,10 @@ class LocationCommand extends Command
 
         foreach ($avaloirs as $avaloir) {
             //$this->serializeApi->serializeAvaloir($avaloir);
-            if (!$avaloir->getRue()) {
-                try {
-                    $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
-                    $avaloir->setLocalite($this->locationReverse->getLocality());
-                    $avaloir->setRue($this->locationReverse->getRoad());
-                } catch (\Exception $e) {
-                }
-            }
+            //  if (!$avaloir->getRue()) {
+            $this->locationUpdater->updateRueAndLocalite($avaloir);
+            // }
         }
-
-        $this->avaloirRepository->flush();
+        //   $this->avaloirRepository->flush();
     }
 }
