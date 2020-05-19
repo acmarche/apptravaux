@@ -49,8 +49,8 @@ services:
     AcMarche\Avaloir\Namer\DirectoryNamer:
         public: true
 
-    AcMarche\Avaloir\Location\LocationReverseInterface:
-        alias: AcMarche\Avaloir\Location\GoogleReverse
+    #AcMarche\Avaloir\Location\LocationReverseInterface:
+    #    alias: AcMarche\Avaloir\Location\GoogleReverse
 
     Liip\ImagineBundle\Service\FilterService:
         alias: 'liip_imagine.service.filter'

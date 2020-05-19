@@ -8,6 +8,11 @@ use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * https://developers.google.com/maps/documentation/geocoding/start
+ * Class GoogleReverse
+ * @package AcMarche\Avaloir\Location
+ */
 class GoogleReverse implements LocationReverseInterface
 {
     private $url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY';
@@ -48,6 +53,8 @@ class GoogleReverse implements LocationReverseInterface
                 $this->baseUrl,
                 [
                     'query' => [
+                        //'location_type' => 'ROOFTOP',
+                        'result_type' => 'street_address',
                         'key' => $this->apiKeyGoogle,
                         'latlng' => $latitude.','.$longitude,
                     ],

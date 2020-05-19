@@ -43,7 +43,7 @@ class LocationUpdater
     {
         try {
             $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
-            if ($result['status'] == 'OK') {
+            if ($this->isResultOk($result)) {
                 $avaloir->setRue($this->locationReverse->getRoad());
                 $road = $this->locationReverse->getRoad();
                 if ($road) {
@@ -66,5 +66,18 @@ class LocationUpdater
         } catch (\Exception $e) {
             $this->mailerAvaloir->sendError($e->getMessage(), $result);
         }
+    }
+
+    protected function isResultOk(array $result): bool
+    {
+        if (isset($result['status']) && $result['status'] == 'OK') {
+            return true;
+        }
+
+        if (!isset($result['error'])) {
+            return true;
+        }
+
+        return false;
     }
 }
