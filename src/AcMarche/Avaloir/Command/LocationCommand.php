@@ -71,12 +71,12 @@ class LocationCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        $avaloir = $this->avaloirRepository->find(1);
-        $this->locationUpdater->updateRueAndLocalite($avaloir);
+        // $avaloir = $this->avaloirRepository->find(1);
+        // $this->locationUpdater->updateRueAndLocalite($avaloir);
 
-     //   $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+        //$this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
 
-        // $this->reverseAll();
+        $this->reverseAll();
 
         return 0;
     }
@@ -99,6 +99,5 @@ class LocationCommand extends Command
             $this->locationUpdater->updateRueAndLocalite($avaloir);
             // }
         }
-        //   $this->avaloirRepository->flush();
     }
 }
