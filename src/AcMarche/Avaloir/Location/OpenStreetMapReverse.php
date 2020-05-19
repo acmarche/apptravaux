@@ -66,7 +66,7 @@ class OpenStreetMapReverse implements LocationReverseInterface
         }
     }
 
-    public function getRoad(): string
+    public function getRoad(): ?string
     {
         return $this->extractRoad();
     }
@@ -83,10 +83,14 @@ class OpenStreetMapReverse implements LocationReverseInterface
             return $address['pedestrian'];
         }
 
+        if (isset($address['industrial'])) {
+            return $address['industrial'];
+        }
+
         return null;
     }
 
-    public function getLocality(): string
+    public function getLocality(): ?string
     {
         return $this->result['address']['town'];
     }

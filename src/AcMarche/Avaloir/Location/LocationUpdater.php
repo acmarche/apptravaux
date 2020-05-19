@@ -44,7 +44,6 @@ class LocationUpdater
         try {
             $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
             if ($this->isResultOk($result)) {
-                $avaloir->setRue($this->locationReverse->getRoad());
                 $road = $this->locationReverse->getRoad();
                 if ($road) {
                     $avaloir->setRue($road);
@@ -53,12 +52,14 @@ class LocationUpdater
                         $avaloir->setLocalite($rue->getVillage());
                     } else {
                         $this->mailerAvaloir->sendError(
-                            'rue non trouvee',
+                            'rue non trouvee dans db sql',
                             ['message' => 'dans db sql', 'rueName' => $road]
                         );
                         $avaloir->setLocalite($this->locationReverse->getLocality());
                     }
                     $this->avaloirRepository->flush();
+                } else {
+                    $this->mailerAvaloir->sendError('road non trouve dans api. Avaloir id '.$avaloir->getId(), $result);
                 }
             } else {
                 $this->mailerAvaloir->sendError('result pas OK', $result);

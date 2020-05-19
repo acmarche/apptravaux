@@ -71,7 +71,7 @@ class GoogleReverse implements LocationReverseInterface
         }
     }
 
-    public function getRoad(): string
+    public function getRoad(): ?string
     {
         $results = $this->result['results'];
         $first = $results[0];
@@ -80,7 +80,7 @@ class GoogleReverse implements LocationReverseInterface
         return $road;
     }
 
-    public function getLocality(): string
+    public function getLocality(): ?string
     {
         $results = $this->result['results'];
         $first = $results[0];
