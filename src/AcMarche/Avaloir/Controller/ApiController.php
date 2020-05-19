@@ -171,6 +171,7 @@ class ApiController extends AbstractController
                 'message' => 'ok',
                 'avaloir' => $this->serializeApi->serializeAvaloir($avaloir),
             ];
+            $this->mailerAvaloir->sendError('update elastic', $result);
 
             return new JsonResponse($data);
         } catch (\Exception $e) {
@@ -199,7 +200,7 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
-            $this->mailerAvaloir->sendError('Update - Avaloir non trouvé',$data);
+            $this->mailerAvaloir->sendError('Update - Avaloir non trouvé', $data);
 
             return new JsonResponse($data);
         }
@@ -229,7 +230,7 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
-            $this->mailerAvaloir->sendError('avaloir non trouvé, add clean date',$data);
+            $this->mailerAvaloir->sendError('avaloir non trouvé, add clean date', $data);
 
             return new JsonResponse($data);
         }
