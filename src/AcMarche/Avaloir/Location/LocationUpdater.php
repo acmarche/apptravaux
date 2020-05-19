@@ -46,6 +46,9 @@ class LocationUpdater
             if ($this->isResultOk($result)) {
                 $road = $this->locationReverse->getRoad();
                 if ($road) {
+                    if ($number = $this->locationReverse->getHouseNumber()) {
+                        $road = $road.' '.$number;
+                    }
                     $avaloir->setRue($road);
                     $rue = $this->rueRepository->findOneByRue($road);
                     if ($rue) {
