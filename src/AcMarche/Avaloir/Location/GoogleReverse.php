@@ -88,4 +88,9 @@ class GoogleReverse implements LocationReverseInterface
 
         return $road;
     }
+
+    public function getHouseNumber(): ?string
+    {
+        return null;
+    }
 }

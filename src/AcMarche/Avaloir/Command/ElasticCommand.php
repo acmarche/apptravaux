@@ -44,13 +44,20 @@ class ElasticCommand extends Command
     {
         $this
             ->setDescription('Mise à jour du moteur de recherche')
-            ->addOption('raz', null, InputOption::VALUE_NONE, 'Remise à zéro du moteur');
+            ->addOption('raz', null, InputOption::VALUE_NONE, 'Remise à zéro du moteur')
+            ->addOption('reindex', null, InputOption::VALUE_NONE, 'Réindex tous les avaloirs')
+            ->addArgument('latitude', InputArgument::OPTIONAL)
+            ->addArgument('longitude', InputArgument::OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $raz = $input->getOption('raz');
+        $reindex = $input->getOption('reindex');
+        $reindex = $input->getOption('reindex');
+        $latitude = $input->getArgument('latitude');
+        $longitude = $input->getArgument('longitude');
 
         if ($raz) {
             try {
@@ -65,9 +72,14 @@ class ElasticCommand extends Command
             }
         }
 
-        //$result = $this->elasticSearch->search("500km", 50.22403140, 5.29429060);
+        if ($latitude && $longitude) {
+            $result = $this->elasticSearch->search("25m", $latitude, $longitude);
+            print_r($result);
+        }
 
-        $this->updateAvaloirs();
+        if ($reindex) {
+            $this->updateAvaloirs();
+        }
 
         return 0;
     }
@@ -78,6 +90,7 @@ class ElasticCommand extends Command
             $result = $this->elasticServer->updateData($avaloir);
             var_dump($result);
         }
+
         //$this->elasticServer->getClient()->indices()->refresh();
         return [];
     }

@@ -95,6 +95,16 @@ class OpenStreetMapReverse implements LocationReverseInterface
         return $this->result['address']['town'];
     }
 
+    public function getHouseNumber(): ?string
+    {
+        $address = $this->result['address'];
+
+        if (isset($address['house_number'])) {
+            return $address['house_number'];
+        }
+
+        return null;
+    }
     /**
      * {
      * "place_id":188259342,
