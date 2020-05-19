@@ -37,7 +37,7 @@
                             <th>Date de rappel</th>
                             <td>
                                 {% if avaloir.dateRappel %}
-                                    {{ avaloir.dateRappel | date('d-m-Y') }}
+                                    {{ avaloir.dateRappel | format_date('full') }}
                                 {% endif %}
                             </td>
                         </tr>

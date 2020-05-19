@@ -5,6 +5,8 @@ namespace AcMarche\Avaloir\Controller;
 use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\Commentaire;
 use AcMarche\Avaloir\Entity\DateNettoyage;
+use AcMarche\Avaloir\Location\LocationReverseInterface;
+use AcMarche\Avaloir\MailerAvaloir;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Avaloir\Repository\CommentaireRepository;
 use AcMarche\Avaloir\Repository\DateNettoyageRepository;
@@ -54,6 +56,14 @@ class ApiController extends AbstractController
      * @var CommentaireRepository
      */
     private $commentaireRepository;
+    /**
+     * @var LocationReverseInterface
+     */
+    private $locationReverse;
+    /**
+     * @var MailerAvaloir
+     */
+    private $mailerAvaloir;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
@@ -62,7 +72,9 @@ class ApiController extends AbstractController
         SerializeApi $serializeApi,
         Logger $logger,
         ElasticSearch $elasticSearch,
-        ElasticServer $elasticServer
+        ElasticServer $elasticServer,
+        LocationReverseInterface $locationReverse,
+        MailerAvaloir $mailerAvaloir
     ) {
         $this->avaloirRepository = $avaloirRepository;
         $this->serializeApi = $serializeApi;
@@ -71,6 +83,8 @@ class ApiController extends AbstractController
         $this->elasticSearch = $elasticSearch;
         $this->elasticServer = $elasticServer;
         $this->commentaireRepository = $commentaireRepository;
+        $this->locationReverse = $locationReverse;
+        $this->mailerAvaloir = $mailerAvaloir;
     }
 
     /**
@@ -125,12 +139,24 @@ class ApiController extends AbstractController
                 'avaloir' => $exception->getMessage(),
             ];
 
+            $this->mailerAvaloir->sendError($data);
+
             return new JsonResponse($data);
+        }
+
+        $result = $this->locationReverse->reverse($avaloir->getLatitude(), $avaloir->getLongitude());
+        if ($result['statuts'] == 'OK') {
+            $avaloir->setRue($this->locationReverse->getRoad());
+            $avaloir->setLocalite($this->locationReverse->getLocality());
+        } else {
+            $this->mailerAvaloir->sendError($result);
         }
 
         $result = $this->uploadImage($avaloir, $request);
 
         if ($result['error'] > 0) {
+            $this->mailerAvaloir->sendError($result);
+
             return new JsonResponse($result);
         }
 
@@ -171,6 +197,8 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
+            $this->mailerAvaloir->sendError($data);
+
             return new JsonResponse($data);
         }
 
@@ -198,6 +226,8 @@ class ApiController extends AbstractController
                 'message' => "Avaloir non trouvé",
                 'avaloir' => null,
             ];
+
+            $this->mailerAvaloir->sendError($data);
 
             return new JsonResponse($data);
         }
@@ -240,6 +270,8 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
+            $this->mailerAvaloir->sendError($data);
+
             return new JsonResponse($data);
         }
 
@@ -249,12 +281,16 @@ class ApiController extends AbstractController
         $this->commentaireRepository->persist($commentaire);
         $this->commentaireRepository->flush();
 
-        $data = ['error' => 0, 'message' => "ok", 'commentaire' => $this->serializeApi->serializeCommentaire($commentaire)];
+        $data = [
+            'error' => 0,
+            'message' => "ok",
+            'commentaire' => $this->serializeApi->serializeCommentaire($commentaire),
+        ];
 
         return new JsonResponse($data);
     }
 
-    public function uploadImage(Avaloir $avaloir, Request $request)
+    public function uploadImage(Avaloir $avaloir, Request $request): array
     {
         /**
          * @var UploadedFile $image
@@ -331,6 +367,7 @@ class ApiController extends AbstractController
         }
 
         $result = $this->elasticSearch->search($distance, $latitude, $longitude);
+        $this->mailerAvaloir->sendError($result);
         $hits = $result['hits'];
         $total = $hits['total'];
         $avaloirs = [];

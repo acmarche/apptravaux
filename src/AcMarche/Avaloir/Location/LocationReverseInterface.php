@@ -10,7 +10,6 @@ interface LocationReverseInterface
      * @param $latitude
      * @param $longitude
      * @return array
-     * @throws \Exception
      */
     public function reverse($latitude, $longitude): array;
 

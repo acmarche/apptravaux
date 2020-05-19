@@ -27,27 +27,24 @@
                                     {{ avaloir.rue }} {{ avaloir.numero }} <br/> {{ avaloir.localite }}
                                 </a>
                             </h5>
-                            <strong>Situation :</strong> {{ avaloir.latitude }} {{ avaloir.longitude }}
-                            <p class="card-text">
 
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">
+                            {% if avaloir.dateRappel and avaloir.dateRappel > date('-3days') %}
+                                <strong class="text-danger">Date de rappel :</strong> {{ avaloir.dateRappel | format_date('full') }}
+                            {% endif %}
 
-                                </small>
-                            </p>
+                            {% if avaloir.commentaires | length > 0 %}
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {% set commentaire = avaloir.commentaires | first %}
+                                        {{ commentaire.content | nl2br }}
+                                    </small>
+                                </p>
+                            {% endif %}
                         </div>
                         <div class="card-footer text-muted">
-                            {% if is_granted('ROLE_TRAVAUX_AVALOIR') %}
-                                <a href="{{ path('datenettoyage_new', { 'id': avaloir.id }) }}"
-                                   class="btn btn-primary btn-xs float-right" role="button">
-                                    <i class="far fa-calendar-alt"></i>
-                                    Ajouter
-                                </a>
-                            {% endif %}
                             {% if avaloir.dates | length > 0 %}
                                 {% set jour = avaloir.dates | first %}
-                                Le {{ jour }}
+                                Dernier nettoyage le {{ jour | format_date('full') }}
                             {% endif %}
                         </div>
                     </div>

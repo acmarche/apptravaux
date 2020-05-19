@@ -6,6 +6,7 @@ namespace AcMarche\Avaloir\Location;
 
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class GoogleReverse implements LocationReverseInterface
 {
@@ -34,6 +35,11 @@ class GoogleReverse implements LocationReverseInterface
         $this->apiKeyGoogle = $apiKeyGoogle;
     }
 
+    /**
+     * @param $latitude
+     * @param $longitude
+     * @return array
+     */
     public function reverse($latitude, $longitude): array
     {
         try {
@@ -52,6 +58,8 @@ class GoogleReverse implements LocationReverseInterface
 
             return $this->result;
         } catch (ClientException $e) {
+            return ['error' => true, 'message' => $e->getMessage()];
+        } catch (TransportExceptionInterface $e) {
             return ['error' => true, 'message' => $e->getMessage()];
         }
     }

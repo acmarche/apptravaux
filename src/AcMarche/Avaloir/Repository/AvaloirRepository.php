@@ -69,13 +69,14 @@ class AvaloirRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('avaloir');
         $qb->leftJoin('avaloir.dates', 'dates', 'WITH');
+        $qb->leftJoin('avaloir.commentaires', 'commentaires', 'WITH');
         $qb->leftJoin('avaloir.rueEntity', 'rueEntity', 'WITH');
         $qb->leftJoin('rueEntity.quartier', 'quartier', 'WITH');
-        $qb->addSelect('quartier', 'rueEntity', 'dates');
+        $qb->addSelect('quartier', 'rueEntity', 'dates', 'commentaires');
 
         if ($nom) {
             $qb->andWhere('avaloir.descriptif LIKE :mot ')
-                ->setParameter('mot', '%' . $nom . '%');
+                ->setParameter('mot', '%'.$nom.'%');
         }
 
         if ($rue) {
@@ -112,6 +113,7 @@ class AvaloirRepository extends ServiceEntityRepository
         }
 
         $qb->addOrderBy('avaloir.createdAt', 'DESC');
+
         //$qb->addOrderBy('rue.nom', 'ASC');
 
         return $qb;
