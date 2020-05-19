@@ -67,6 +67,7 @@ class SerializeApi
         $std->latitude = $avaloir->getLatitude();
         $std->longitude = $avaloir->getLongitude();
         $std->rue = $avaloir->getRue();
+        $std->localite = $avaloir->getLocalite();
         $std->description = $avaloir->getDescription();
         if ($avaloir->getImageName()) {
             $root = $this->parameterBag->get('ac_marche_travaux_dir_public');
