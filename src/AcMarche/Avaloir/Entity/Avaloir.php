@@ -100,7 +100,7 @@ class Avaloir implements TimestampableInterface
 
     /**
      * Utilise pour l'ajout d'un avoloir (ajax)
-     * @var
+     * @var int
      */
     private $rueId;
 

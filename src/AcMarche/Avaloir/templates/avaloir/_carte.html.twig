@@ -1,7 +1,7 @@
 {% if avaloir.latitude and avaloir.longitude %}
 
-    <br/>
     <h4>Situation sur la carte</h4>
+    {{ include('@AcMarcheAvaloir/avaloir/_localisation_form.html.twig') }}
 
     <div id='openmap' style='width: 100%; height: 400px;'></div>
 
@@ -9,8 +9,7 @@
         var latitude = '{{ avaloir.latitude }}';
         var longitude = '{{ avaloir.longitude }}';
         var center = [latitude, longitude];
-        console.log(center);
-        var map = L.map('openmap').setView(center, 15);
+        var map = L.map('openmap').setView(center, 18);
         var societe = '{{ avaloir.rue }}';
 
         L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
@@ -20,7 +19,12 @@
             maxZoom: 20
         }).addTo(map);
 
-        L.marker(center, {title: societe, draggable: true}).addTo(map);
+        var marker = L.marker(center, {title: societe, draggable: true}).addTo(map);
+
+        marker.on('dragend', function (e) {
+            document.getElementById('localisation_latitude').value = marker.getLatLng().lat;
+            document.getElementById('localisation_longitude').value = marker.getLatLng().lng;
+        });
 
     </script>
 

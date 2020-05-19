@@ -13,16 +13,18 @@
                 <div class="col mb-4">
                     <div class="card h-100">
                         <div class="card-header">
-                        {{ avaloir.rue }} {{ avaloir.numero }}     {{ avaloir.id }}
+                            <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': avaloir.id }) }}">
+                                {{ avaloir.rue }} {{ avaloir.numero }}
+                            </a>
                         </div>
                         {% if avaloir.imageName %}
-                            <img src="{{ vich_uploader_asset(avaloir, 'imageFile')  }}"
+                            <img src="{{ vich_uploader_asset(avaloir, 'imageFile') | imagine_filter('avaloir_heighten_filter') }}"
                                  alt="{{ avaloir.imageName }}" class="card-img-top"/>
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a title="Consulter l'avaloir" href="{{ path('avaloir_show', { 'id': avaloir.id }) }}">
-                                    {{ avaloir.rue }} {{ avaloir.numero }} <br /> {{ avaloir.localite }}
+                                    {{ avaloir.rue }} {{ avaloir.numero }} <br/> {{ avaloir.localite }}
                                 </a>
                             </h5>
                             <strong>Situation :</strong> {{ avaloir.latitude }} {{ avaloir.longitude }}

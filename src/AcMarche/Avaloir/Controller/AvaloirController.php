@@ -8,6 +8,7 @@ use AcMarche\Avaloir\Entity\DateNettoyage;
 use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Form\AvaloirEditType;
 use AcMarche\Avaloir\Form\AvaloirType;
+use AcMarche\Avaloir\Form\LocalisationType;
 use AcMarche\Avaloir\Form\Search\SearchAvaloirType;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -30,8 +31,9 @@ class AvaloirController extends AbstractController
      */
     private $avaloirRepository;
 
-    public function __construct(AvaloirRepository $avaloirRepository)
-    {
+    public function __construct(
+        AvaloirRepository $avaloirRepository
+    ) {
         $this->avaloirRepository = $avaloirRepository;
     }
 
@@ -127,7 +129,7 @@ class AvaloirController extends AbstractController
             if (!$rue) {
                 $this->addFlash("error", "La rue que vous avez choisi ne se trouve pas dans la liste des rues");
 
-                return $this->redirectToRoute('avaloir_new');
+                return $this->redirectToRoute('avaloir_show');
             }
 
             $avaloir->setRue($rue);
@@ -135,7 +137,7 @@ class AvaloirController extends AbstractController
             $em->flush();
             $this->addFlash("success", "L'avaloir a bien été créé");
 
-            return $this->redirectToRoute('avaloir');
+            return $this->redirectToRoute('avaloir_show', ['id' => $avaloir->getId()]);
         }
 
         return $this->render(
@@ -155,15 +157,19 @@ class AvaloirController extends AbstractController
      */
     public function show(Avaloir $avaloir)
     {
-       /* $avaloir->getImageName();
-        $magick = new \Imagick();
-
-        $magick->getImageOrientation();*/
+        $form = $this->createForm(
+            LocalisationType::class,
+            $avaloir,
+            [
+                'action' => $this->generateUrl('avaloir_localisation_update', ['id' => $avaloir->getId()]),
+            ]
+        );
 
         return $this->render(
             '@AcMarcheAvaloir/avaloir/show.html.twig',
             array(
                 'avaloir' => $avaloir,
+                'form' => $form->createView(),
             )
         );
     }

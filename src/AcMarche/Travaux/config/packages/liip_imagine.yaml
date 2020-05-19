@@ -24,8 +24,8 @@ liip_imagine:
       avaloir_heighten_filter:
         quality: 95
         filters:
+          auto_rotate: ~
           # use and setup the "relative_resize" filter
           relative_resize:
             # given 50x40px, output 75x60px using "heighten" option
             heighten: 600
-

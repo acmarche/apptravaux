@@ -2,8 +2,6 @@
 
 namespace AcMarche\Avaloir\Command;
 
-use AcMarche\Avaloir\Entity\Avaloir;
-use AcMarche\Avaloir\Image\ImageService;
 use AcMarche\Avaloir\Location\LocationReverseInterface;
 use AcMarche\Avaloir\Repository\AvaloirRepository;
 use AcMarche\Stock\Service\SerializeApi;
@@ -39,21 +37,12 @@ class LocationCommand extends Command
      * @var SymfonyStyle
      */
     private $io;
-    /**
-     * @var ImageService
-     */
-    private $imageService;
-    /**
-     * @var string|null
-     */
-    private $name;
 
     public function __construct(
         AvaloirRepository $avaloirRepository,
         LocationReverseInterface $locationReverse,
         MailerInterface $mailer,
         SerializeApi $serializeApi,
-        ImageService $imageService,
         string $name = null
     ) {
         parent::__construct($name);
@@ -61,7 +50,6 @@ class LocationCommand extends Command
         $this->locationReverse = $locationReverse;
         $this->mailer = $mailer;
         $this->serializeApi = $serializeApi;
-        $this->imageService = $imageService;
     }
 
     protected function configure()
@@ -76,7 +64,7 @@ class LocationCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-      //  $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
+        $this->testLocation($input->getArgument('latitude'), $input->getArgument('longitude'));
 
         return 0;
         $avaloirs = $this->avaloirRepository->findAll();
@@ -104,7 +92,7 @@ class LocationCommand extends Command
         $result = $this->locationReverse->reverse($latitude, $longitude);
         $this->io->writeln($this->locationReverse->getRoad());
         $this->io->writeln($this->locationReverse->getLocality());
-        //  print_r($result);
+        print_r($result);
     }
 
     protected function sendemail(array $result)
