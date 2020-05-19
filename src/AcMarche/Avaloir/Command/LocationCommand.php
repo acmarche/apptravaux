@@ -84,7 +84,7 @@ class LocationCommand extends Command
     protected function testLocation(string $latitude, string $longitude)
     {
         $result = $this->locationReverse->reverse($latitude, $longitude);
-        print_r($result);
+        print_r(json_encode($result));
         $this->io->writeln($this->locationReverse->getRoad());
         $this->io->writeln($this->locationReverse->getLocality());
     }
