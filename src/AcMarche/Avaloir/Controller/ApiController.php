@@ -147,7 +147,7 @@ class ApiController extends AbstractController
                 'avaloir' => $exception->getMessage(),
             ];
 
-            $this->mailerAvaloir->sendError($data);
+            $this->mailerAvaloir->sendError('Avaloir non insérer dans la base de données', $data);
 
             return new JsonResponse($data);
         }
@@ -157,7 +157,7 @@ class ApiController extends AbstractController
         $result = $this->uploadImage($avaloir, $request);
 
         if ($result['error'] > 0) {
-            $this->mailerAvaloir->sendError($result);
+            $this->mailerAvaloir->sendError('image upload error', $result);
 
             return new JsonResponse($result);
         }
@@ -199,7 +199,7 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
-            $this->mailerAvaloir->sendError($data);
+            $this->mailerAvaloir->sendError('Update - Avaloir non trouvé',$data);
 
             return new JsonResponse($data);
         }
@@ -229,7 +229,7 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
-            $this->mailerAvaloir->sendError($data);
+            $this->mailerAvaloir->sendError('avaloir non trouvé, add clean date',$data);
 
             return new JsonResponse($data);
         }
@@ -272,7 +272,7 @@ class ApiController extends AbstractController
                 'avaloir' => null,
             ];
 
-            $this->mailerAvaloir->sendError($data);
+            $this->mailerAvaloir->sendError("Comment, Avaloir non trouvé", $data);
 
             return new JsonResponse($data);
         }
@@ -369,7 +369,7 @@ class ApiController extends AbstractController
         }
 
         $result = $this->elasticSearch->search($distance, $latitude, $longitude);
-        $this->mailerAvaloir->sendError($result);
+        $this->mailerAvaloir->sendError('result search elastic', $result);
         $hits = $result['hits'];
         $total = $hits['total'];
         $avaloirs = [];
