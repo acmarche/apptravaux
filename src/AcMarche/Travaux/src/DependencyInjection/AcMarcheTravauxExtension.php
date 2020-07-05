@@ -49,14 +49,12 @@ class AcMarcheTravauxExtension extends Extension implements PrependExtensionInte
                         $this->loadConfig($container, 'liip_imagine');
                         break;
                     case 'framework':
+                        $this->loadConfig($container, 'security');
                         $this->loadConfig($container, 'workflow');
                         $this->loadConfig($container, 'translation');
                         break;
                     case 'vich_uploader':
                         $this->loadConfig($container, 'vich_uploader');
-                        break;
-                    case 'api_platform222':
-                        $this->loadConfig($container, 'api_platform');
                         break;
                 }
             }

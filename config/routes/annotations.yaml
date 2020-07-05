@@ -1,15 +1,18 @@
-controllers:
+kernel:
+    resource: ../../src/App/Kernel.php
+    type: annotation
+
+travaux:
     resource: ../../src/AcMarche/Travaux/src/Controller/
     type: annotation
 
-acmarche_avaloir:
+avaloir:
     # loads routes from the PHP annotations of the controllers found in that directory
     resource: '../../src/AcMarche/Avaloir/Controller/'
     type:     annotation
     prefix: avaloirs/
 
-
-acmarche_stock:
+stock:
     # loads routes from the PHP annotations of the controllers found in that directory
     resource: '../../src/AcMarche/Stock/Controller/'
     type:     annotation

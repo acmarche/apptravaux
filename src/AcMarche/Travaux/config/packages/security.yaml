@@ -1,0 +1,21 @@
+security:
+    encoders:
+        AcMarche\Travaux\Entity\Security\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: AcMarche\Travaux\Entity\Security\User
+                property: username
+    firewalls:
+        main:
+            #anonymous: lazy
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - AcMarche\Travaux\Security\TravauxAuthenticator
+            logout:
+                path: app_logout
