@@ -79,7 +79,7 @@ class ExportController extends AbstractController
             $sheet->setCellValue($lettre++ . $ligne, $avaloir->getLatitude());
             $sheet->setCellValue($lettre++ . $ligne, $avaloir->getLongitude());
             $sheet->setCellValue($lettre++ . $ligne, $avaloir->getRue());
-            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getDescriptif());
+            $sheet->setCellValue($lettre++ . $ligne, $avaloir->getDescription());
 
             foreach ($dates as $date) {
                 $jour = $date->getJour();
