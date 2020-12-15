@@ -4,7 +4,7 @@ namespace AcMarche\Avaloir\Repository;
 
 use AcMarche\Avaloir\Entity\Village;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Village|null find($id, $lockMode = null, $lockVersion = null)

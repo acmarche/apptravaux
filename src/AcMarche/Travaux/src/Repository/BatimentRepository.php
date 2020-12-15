@@ -5,7 +5,7 @@ namespace AcMarche\Travaux\Repository;
 use AcMarche\Travaux\Entity\Batiment;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 /**

@@ -4,7 +4,7 @@ namespace AcMarche\Stock\Repository;
 
 use AcMarche\Stock\Entity\Log;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Log|null find($id, $lockMode = null, $lockVersion = null)

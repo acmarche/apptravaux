@@ -5,8 +5,8 @@ namespace AcMarche\Avaloir\DataFixtures\ORM;
 use AcMarche\Avaloir\Entity\Village;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use AcMarche\Avaloir\Entity\Rue;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadRueData extends Fixture implements ORMFixtureInterface
 {

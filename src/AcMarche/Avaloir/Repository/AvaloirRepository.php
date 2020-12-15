@@ -5,7 +5,7 @@ namespace AcMarche\Avaloir\Repository;
 use AcMarche\Avaloir\Entity\Avaloir;
 use AcMarche\Avaloir\Entity\Rue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Avaloir|null find($id, $lockMode = null, $lockVersion = null)

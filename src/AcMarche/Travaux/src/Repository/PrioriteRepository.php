@@ -4,7 +4,7 @@ namespace AcMarche\Travaux\Repository;
 
 use AcMarche\Travaux\Entity\Priorite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Priorite|null find($id, $lockMode = null, $lockVersion = null)

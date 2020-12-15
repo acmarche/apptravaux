@@ -5,7 +5,7 @@ namespace AcMarche\Travaux\Repository;
 use AcMarche\Travaux\Entity\Intervention;
 use AcMarche\Travaux\Entity\Suivi;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Suivi|null find($id, $lockMode = null, $lockVersion = null)

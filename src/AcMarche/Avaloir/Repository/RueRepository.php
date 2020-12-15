@@ -6,7 +6,7 @@ use AcMarche\Avaloir\Entity\Quartier;
 use AcMarche\Avaloir\Entity\Rue;
 use AcMarche\Avaloir\Entity\Village;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Rue|null find($id, $lockMode = null, $lockVersion = null)
